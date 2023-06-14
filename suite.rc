@@ -1,14 +1,18 @@
 [cylc]
     UTC mode = True # Ignore DST
     [[parameters]]
-        county = 1..10
+        model=CMCC-CM2-SR5
+        initial_year=1960
+        final_year=2019
+        variable=psl
+        region=north-atlantic
+        forecast-range=2-9
+        season=DJFM
 
 [scheduling]
     [[dependencies]]
-        graph = """
-            clone_repo => get_counties
-            get_counties => process<county> 
-            process<county> => plot"""
+        graph = """sel_region => calc_anoms
+            calc_anoms => merge_time"""
 
 [runtime]
     [[root]]
@@ -19,11 +23,10 @@
             execution time limit = PT10M
         [[[directives]]]
             --partition = short-serial
-    [[clone_repo]]
-        script = """rm -fr workshop-repo
-git clone https://github.com/cedadev/jasmin-workshop workshop-repo
-cp workshop-repo/tutorials/tut02/code/* ${CYLC_SUITE_RUN_DIR}/
-rm -fr workshop-repo"""
+    [[sel_region]]
+        script = """module load jaspy
+        cd ${CYLC_SUITE_RUN_DIR}/
+        bash submit-all-multi-model.sel-region-forecast-range-season.bash ${model} ${initial_year} ${final_year} ${variable} ${region} ${forecast-range} ${season}"""
     [[get_counties]]
         script = """module load jaspy
 cd ${CYLC_SUITE_RUN_DIR}/
