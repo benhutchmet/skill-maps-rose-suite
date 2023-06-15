@@ -26,12 +26,12 @@
     [[sel_region]]
         script = """module load jaspy
         cd ${CYLC_SUITE_RUN_DIR}/
-        bash submit-all-multi-model.sel-region-forecast-range-season.bash ${cylc.parameters.model} ${cylc.parameters.initial_year} ${cylc.parameters.final_year} ${cylc.parameters.variable} ${cylc.parameters.region} ${cylc.parameters.forecast-range} ${cylc.parameters.season}"""
+        bash submit-all-multi-model.sel-region-forecast-range-season.bash ${CYLC_TASK_PARAM_model} ${CYLC_TASK_PARAM_initial_year} ${CYLC_TASK_PARAM_final_year} ${CYLC_TASK_PARAM_variable} ${CYLC_TASK_PARAM_region} ${CYLC_TASK_PARAM_forecast-range} ${CYLC_TASK_PARAM_season}"""
     [[calc_anoms]]
         script = """module load jaspy
         cd ${CYLC_SUITE_RUN_DIR}/
-        bash submit-all-multi-model.calc-anoms.bash ${cylc.parameters.model} ${cylc.parameters.variable} ${cylc.parameters.region} ${cylc.parameters.forecast-range} ${cylc.parameters.season}"""
+        bash submit-all-multi-model.calc-anoms.bash ${CYLC_TASK_PARAM_model} ${CYLC_TASK_PARAM_variable} ${CYLC_TASK_PARAM_region} ${CYLC_TASK_PARAM_forecast-range} ${CYLC_TASK_PARAM_season}"""
     [[merge_time]]
         script = """module load jaspy
         cd ${CYLC_SUITE_RUN_DIR}/
-        bash submit-all-multi-model.mergetime.bash ${cylc.parameters.model} ${cylc.parameters.variable} ${cylc.parameters.region} ${cylc.parameters.forecast-range} ${cylc.parameters.season}"""
+        bash submit-all-multi-model.mergetime.bash ${CYLC_TASK_PARAM_model} ${CYLC_TASK_PARAM_variable} ${CYLC_TASK_PARAM_region} ${CYLC_TASK_PARAM_forecast-range} ${CYLC_TASK_PARAM_season}"""
