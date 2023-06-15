@@ -1,22 +1,3 @@
-#!jinja2
-{# Rose Configuration Insertion: Init #}
-{% set CYLC_VERSION="7.8.12" %}
-{% set ROSE_ORIG_HOST="cylc1.jasmin.ac.uk" %}
-{% set ROSE_SITE="" %}
-{% set ROSE_VERSION="2019.01.8" %}
-{% set ROSE_SUITE_VARIABLES={
-    'CYLC_VERSION': CYLC_VERSION,
-    'ROSE_ORIG_HOST': ROSE_ORIG_HOST,
-    'ROSE_SITE': ROSE_SITE,
-    'ROSE_VERSION': ROSE_VERSION,
-} %}
-[cylc]
-    [[environment]]
-        CYLC_VERSION=7.8.12
-        ROSE_ORIG_HOST=cylc1.jasmin.ac.uk
-        ROSE_SITE=
-        ROSE_VERSION=2019.01.8
-{# Rose Configuration Insertion: Done #}
 [cylc]
     UTC mode = True # Ignore DST
     [[parameters]]
