@@ -35,23 +35,3 @@
         script = """module load jaspy
         cd ${CYLC_SUITE_RUN_DIR}/
         bash submit-all-multi-model.mergetime.bash ${cylc.parameters.model} ${cylc.parameters.variable} ${cylc.parameters.region} ${cylc.parameters.forecast-range} ${cylc.parameters.season}"""
-
-
-
-
-
-
-
-
-//     [[get_counties]]
-//         script = """module load jaspy
-// cd ${CYLC_SUITE_RUN_DIR}/
-// python create-counties-file.py"""
-//     [[process<county>]]
-//         script = """module load jaspy
-// cd ${CYLC_SUITE_RUN_DIR}/
-// python extract-annual-max-series.py ${CYLC_TASK_PARAM_county}"""
-//     [[plot]]
-//         script = """module load jaspy
-// cd ${CYLC_SUITE_RUN_DIR}/
-// python plot-county-temps.py"""
