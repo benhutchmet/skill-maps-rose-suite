@@ -30,9 +30,18 @@ init_scheme=$7
 # make sure that cdo is loaded
 module load jaspy
 
-# set up the files
-files=/work/scratch-nopw/benhutch/$variable/$model/$region/years_${forecast_range}/$season/outputs/mean-years-${forecast_range}-${season}-${region}-${variable}_Amon_${model}_dcppA-hindcast_s????-r${run}i${init_scheme}*.nc
 
+# the anomaly files are in the following directory:
+# /work/scratch-nopw/benhutch/psl/CMCC-CM2-SR5/north-atlantic/years_2-9/DJFM/outputs/anoms
+# they are named as follows:
+# mean-years-2-9-DJFM-north-atlantic-psl_Amon_CMCC-CM2-SR5_dcppA-hindcast_s1960-r10i1p1f1_gn_196011-197012-anoms.nc
+
+
+
+# set up the files
+anom_files_dir="/work/scratch-nopw/benhutch/$variable/$model/$region/years_${forecast_range}/$season/outputs/anoms"
+anom_files_name="mean-years-${forecast_range}-${season}-${region}-${variable}_Amon_${model}_dcppA-hindcast_s????-r${run}i${init_scheme}*anoms.nc"
+files="$anom_files_dir/$anom_files_name"
 
 # echo the files to be merged
 echo "Files to be merged: $files"
@@ -43,7 +52,7 @@ OUTPUT_DIR="/home/users/benhutch/skill-maps-processed-data/$variable/$model/$reg
 mkdir -p $OUTPUT_DIR
 
 # set the output file
-mergetime_fname="mergetime_${model}_${variable}_${region}_${forecast_range}_${season}-r${run}i${init_scheme}.nc"
+mergetime_fname="mergetime_${model}_${variable}_${region}_${forecast_range}_${season}-r${run}i${init_scheme}-anoms.nc"
 OUTPUT_FILE=$OUTPUT_DIR/$mergetime_fname
 
 # echo the output file
