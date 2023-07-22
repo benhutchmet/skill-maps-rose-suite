@@ -31,7 +31,7 @@ init_scheme=$7
 module load jaspy
 
 # anoms directory from which to extract the files
-base_dir="/work/scratch-nopw/benhutch/$variable/$model/$region/years_${forecast_range}/$season/outputs/anoms"
+base_dir="/work/scratch-nopw2/benhutch/$variable/$model/$region/years_${forecast_range}/$season/outputs/anoms"
 
 # file pattern of the anoms files
 files_pattern="mean-years-${forecast_range}-${season}-${region}-${variable}_Amon_${model}_dcppA-hindcast_s????-r${run}i${init_scheme}*-anoms.nc"

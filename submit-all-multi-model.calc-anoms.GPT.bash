@@ -10,7 +10,7 @@ submit_job() {
     local region=$3
     local forecast_range=$4
     local season=$5
-    local output_dir="/work/scratch-nopw/benhutch/${variable}/${model}/${region}/years_${forecast_range}/${season}/lotus-outputs"
+    local output_dir="/work/scratch-nopw2/benhutch/${variable}/${model}/${region}/years_${forecast_range}/${season}/lotus-outputs"
 
     mkdir -p "$output_dir"
     echo "[INFO] Output directory: $output_dir"
