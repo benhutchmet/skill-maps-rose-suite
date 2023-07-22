@@ -967,7 +967,7 @@ def remove_years_with_nans(observed_data, ensemble_mean):
     return observed_data, ensemble_mean
 
 # plot the correlations and p-values
-def plot_correlations(rfield, pfield, obs, variable, region, season, forecast_range, plots_dir, obs_lons_converted, lons_converted, azores_grid, iceland_grid):
+def plot_correlations(model, rfield, pfield, obs, variable, region, season, forecast_range, plots_dir, obs_lons_converted, lons_converted, azores_grid, iceland_grid):
     """Plot the correlation coefficients and p-values.
     
     This function plots the correlation coefficients and p-values
@@ -975,6 +975,8 @@ def plot_correlations(rfield, pfield, obs, variable, region, season, forecast_ra
     
     Parameters
     ----------
+    model : str
+        Name of the model.
     rfield : array
         Array of correlation coefficients.
     pfield : array
@@ -1061,11 +1063,24 @@ def plot_correlations(rfield, pfield, obs, variable, region, season, forecast_ra
     cbar = plt.colorbar(cf, orientation='horizontal', pad=0.05, aspect=50)
     cbar.set_label('Correlation Coefficient')
 
+    # extract the model name from the list
+    # given as ['model']
+    # we only want the model name
+    # if the length of the list is 1
+    # then the model name is the first element
+    if len(model) == 1:
+        model = model[0]
+    elif len(model) > 1:
+        model = all_models
+    else :
+        print("Error: model name not found")
+        sys.exit()
+
     # Add title
-    plt.title(f"{variable} {region} {season} {forecast_range} Correlation Coefficients")
+    plt.title(f"{model} {variable} {region} {season} {forecast_range} Correlation Coefficients")
 
     # set up the path for saving the figure
-    fig_name = f"{variable}_{region}_{season}_{forecast_range}_correlation_coefficients_{datetime.now().strftime('%Y%m%d_%H%M%S')}.png"
+    fig_name = f"{model}_{variable}_{region}_{season}_{forecast_range}_correlation_coefficients_{datetime.now().strftime('%Y%m%d_%H%M%S')}.png"
     fig_path = os.path.join(plots_dir, fig_name)
 
     # Save the figure
@@ -1170,7 +1185,7 @@ def main():
     rfield, pfield, obs_lons_converted, lons_converted = calculate_spatial_correlations(obs, variable_data, args.model)
 
     # Call the function to plot the ACC
-    plot_correlations(rfield, pfield, obs, args.variable, args.region, args.season, args.forecast_range, dic.plots_dir, obs_lons_converted, lons_converted, dic.azores_grid, dic.iceland_grid)
+    plot_correlations(args.model, rfield, pfield, obs, args.variable, args.region, args.season, args.forecast_range, dic.plots_dir, obs_lons_converted, lons_converted, dic.azores_grid, dic.iceland_grid)
 
 # Call the main function.
 if __name__ == "__main__":
