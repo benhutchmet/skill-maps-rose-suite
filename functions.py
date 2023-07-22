@@ -78,7 +78,7 @@ def load_data(base_directory, models, variable, region, forecast_range, season):
         datasets_by_model[model] = []
         
         # create the path to the files for this model
-        files_path = base_directory + "/" + variable + "/" + model + "/" + region + "/" + f"years_{forecast_range}" + "/" + season + "/" + "outputs" + "/" + "mergetime" + "/" + "*-anoms.nc"
+        files_path = base_directory + "/" + variable + "/" + model + "/" + region + "/" + f"years_{forecast_range}" + "/" + season + "/" + "outputs" + "/" + "mergetime" + "/" + "*.nc"
 
         # print the path to the files
         print("Searching for files in ", files_path)
