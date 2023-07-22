@@ -1138,8 +1138,8 @@ def main():
     USAGE_STATEMENT = """python functions.py <variable> <model> <region> <forecast_range> <season>"""
 
     # Check if the number of arguments is correct.
-    if len(sys.argv) != 5:
-        print(f"Expected 5 arguments, but got {len(sys.argv)}")
+    if len(sys.argv) != 6:
+        print(f"Expected 6 arguments, but got {len(sys.argv)}")
         print(USAGE_STATEMENT)
         sys.exit()
 
