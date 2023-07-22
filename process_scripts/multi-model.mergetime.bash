@@ -43,6 +43,12 @@ files="${base_dir}/${files_pattern}"
 # echo the files to be merged
 echo "Files to be merged: $files"
 
+# Check that the files exist
+if [ ! -f $files ]; then
+    echo "Files do not exist"
+    exit 1
+fi
+
 # set the output directory
 # send to the home directory
 OUTPUT_DIR="/home/users/benhutch/skill-maps-processed-data/${variable}/${model}/${region}/years_${forecast_range}/${season}/outputs/mergetime"
