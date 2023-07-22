@@ -1,7 +1,7 @@
 [cylc]
     UTC mode = True # Ignore DST
     [[parameters]]
-        model="BCC-CSM2-MR"
+        model="HadGEM3-GC31-MM"
         initial_year=1960
         final_year=2019
         variable="psl"
@@ -12,8 +12,7 @@
 [scheduling]
     [[dependencies]]
         graph = """sel_region<model><initial_year><final_year><variable><region><forecast_range><season> => calc_anoms<model><variable><region><forecast_range><season>
-        calc_anoms<model><variable><region><forecast_range><season> => merge_time<model><variable><region><forecast_range><season>
-        merge_time<model><variable><region><forecast_range><season> => process_plot<variable><model><region><forecast_range><season>"""
+        calc_anoms<model><variable><region><forecast_range><season> => merge_time<model><variable><region><forecast_range><season>"""
 
 [runtime]
     [[root]]
@@ -36,8 +35,4 @@
         script = """module load jaspy
         cd ${CYLC_SUITE_RUN_DIR}/
         bash submit-all-multi-model.mergetime.bash ${CYLC_TASK_PARAM_model} ${CYLC_TASK_PARAM_variable} ${CYLC_TASK_PARAM_region} ${CYLC_TASK_PARAM_forecast_range} ${CYLC_TASK_PARAM_season}"""
-    [[process_plot<variable><model><region><forecast_range><season>]]
-        script = """module load jaspy
-        cd ${CYLC_SUITE_RUN_DIR}/
-        python functions.py ${CYLC_TASK_PARAM_variable} ${CYLC_TASK_PARAM_model} ${CYLC_TASK_PARAM_region} ${CYLC_TASK_PARAM_forecast_range} ${CYLC_TASK_PARAM_season}"""
 
