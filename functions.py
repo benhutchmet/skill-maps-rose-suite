@@ -1139,6 +1139,7 @@ def main():
 
     # Check if the number of arguments is correct.
     if len(sys.argv) != 5:
+        print(f"Expected 5 arguments, but got {len(sys.argv)}")
         print(USAGE_STATEMENT)
         sys.exit()
 
