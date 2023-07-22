@@ -1167,6 +1167,10 @@ def main():
     if args.model == "all":
         args.model = dic.models
 
+    # If the type of the model argument is a string, then convert it to a list.
+    if type(args.model) == str:
+        args.model = [args.model]
+
     # Load the data.
     datasets = load_data(dic.base_dir, args.model, args.variable, args.region, args.forecast_range, args.season)
 
