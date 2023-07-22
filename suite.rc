@@ -1,7 +1,7 @@
 [cylc]
     UTC mode = True # Ignore DST
     [[parameters]]
-        model="CMCC-CM2-SR5"
+        model="BCC-CSM2-MR"
         initial_year=1960
         final_year=2019
         variable="psl"
