@@ -54,6 +54,12 @@ fi
 OUTPUT_DIR="/home/users/benhutch/skill-maps-processed-data/${variable}/${model}/${region}/years_${forecast_range}/${season}/outputs/mergetime"
 mkdir -p $OUTPUT_DIR
 
+# If there are files already in the output directory, then delete them
+if [ -f $OUTPUT_DIR/* ]; then
+    echo "Deleting files in output directory"
+    rm $OUTPUT_DIR/*
+fi
+
 # set the output file
 mergetime_fname="mergetime_${model}_${variable}_${region}_${forecast_range}_${season}-r${run}i${init_scheme}.nc"
 OUTPUT_FILE=${OUTPUT_DIR}/${mergetime_fname}
