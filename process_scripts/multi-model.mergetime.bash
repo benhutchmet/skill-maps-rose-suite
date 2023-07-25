@@ -55,16 +55,16 @@ OUTPUT_DIR="/home/users/benhutch/skill-maps-processed-data/${variable}/${model}/
 mkdir -p $OUTPUT_DIR
 
 # If there are files already in the output directory, then delete them
-echo "Checking for files in output directory"
-# echo the files in the output directory
-echo "Files in output directory: "$OUTPUT_DIR/*""
-if [ -f $OUTPUT_DIR/*.nc ]; then
-    echo "Deleting files in output directory"
-    rm $OUTPUT_DIR/*
-# otherwise there are no files in the output directory
-else
-    echo "No files in output directory"
-fi
+# echo "Checking for files in output directory"
+# # echo the files in the output directory
+# echo "Files in output directory: "$OUTPUT_DIR/*""
+# if [ -f $OUTPUT_DIR/*.nc ]; then
+#     echo "Deleting files in output directory"
+#     rm $OUTPUT_DIR/*
+# # otherwise there are no files in the output directory
+# else
+#     echo "No files in output directory"
+# fi
 
 # set the output file
 mergetime_fname="mergetime_${model}_${variable}_${region}_${forecast_range}_${season}-r${run}i${init_scheme}.nc"
