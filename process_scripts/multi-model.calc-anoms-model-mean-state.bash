@@ -7,7 +7,7 @@
 # For example: calculate-model-mean-states.bash HadGEM3-GC31-MM psl north-atlantic 2-5 DJF
 
 # Set the usage message
-USAGE_MESSAGE="Usage: calculate-model-mean-states.bash <model> <variable> <region> <forecast-range> <season>"
+USAGE_MESSAGE="Usage: multi-model.calc-anoms-model-mean-state.bash <model> <variable> <region> <forecast-range> <season>"
 
 # Check that the correct number of arguments have been passed
 if [ $# -ne 5 ]; then
@@ -41,7 +41,7 @@ process_files() {
     temp_model_mean_state="$base_dir/tmp/model_mean_state_${init_scheme}.nc"
 
     # Take the ensemble mean of the time mean files
-    cdo ensmean ${base_dir}/tmp/temp-*${init_scheme}*.nc ${temp_model_mean_state}
+    cdo ensmean ${files_path} ${temp_model_mean_state}
 
     # Ensure that the model mean state file has been created
     if [ ! -f $temp_model_mean_state ]; then
