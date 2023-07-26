@@ -11,8 +11,9 @@
 
 [scheduling]
     [[dependencies]]
-        graph = """sel_region<model><initial_year><final_year><variable><region><forecast_range><season> => calc_anoms<model><variable><region><forecast_range><season>
-        calc_anoms<model><variable><region><forecast_range><season> => merge_time<model><variable><region><forecast_range><season>"""
+        graph = """sel_region<model><initial_year><final_year><variable><region><forecast_range><season> => calc_model_mean_state<model><variable><region><forecast_range><season>
+        calc_model_mean_state<model><variable><region><forecast_range><season> => calc_anoms<model><initial_year><final_year><variable><region><forecast_range><season>
+        calc_anoms<model><initial_year><final_year><variable><region><forecast_range><season> => merge_time<model><variable><region><forecast_range><season>"""
 
 [runtime]
     [[root]]
@@ -27,12 +28,15 @@
         script = """module load jaspy
         cd ${CYLC_SUITE_RUN_DIR}/
         bash submit-all-multi-model.sel-region-forecast-range-season.bash ${CYLC_TASK_PARAM_model} ${CYLC_TASK_PARAM_initial_year} ${CYLC_TASK_PARAM_final_year} ${CYLC_TASK_PARAM_variable} ${CYLC_TASK_PARAM_region} ${CYLC_TASK_PARAM_forecast_range} ${CYLC_TASK_PARAM_season}"""
-    [[calc_anoms<model><variable><region><forecast_range><season>]]
+    [[calc_model_mean_state<model><variable><region><forecast_range><season>]]
         script = """module load jaspy
         cd ${CYLC_SUITE_RUN_DIR}/
-        bash submit-all-multi-model.calc-anoms.bash ${CYLC_TASK_PARAM_model} ${CYLC_TASK_PARAM_variable} ${CYLC_TASK_PARAM_region} ${CYLC_TASK_PARAM_forecast_range} ${CYLC_TASK_PARAM_season}"""
+        bash submit-all-multi-model.calc-anoms-model-mean-state.bash ${CYLC_TASK_PARAM_model} ${CYLC_TASK_PARAM_variable} ${CYLC_TASK_PARAM_region} ${CYLC_TASK_PARAM_forecast_range} ${CYLC_TASK_PARAM_season}"""
+    [[calc_anoms<model><initial_year><final_year><variable><region><forecast_range><season>]]
+        script = """module load jaspy
+        cd ${CYLC_SUITE_RUN_DIR}/
+        bash submit-all-multi-model.calc-anoms-sub-anoms.bash ${CYLC_TASK_PARAM_model} ${CYLC_TASK_PARAM_initial_year} ${CYLC_TASK_PARAM_final_year} ${CYLC_TASK_PARAM_variable} ${CYLC_TASK_PARAM_region} ${CYLC_TASK_PARAM_forecast_range} ${CYLC_TASK_PARAM_season}"""
     [[merge_time<model><variable><region><forecast_range><season>]]
         script = """module load jaspy
         cd ${CYLC_SUITE_RUN_DIR}/
         bash submit-all-multi-model.mergetime.bash ${CYLC_TASK_PARAM_model} ${CYLC_TASK_PARAM_variable} ${CYLC_TASK_PARAM_region} ${CYLC_TASK_PARAM_forecast_range} ${CYLC_TASK_PARAM_season}"""
-
