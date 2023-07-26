@@ -58,7 +58,7 @@ calculate_anoms() {
     fi
 
     # Set up the output file name
-    OUTPUT_FILE="$OUTPUT_DIR/$(basename ${INPUT_FILE%.nc})-anoms.nc"
+    OUTPUT_FILE="$OUTPUT_DIR/${INPUT_FILE%.nc}-anoms.nc"
 
     # Calculate the anomalies
     cdo sub $INPUT_FILE $MODEL_MEAN_STATE $OUTPUT_FILE
