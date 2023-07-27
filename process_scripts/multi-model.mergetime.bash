@@ -43,9 +43,9 @@ files="${base_dir}/${files_pattern}"
 # echo the files to be merged
 echo "Files to be merged: $files"
 
-# Check that the files exist
-if [ ! -f $files ]; then
-    echo "Files do not exist"
+# Check that the base directory is not empty
+if [ -z "$(ls -A $base_dir)" ]; then
+    echo "ERROR: base directory is empty: $base_dir"
     exit 1
 fi
 
