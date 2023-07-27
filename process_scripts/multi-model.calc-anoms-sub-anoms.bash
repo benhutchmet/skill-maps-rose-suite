@@ -4,13 +4,13 @@
 #
 # Script for calculating the anomalies from the model mean state for a given model, variable, region, forecast range, and season.
 #
-# For example: multi-model.calc-anoms-sub-anoms.bash HadGEM3-GC31-MM 1960 1 psl north-atlantic 2-5 DJF
+# For example: multi-model.calc-anoms-sub-anoms.bash HadGEM3-GC31-MM 1960 psl north-atlantic 2-5 DJF
 
 # Set the usage message
-USAGE_MESSAGE="Usage: multi-model.calc-anoms-sub-anoms.bash <model> <initialization-year> <run-number> <variable> <region> <forecast-range> <season>"
+USAGE_MESSAGE="Usage: multi-model.calc-anoms-sub-anoms.bash <model> <initialization-year> <variable> <region> <forecast-range> <season>"
 
 # Check that the correct number of arguments have been passed
-if [ $# -ne 7 ]; then
+if [ $# -ne 6 ]; then
     echo "$USAGE_MESSAGE"
     exit 1
 fi
@@ -18,11 +18,10 @@ fi
 # Extract the model-year-run, variable, region, forecast range and season
 model=$1
 year=$2
-run=$3
-variable=$4
-region=$5
-forecast_range=$6
-season=$7
+variable=$3
+region=$4
+forecast_range=$5
+season=$6
 
 # Load cdo
 module load jaspy
@@ -37,7 +36,7 @@ calculate_anoms() {
     init_scheme=$1
 
     # Set up the input file path
-    INPUT_FILE="$base_dir/mean-years-${forecast_range}-${season}-${region}-${variable}_Amon_${model}_dcppA-hindcast_s${year}-r${run}${init_scheme}*.nc"
+    INPUT_FILES="$base_dir/mean-years-${forecast_range}-${season}-${region}-${variable}_Amon_${model}_dcppA-hindcast_s${year}-r*${init_scheme}*.nc"
     # Set up the model mean state file path
     MODEL_MEAN_STATE="$base_dir/tmp/model_mean_state_${init_scheme}.nc"
 
@@ -46,23 +45,30 @@ calculate_anoms() {
     echo "Using model mean state file: $MODEL_MEAN_STATE"
 
     # Check that the input files exist
-    if [ ! -f $INPUT_FILE ]; then
-        echo "ERROR: input files not found ${init_scheme}"
+    if [ ! -f $INPUT_FILES ]; then
+        echo "ERROR: input files not found for initialization scheme ${init_scheme}: ${INPUT_FILES}"
         exit 1
     fi
 
     # Check that the model mean state file exists
     if [ ! -f $MODEL_MEAN_STATE ]; then
-        echo "ERROR: model mean state file not found ${init_scheme}"
+        echo "ERROR: model mean state file not found ${init_scheme}: ${MODEL_MEAN_STATE}"
         exit 1
     fi
 
-    # Set up the output file name
-    filename=$(basename ${INPUT_FILE})
-    OUTPUT_FILE="$OUTPUT_DIR/${filename%.nc}-anoms.nc"
-
     # Calculate the anomalies
-    cdo sub $INPUT_FILE $MODEL_MEAN_STATE $OUTPUT_FILE
+    # By looping over the input files
+    for INPUT_FILE in $INPUT_FILES; do
+        # Echo the input file
+        echo "Calculating anomalies for: $INPUT_FILE"
+
+        # Set up the output file name
+        filename=$(basename ${INPUT_FILE})
+        OUTPUT_FILE="$OUTPUT_DIR/${filename%.nc}-anoms.nc"
+
+        # Calculate the anomalies
+        cdo sub $INPUT_FILE $MODEL_MEAN_STATE $OUTPUT_FILE
+    done
 }
 
 
@@ -86,7 +92,7 @@ case $model in
         ;;
 esac
 
-echo "Anomalies calculated for model $model, variable $variable, region $region, forecast range $forecast_range, season $season and saved to $OUTPUT_DIR"
+echo "Anomalies calculated for year ${year}, model $model, variable $variable, region $region, forecast range $forecast_range, season $season and saved to $OUTPUT_DIR"
 
 # End of script
 exit 0
