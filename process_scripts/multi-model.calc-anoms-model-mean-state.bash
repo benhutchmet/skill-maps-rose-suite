@@ -26,7 +26,7 @@ season=$5
 module load jaspy
 
 # Base directory
-base_dir="/work/scratch-nopw2/benhutch/$variable/$model/$region/years_${forecast_range}/$season/outputs"
+base_dir="/work/scratch-nopw2/benhutch/${variable}/${model}/${region}/years_${forecast_range}/${season}/outputs"
 
 # Function for processing files
 process_files() {

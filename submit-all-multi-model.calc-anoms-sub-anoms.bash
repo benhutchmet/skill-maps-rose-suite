@@ -71,7 +71,7 @@ if [ "$model" == "all" ]; then
 
         # Set up the output directory
         # For the LOTUS outputs
-        OUTPUT_DIR="/work/scratch-nopw2/benhutch/${variable}/${model}/${region}/years_${forecast_range}/$season/lotus-outputs"
+        OUTPUT_DIR="/work/scratch-nopw2/benhutch/${variable}/${model}/${region}/years_${forecast_range}/${season}/lotus-outputs"
         mkdir -p $OUTPUT_DIR
 
         # Loop over the years
@@ -87,7 +87,7 @@ if [ "$model" == "all" ]; then
             echo "[INFO] Submitting job for model: $model, variable: $variable, region: $region, forecast range: $forecast_range, season: $season, init_method: $init_method"
 
             # Submit the job
-            sbatch --partition=short-serial -t 4 -o $OUTPUT_DIR/$model.$year.$variable.$region.$forecast_range.$season-calc-anoms.out -e $OUTPUT_DIR/$model.$year.$variable.$region.$forecast_range.$season-calc-anoms.err $EXTRACTOR $model $year $variable $region $forecast_range $season
+            sbatch --partition=short-serial -t 5 -o $OUTPUT_DIR/${model}.${year}.${variable}.${region}.${forecast_range}.${season}-calc-anoms.out -e $OUTPUT_DIR/${model}.${year}.${variable}.${region}.${forecast_range}.${season}-calc-anoms.err $EXTRACTOR $model $year $variable $region $forecast_range $season
 
         done
     done
@@ -98,7 +98,7 @@ else
 
     # Set up the output directory
     # For the LOTUS outputs
-    OUTPUT_DIR="/work/scratch-nopw2/benhutch/$variable/$model/$region/years_${forecast_range}/$season/lotus-outputs"
+    OUTPUT_DIR="/work/scratch-nopw2/benhutch/${variable}/${model}/${region}/years_${forecast_range}/${season}/lotus-outputs"
     mkdir -p $OUTPUT_DIR
 
     # Echo the number of ensemble members
@@ -117,7 +117,7 @@ else
         echo "[INFO] Submitting job for model: $model, variable: $variable, region: $region, forecast range: $forecast_range, season: $season, run: $run, init_method: $init_method"
 
         # Submit the job
-        sbatch --partition=short-serial -t 4 -o $OUTPUT_DIR/$model.$year.$variable.$region.$forecast_range.$season-calc-anoms.out -e $OUTPUT_DIR/$model.$year.$variable.$region.$forecast_range.$season-calc-anoms.err $EXTRACTOR $model $year $variable $region $forecast_range $season
+        sbatch --partition=short-serial -t 5 -o $OUTPUT_DIR/${model}.${year}.${variable}.${region}.${forecast_range}.${season}-calc-anoms.out -e $OUTPUT_DIR/${model}.${year}.${variable}.${region}.${forecast_range}.${season}-calc-anoms.err $EXTRACTOR $model $year $variable $region $forecast_range $season
 
     done
 fi
