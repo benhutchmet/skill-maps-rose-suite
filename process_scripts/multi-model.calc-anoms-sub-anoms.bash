@@ -41,7 +41,7 @@ calculate_anoms() {
     MODEL_MEAN_STATE="$base_dir/tmp/model_mean_state_${init_scheme}.nc"
 
     # Echo the files to be processed
-    echo "Calculating anomalies for: $INPUT_FILE"
+    echo "Calculating anomalies for: $INPUT_FILES"
     echo "Using model mean state file: $MODEL_MEAN_STATE"
 
     # Check that the input files exist
@@ -70,7 +70,6 @@ calculate_anoms() {
         cdo sub $INPUT_FILE $MODEL_MEAN_STATE $OUTPUT_FILE
     done
 }
-
 
 # Create output directories
 mkdir -p $OUTPUT_DIR
