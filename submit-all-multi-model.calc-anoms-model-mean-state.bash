@@ -45,6 +45,13 @@ fi
 # Set the extractor script
 EXTRACTOR=$PWD/process_scripts/multi-model.calc-anoms-model-mean-state.bash
 
+# Check that the extractor script exists
+# if not exit with an error
+if [ ! -f $EXTRACTOR ]; then
+    echo "ERROR: extractor script does not exist: $EXTRACTOR"
+    exit 1
+fi
+
 # Make sure that cdo is loaded
 module load jaspy
 
