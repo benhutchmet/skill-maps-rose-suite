@@ -173,11 +173,30 @@ for INPUT_FILE in $files; do
 
     # If any of the TEMP_FILE, REGRIDDED_FILE, OUTPUT_FILE, or MEAN_FILE already exist
     # echo that the file already exists and these will be overwritten
-    if [ -f "$TEMP_FILE" ] && [ -f "$REGRIDDED_FILE" ] && [ -f "$OUTPUT_FILE" ] && [ -f "$MEAN_FILE" ]; then
-        echo "[INFO] All files already exist and will be overwritten"
-        rm -f "$TEMP_FILE" "$REGRIDDED_FILE" "$OUTPUT_FILE" "$MEAN_FILE"
+    if [ -f "$TEMP_FILE" ]; then
+        echo "WARNING: TEMP_FILE already exists: $TEMP_FILE"
+        echo "WARNING: TEMP_FILE will be overwritten"
+        rm -f $TEMP_FILE
     fi
 
+    if [ -f "$REGRIDDED_FILE" ]; then
+        echo "WARNING: REGRIDDED_FILE already exists: $REGRIDDED_FILE"
+        echo "WARNING: REGRIDDED_FILE will be overwritten"
+        rm -f $REGRIDDED_FILE
+    fi
+
+    if [ -f "$OUTPUT_FILE" ]; then
+        echo "WARNING: OUTPUT_FILE already exists: $OUTPUT_FILE"
+        echo "WARNING: OUTPUT_FILE will be overwritten"
+        rm -f $OUTPUT_FILE
+    fi
+
+    if [ -f "$MEAN_FILE" ]; then
+        echo "WARNING: MEAN_FILE already exists: $MEAN_FILE"
+        echo "WARNING: MEAN_FILE will be overwritten"
+        rm -f $MEAN_FILE
+    fi
+    
     # Regrid using bilinear interpolation
     # Selects region (as long as x and y dimensions divide by 2.5)
     cdo remapbil,$grid $INPUT_FILE $REGRIDDED_FILE
