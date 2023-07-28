@@ -158,6 +158,15 @@ module load jaspy
 OUTPUT_DIR="/work/scratch-nopw2/benhutch/${variable}/${model}/${region}/years_${forecast_range}/${season}/outputs"
 mkdir -p $OUTPUT_DIR
 
+# Check whether there are any files *.nc in the output directory
+# If there are, then delete them
+# Echo that we are overwriting these files
+if [ "$(ls -A $OUTPUT_DIR)" ]; then
+    echo "WARNING: output directory not empty"
+    echo "WARNING: deleting existing files"
+    rm -f $OUTPUT_DIR/*.nc
+fi
+
 # loop through the files and process them
 for INPUT_FILE in $files; do
 
