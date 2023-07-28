@@ -54,21 +54,20 @@ fi
 OUTPUT_DIR="/home/users/benhutch/skill-maps-processed-data/${variable}/${model}/${region}/years_${forecast_range}/${season}/outputs/mergetime"
 mkdir -p $OUTPUT_DIR
 
-# If there are files in the OUTPUT_DIR
-# Then delete them
-# Echo that we are overwriting these files
-if [ "$(ls -A $OUTPUT_DIR)" ]; then
-    echo "WARNING: output directory not empty"
-    echo "WARNING: deleting existing files"
-    rm -f $OUTPUT_DIR/*
-fi
-
 # set the output file
 mergetime_fname="mergetime_${model}_${variable}_${region}_${forecast_range}_${season}-r${run}i${init_scheme}.nc"
 OUTPUT_FILE=${OUTPUT_DIR}/${mergetime_fname}
 
 # echo the output file
 echo "Output file: $OUTPUT_FILE"
+
+# Check that the output file does not already exist
+# If it does, then delete it
+if [ -f $OUTPUT_FILE ]; then
+    echo "WARNING: output file already exists"
+    echo "WARNING: deleting existing output file"
+    rm -f $OUTPUT_FILE
+fi
 
 # merge the files
 cdo mergetime $files $OUTPUT_FILE
