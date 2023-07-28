@@ -6,6 +6,17 @@
 #
 # For example: submit-all-multi-model.calc-anoms-model-mean-state.bash HadGEM3-GC31-MM psl north-atlantic 2-5 DJF
 
+# Make sure that the dictionaries.bash file exists
+if [ ! -f dictionaries.bash ]; then
+    echo "ERROR: dictionaries.bash file does not exist"
+    exit 1
+fi
+
+# Source the dictionaries.bash file
+source $PWD/dictionaries.bash
+# Echo the models
+echo "[INFO] models: $models"
+
 # Set the usage message
 USAGE_MESSAGE="Usage: submit-all-multi-model.calc-anoms-model-mean-state.bash <model> <variable> <region> <forecast-range> <season>"
 
