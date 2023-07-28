@@ -158,15 +158,6 @@ module load jaspy
 OUTPUT_DIR="/work/scratch-nopw2/benhutch/${variable}/${model}/${region}/years_${forecast_range}/${season}/outputs"
 mkdir -p $OUTPUT_DIR
 
-# Check whether there are any files *.nc in the output directory
-# If there are, then delete them
-# Echo that we are overwriting these files
-if [ "$(ls -A $OUTPUT_DIR)" ]; then
-    echo "WARNING: output directory not empty"
-    echo "WARNING: deleting existing files"
-    rm -f $OUTPUT_DIR/*.nc
-fi
-
 # loop through the files and process them
 for INPUT_FILE in $files; do
 
@@ -179,6 +170,13 @@ for INPUT_FILE in $files; do
     REGRIDDED_FILE="$OUTPUT_DIR/${regridded_fname}"
     OUTPUT_FILE="$OUTPUT_DIR/${season_fname}"
     MEAN_FILE="$OUTPUT_DIR/mean-${season_fname}"
+
+    # If any of the TEMP_FILE, REGRIDDED_FILE, OUTPUT_FILE, or MEAN_FILE already exist
+    # echo that the file already exists and these will be overwritten
+    if [ -f "$TEMP_FILE" ] && [ -f "$REGRIDDED_FILE" ] && [ -f "$OUTPUT_FILE" ] && [ -f "$MEAN_FILE" ]; then
+        echo "[INFO] All files already exist and will be overwritten"
+        rm -f "$TEMP_FILE" "$REGRIDDED_FILE" "$OUTPUT_FILE" "$MEAN_FILE"
+    fi
 
     # Regrid using bilinear interpolation
     # Selects region (as long as x and y dimensions divide by 2.5)
