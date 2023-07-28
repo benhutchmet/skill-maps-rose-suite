@@ -4,6 +4,7 @@
 #
 # For example: submit-all-multi-model.sel-region-forecast-range-season.bash CMCC-CM2-SR5 1960 1 psl north-atlantic 2-5 DJFM
 #
+#
 
 # make sure that the dictionaries.bash file exists
 if [ ! -f $PWD/dictionaries.bash ]; then
