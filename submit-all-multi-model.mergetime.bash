@@ -8,6 +8,12 @@
 # For example: submit-all-multi-model.mergetime.bash HadGEM3-GC31-MM psl north-atlantic 2-5 DJF
 #
 
+# make sure that the dictionaries.bash file exists
+if [ ! -f dictionaries.bash ]; then
+    echo "ERROR: dictionaries.bash file does not exist"
+    exit 1
+fi
+
 # import the models list
 source $PWD/dictionaries.bash
 # echo the multi-models list
