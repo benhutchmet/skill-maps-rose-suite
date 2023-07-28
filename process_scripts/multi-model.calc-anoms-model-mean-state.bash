@@ -40,6 +40,14 @@ process_files() {
     # Set up the file name for the model mean state
     temp_model_mean_state="$base_dir/tmp/model_mean_state_${init_scheme}.nc"
 
+    # Check that the model mean state file does not already exist
+    # If one does exist, then delete it
+    if [ -f $temp_model_mean_state ]; then
+        echo "WARNING: model mean state file already exists ${init_scheme}"
+        echo "WARNING: deleting existing model mean state file ${init_scheme}"
+        rm -f $temp_model_mean_state
+    fi
+
     # Take the ensemble mean of the time mean files
     cdo ensmean ${files_path} ${temp_model_mean_state}
 
