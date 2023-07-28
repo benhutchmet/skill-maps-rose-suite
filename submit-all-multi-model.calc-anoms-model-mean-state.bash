@@ -90,7 +90,7 @@ if [ "$model" == "all" ]; then
         echo "[INFO] Submitting job for model: $model, variable: $variable, region: $region, forecast range: $forecast_range, season: $season"
 
         # Submit the job
-        sbatch --partition=short-serial -t 5 -o $OUTPUT_DIR/${model}.${variable}.${region}.${forecast_range}.${season}-model-mean-state.out -e $OUTPUT_DIR/${model}.${variable}.${region}.${forecast_range}.${season}-model-mean-state.err $EXTRACTOR $model $variable $region $forecast_range $season
+        sbatch --partition=short-serial --mem=1000 -t 5 -o $OUTPUT_DIR/${model}.${variable}.${region}.${forecast_range}.${season}-model-mean-state.out -e $OUTPUT_DIR/${model}.${variable}.${region}.${forecast_range}.${season}-model-mean-state.err $EXTRACTOR $model $variable $region $forecast_range $season
 
     done
     
@@ -111,6 +111,6 @@ else
     echo "[INFO] Submitting job for model: $model, variable: $variable, region: $region, forecast range: $forecast_range, season: $season"
 
     # Submit the job
-    sbatch --partition=short-serial --mem=1000 -t 5 -o $OUTPUT_DIR/${model}.${variable}.${region}.${forecast_range}.${season}-model-mean-state.out -e $OUTPUT_DIR/${model}.${variable}.${region}.${forecast_range}.${season}-model-mean-state.err $EXTRACTOR $model $variable $region $forecast_range $season
+    sbatch --partition=short-serial --mem=100000 -t 5 -o $OUTPUT_DIR/${model}.${variable}.${region}.${forecast_range}.${season}-model-mean-state.out -e $OUTPUT_DIR/${model}.${variable}.${region}.${forecast_range}.${season}-model-mean-state.err $EXTRACTOR $model $variable $region $forecast_range $season
 
 fi
