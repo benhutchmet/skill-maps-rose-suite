@@ -5,6 +5,11 @@
 # For example: submit-all-multi-model.sel-region-forecast-range-season.bash CMCC-CM2-SR5 1960 1 psl north-atlantic 2-5 DJFM
 #
 
+# make sure that the dictionaries.bash file exists
+if [ ! -f dictionaries.bash ]; then
+    echo "ERROR: dictionaries.bash file does not exist"
+    exit 1
+fi
 
 # import the models list
 source $PWD/dictionaries.bash
