@@ -7,7 +7,7 @@
 # For example: submit-all-multi-model.calc-anoms-model-mean-state.bash HadGEM3-GC31-MM psl north-atlantic 2-5 DJF
 
 # Make sure that the dictionaries.bash file exists
-if [ ! -f dictionaries.bash ]; then
+if [ ! -f $PWD/dictionaries.bash ]; then
     echo "ERROR: dictionaries.bash file does not exist"
     exit 1
 fi

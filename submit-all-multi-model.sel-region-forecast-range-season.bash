@@ -6,7 +6,7 @@
 #
 
 # make sure that the dictionaries.bash file exists
-if [ ! -f dictionaries.bash ]; then
+if [ ! -f $PWD/dictionaries.bash ]; then
     echo "ERROR: dictionaries.bash file does not exist"
     exit 1
 fi
