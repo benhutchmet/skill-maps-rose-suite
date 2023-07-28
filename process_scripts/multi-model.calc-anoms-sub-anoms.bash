@@ -50,15 +50,6 @@ calculate_anoms() {
         exit 1
     fi
 
-    # Check whether there are files in the OUTPUT_DIR
-    # If there are, then delete them
-    # Echo that we are overwriting these files
-    if [ "$(ls -A $OUTPUT_DIR)" ]; then
-        echo "WARNING: output directory not empty"
-        echo "WARNING: deleting existing files"
-        rm -f $OUTPUT_DIR/*
-    fi
-
     # Calculate the anomalies
     # By looping over the input files
     for INPUT_FILE in $INPUT_FILES; do
@@ -74,6 +65,13 @@ calculate_anoms() {
         # Set up the output file name
         filename=$(basename ${INPUT_FILE})
         OUTPUT_FILE="$OUTPUT_DIR/${filename%.nc}-anoms.nc"
+
+        # If this output file already exists, then delete it
+        if [ -f $OUTPUT_FILE ]; then
+            echo "WARNING: output file already exists"
+            echo "WARNING: deleting existing output file"
+            rm -f $OUTPUT_FILE
+        fi
 
         # Calculate the anomalies
         cdo sub $INPUT_FILE $MODEL_MEAN_STATE $OUTPUT_FILE
