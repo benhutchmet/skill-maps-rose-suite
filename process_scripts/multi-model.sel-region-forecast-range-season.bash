@@ -171,30 +171,12 @@ for INPUT_FILE in $files; do
     OUTPUT_FILE="$OUTPUT_DIR/${season_fname}"
     MEAN_FILE="$OUTPUT_DIR/mean-${season_fname}"
 
-    # If any of the TEMP_FILE, REGRIDDED_FILE, OUTPUT_FILE, or MEAN_FILE already exist
-    # echo that the file already exists and these will be overwritten
-    if [ -f "$TEMP_FILE" ]; then
-        echo "WARNING: TEMP_FILE already exists: $TEMP_FILE"
-        echo "WARNING: TEMP_FILE will be overwritten"
-        rm -f $TEMP_FILE
-    fi
-
-    if [ -f "$REGRIDDED_FILE" ]; then
-        echo "WARNING: REGRIDDED_FILE already exists: $REGRIDDED_FILE"
-        echo "WARNING: REGRIDDED_FILE will be overwritten"
-        rm -f $REGRIDDED_FILE
-    fi
-
-    if [ -f "$OUTPUT_FILE" ]; then
-        echo "WARNING: OUTPUT_FILE already exists: $OUTPUT_FILE"
-        echo "WARNING: OUTPUT_FILE will be overwritten"
-        rm -f $OUTPUT_FILE
-    fi
-
+    # If MEAN_FILE already exists
+    # Exit the script
     if [ -f "$MEAN_FILE" ]; then
-        echo "WARNING: MEAN_FILE already exists: $MEAN_FILE"
-        echo "WARNING: MEAN_FILE will be overwritten"
-        rm -f $MEAN_FILE
+        echo "INFO: MEAN_FILE already exists: $MEAN_FILE"
+        echo "INFO: Exiting the script, will not overwrite $MEAN_FILE"
+        exit 
     fi
     
     # Regrid using bilinear interpolation
