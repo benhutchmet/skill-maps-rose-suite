@@ -7,6 +7,9 @@
 # NOTE: Seasons should be formatted using: JFMAYULGSOND
 #
 
+# source the dictionaries.bash file
+source /home/users/benhutch/skill-maps-rose-suite/dictionaries.bash
+
 # check if the correct number of arguments have been passed
 if [ $# -ne 7 ]; then
     echo "Usage: multi-model.sel-region-forecast-range-season.bash <model> <initialization-year> <run-number> <variable> <region> <forecast-range> <season>"
@@ -134,9 +137,54 @@ elif [ "$variable" == "rsds" ]; then
 elif [ "$variable" == "sfcWind" ]; then
     # set up the models which have sfcWind on JASMIN
     # this includes HadGEM3-GC31-MM, EC-Earth3
-    if [ "$model" == "HadGEM3-GC31-MM" ] || [ "$model" == "EC-Earth3" ]; then
-    # set up the input files
-    files="/work/scratch-nopw2/benhutch/sfcWind/${model}/outputs/mergetime/sfcWind_Amon_${model}_dcppA-hindcast_s${year}-r${run}i*.nc"
+    if [ "$model" == "HadGEM3-GC31-MM" ] ; then
+    # set up the input files - only one initialization scheme
+    multi_files="/badc/cmip6/data/CMIP6/DCPP/$model_group/$model/dcppA-hindcast/s${year}-r${run}i?p?f?/Amon/sfcWind/g?/files/d????????/*.nc"
+
+    # merge the *.nc files into one file
+    # set up the merged file first
+    merged_file_dir=${canari_dir}/dcppA-hindcast/data/${variable}/${model}/merged_files
+    mkdir -p $merged_file_dir
+
+    # set up the start year
+    # which is the year of the initialization and 11
+    # for example 1960 would be 196011
+    start_year="${year}11"
+
+    # set up the end year
+    # which is the year of the initialization + 11
+    # for example 1960 would be 197103
+    end_year=$((year + 11))"03"
+
+    # set up the merged file name
+    merged_filename=${variable}_Amon_${model}_dcppA-hindcast_s${year}-r${run}i1p1f2_gn_${start_year}-${end_year}.nc
+
+    # set up the merged file path
+    merged_file_path=${merged_file_dir}/${merged_filename}
+
+    # if the merged file already exists, do not overwrite
+    if [ -f "$merged_file_path" ]; then
+        echo "INFO: Merged file already exists: $merged_file_path"
+        echo "INFO: Not overwriting $merged_file_path"
+    else
+        echo "INFO: Merged file does not exist: $merged_file_path"
+        echo "INFO: Proceeding with script"
+
+        # merge the files
+        cdo mergetime $multi_files $merged_file_path
+
+        echo "[INFO] Finished merging files for $model"
+    fi
+
+    # Set up the input files
+    files=${merged_file_path}
+
+    # for the files downloaded from ESGF
+    elif [ "$model" == "EC-Earth3" ]; then
+    # Set up the input files from canari
+    i1_files="${canari_dir}/dcppA-hindcast/data/${variable}/${model}/${variable}_Amon_${model}_dcppA-hindcast_s${year}-r${run}i1p*f*_g*_*.nc"
+    i2_files="${canari_dir}/dcppA-hindcast/data/${variable}/${model}/${variable}_Amon_${model}_dcppA-hindcast_s${year}-r${run}i2p*f*_g*_*.nc"
+
     # set up the models downloaded from ESGF
     # this includes CESM1-1-CAM5-CMIP5, FGOALS-f3-L, BCC-CSM2-MR, IPSL-CM6A-LR, MIROC6, MPI-ESM1-2-HR, CanESM5, CMCC-CM2-SR5
     elif [ "$model" == "CESM1-1-CAM5-CMIP5" ] || [ "$model" == "FGOALS-f3-L" ] || [ "$model" == "BCC-CSM2-MR" ] || [ "$model" == "IPSL-CM6A-LR" ] || [ "$model" == "MIROC6" ] || [ "$model" == "MPI-ESM1-2-HR" ] || [ "$model" == "CanESM5" ] || [ "$model" == "CMCC-CM2-SR5" ]; then

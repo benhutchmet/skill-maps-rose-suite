@@ -62,3 +62,20 @@ iceland_grid = {
     'lat1': 63,
     'lat2': 70
 }
+
+
+# HadGEM files
+# -rw-r----- 1 badc open  779073 Jan  7  2021 sfcWind_Amon_HadGEM3-GC31-MM_dcppA-hindcast_s1960-r1i1p1f2_gn_196011-196012.nc
+# -rw-r----- 1 badc open 4308880 Jan  7  2021 sfcWind_Amon_HadGEM3-GC31-MM_dcppA-hindcast_s1960-r1i1p1f2_gn_196101-196112.nc
+# -rw-r----- 1 badc open 4309866 Jan  7  2021 sfcWind_Amon_HadGEM3-GC31-MM_dcppA-hindcast_s1960-r1i1p1f2_gn_196201-196212.nc
+# -rw-r----- 1 badc open 4312259 Jan  7  2021 sfcWind_Amon_HadGEM3-GC31-MM_dcppA-hindcast_s1960-r1i1p1f2_gn_196301-196312.nc
+# -rw-r----- 1 badc open 4311639 Jan  7  2021 sfcWind_Amon_HadGEM3-GC31-MM_dcppA-hindcast_s1960-r1i1p1f2_gn_196401-196412.nc
+# -rw-r----- 1 badc open 4316503 Jan  7  2021 sfcWind_Amon_HadGEM3-GC31-MM_dcppA-hindcast_s1960-r1i1p1f2_gn_196501-196512.nc
+# -rw-r----- 1 badc open 4312597 Jan  7  2021 sfcWind_Amon_HadGEM3-GC31-MM_dcppA-hindcast_s1960-r1i1p1f2_gn_196601-196612.nc
+# -rw-r----- 1 badc open 4315542 Jan  7  2021 sfcWind_Amon_HadGEM3-GC31-MM_dcppA-hindcast_s1960-r1i1p1f2_gn_196701-196712.nc
+# -rw-r----- 1 badc open 4311627 Jan  7  2021 sfcWind_Amon_HadGEM3-GC31-MM_dcppA-hindcast_s1960-r1i1p1f2_gn_196801-196812.nc
+# -rw-r----- 1 badc open 4316690 Jan  7  2021 sfcWind_Amon_HadGEM3-GC31-MM_dcppA-hindcast_s1960-r1i1p1f2_gn_196901-196912.nc
+# -rw-r----- 1 badc open 4316014 Jan  7  2021 sfcWind_Amon_HadGEM3-GC31-MM_dcppA-hindcast_s1960-r1i1p1f2_gn_197001-197012.nc
+# -rw-r----- 1 badc open 1137799 Jan  7  2021 sfcWind_Amon_HadGEM3-GC31-MM_dcppA-hindcast_s1960-r1i1p1f2_gn_197101-197103.nc
+
+# /badc/cmip6/data/CMIP6/DCPP/MOHC/HadGEM3-GC31-MM/dcppA-hindcast/s1960-r1i1p1f2/Amon/sfcWind/gn/files/d20200417

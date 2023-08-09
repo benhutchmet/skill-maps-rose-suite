@@ -64,3 +64,7 @@ rsds_ESGF_models=("CESM1-1-CAM5-CMIP5" "FGOALS-f3-L" "BCC-CSM2-MR")
 # corresponding to the models above
 # will need to make sure that these are the correct nodes
 rsds_ESGF_nodes=("esgf-data.ucar.edu" "esg.lasg.ac.cn" "esgf-data1.llnl.gov")   
+
+canari_dir="/gws/nopw/j04/canari/users/benhutch"
+
+# merged_file_dir="${canari_dir}/dcppA-hindcast/data
