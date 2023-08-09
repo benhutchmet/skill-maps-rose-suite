@@ -89,6 +89,7 @@ if [ "$variable" == "psl" ]; then
     # if the model is HadGEM3 or EC-Earth3
     elif [ "$model" == "HadGEM3-GC31-MM" ] || [ "$model" == "EC-Earth3" ]; then
     # set up the input files
+    # MOVE THESE FROM SCRATCH TO CANARI
     files="/work/scratch-nopw2/benhutch/psl/${model}/outputs/mergetime/psl_Amon_${model}_dcppA-hindcast_s${year}-r${run}i*.nc"
     else
     echo "[ERROR] Model not recognised for variable psl"
