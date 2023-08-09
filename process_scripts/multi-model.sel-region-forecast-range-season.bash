@@ -196,10 +196,6 @@ for INPUT_FILE in $files; do
         echo "First number: $forecast_start_year"
         echo "Second number: $forecast_end_year"
 
-        # modify the start_year -1
-        start_year=$((forecast_start_year - 1))
-
-
         # Declare the month codes
         declare -A months=( ["J"]=1 ["F"]=2 ["M"]=3 ["A"]=4 ["Y"]=5 ["U"]=6 ["L"]=7 ["G"]=8 ["S"]=9 ["O"]=10 ["N"]=11 ["D"]=12 )
 
@@ -209,6 +205,8 @@ for INPUT_FILE in $files; do
         end_month=${months[${season:1:1}]}
         elif [[ ${#season} -eq 3 ]]; then
         end_month=${months[${season:2:1}]}
+        elif [[ ${#season} -eq 4 ]]; then
+        end_month=${months[${season:3:1}]}
         else
         end_month=${months[${season:3:1}]}
         fi
@@ -225,6 +223,17 @@ for INPUT_FILE in $files; do
 
         echo "Start month: $start_month"
         echo "End month: $end_month"
+
+        # If the season specified is DJF, DJFM, NDJF, or NDJ, then the start year needs to be one less than the initialization year
+        if [[ $season == *"DJF"* ]] || [[ $season == *"NDJ"* ]]; then
+            echo "Season is DJF or NDJ"
+            echo "Modifying start year by -1"
+            # modify the start_year -1
+            start_year=$((forecast_start_year - 1))
+        else
+            # leave the start_year as it is
+            start_year=$forecast_start_year
+        fi
 
         # Calculate the start and end dates for the DJFM season
         start_date=$((year + start_year))"-${start_month}-01"
