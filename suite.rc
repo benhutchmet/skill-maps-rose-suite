@@ -6,7 +6,7 @@
         final_year=2019
         variable="psl"
         region="global"
-        forecast_range="2-5"
+        forecast_range="2-3"
         season="DJFM"
 
 [scheduling]
