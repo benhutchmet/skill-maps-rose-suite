@@ -237,8 +237,8 @@ elif [ "$variable" == "sfcWind" ]; then
     # set up the models downloaded from ESGF
     # this includes CESM1-1-CAM5-CMIP5, FGOALS-f3-L, BCC-CSM2-MR, IPSL-CM6A-LR, MIROC6, MPI-ESM1-2-HR, CanESM5, CMCC-CM2-SR5
     elif [ "$model" == "CESM1-1-CAM5-CMIP5" ] || [ "$model" == "FGOALS-f3-L" ] || [ "$model" == "BCC-CSM2-MR" ] || [ "$model" == "IPSL-CM6A-LR" ] || [ "$model" == "MIROC6" ] || [ "$model" == "MPI-ESM1-2-HR" ] || [ "$model" == "CanESM5" ] || [ "$model" == "CMCC-CM2-SR5" ]; then
-        # set up the input files from xfc
-        files="/work/xfc/vol5/user_cache/benhutch/sfcWind/${model}/sfcWind_Amon_${model}_dcppA-hindcast_s${year}-r${run}i*p*f*_g*_*.nc"
+        # set up the input files from canari
+        files=${canari_dir}/dcppA-hindcast/data/${variable}/${model}/${variable}_Amon_${model}_dcppA-hindcast_s${year}-r${run}i*p*f*_g*_*.nc
     else
         echo "[ERROR] Model not recognised for variable sfcWind"
         exit 1
