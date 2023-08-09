@@ -138,61 +138,110 @@ elif [ "$variable" == "sfcWind" ]; then
     # set up the models which have sfcWind on JASMIN
     # this includes HadGEM3-GC31-MM, EC-Earth3
     if [ "$model" == "HadGEM3-GC31-MM" ] ; then
-    # set up the input files - only one initialization scheme
-    multi_files="/badc/cmip6/data/CMIP6/DCPP/$model_group/$model/dcppA-hindcast/s${year}-r${run}i?p?f?/Amon/sfcWind/g?/files/d????????/*.nc"
+        # set up the input files - only one initialization scheme
+        multi_files="/badc/cmip6/data/CMIP6/DCPP/$model_group/$model/dcppA-hindcast/s${year}-r${run}i?p?f?/Amon/sfcWind/g?/files/d????????/*.nc"
 
-    # merge the *.nc files into one file
-    # set up the merged file first
-    merged_file_dir=${canari_dir}/dcppA-hindcast/data/${variable}/${model}/merged_files
-    mkdir -p $merged_file_dir
+        # merge the *.nc files into one file
+        # set up the merged file first
+        merged_file_dir=${canari_dir}/dcppA-hindcast/data/${variable}/${model}/merged_files
+        mkdir -p $merged_file_dir
 
-    # set up the start year
-    # which is the year of the initialization and 11
-    # for example 1960 would be 196011
-    start_year="${year}11"
+        # set up the start year
+        # which is the year of the initialization and 11
+        # for example 1960 would be 196011
+        start_year="${year}11"
 
-    # set up the end year
-    # which is the year of the initialization + 11
-    # for example 1960 would be 197103
-    end_year=$((year + 11))"03"
+        # set up the end year
+        # which is the year of the initialization + 11
+        # for example 1960 would be 197103
+        end_year=$((year + 11))"03"
 
-    # set up the merged file name
-    merged_filename=${variable}_Amon_${model}_dcppA-hindcast_s${year}-r${run}i1p1f2_gn_${start_year}-${end_year}.nc
+        # set up the merged file name
+        merged_filename=${variable}_Amon_${model}_dcppA-hindcast_s${year}-r${run}i1p1f2_gn_${start_year}-${end_year}.nc
 
-    # set up the merged file path
-    merged_file_path=${merged_file_dir}/${merged_filename}
+        # set up the merged file path
+        merged_file_path=${merged_file_dir}/${merged_filename}
 
-    # if the merged file already exists, do not overwrite
-    if [ -f "$merged_file_path" ]; then
-        echo "INFO: Merged file already exists: $merged_file_path"
-        echo "INFO: Not overwriting $merged_file_path"
-    else
-        echo "INFO: Merged file does not exist: $merged_file_path"
-        echo "INFO: Proceeding with script"
+        # if the merged file already exists, do not overwrite
+        if [ -f "$merged_file_path" ]; then
+            echo "INFO: Merged file already exists: $merged_file_path"
+            echo "INFO: Not overwriting $merged_file_path"
+        else
+            echo "INFO: Merged file does not exist: $merged_file_path"
+            echo "INFO: Proceeding with script"
 
-        # merge the files
-        cdo mergetime $multi_files $merged_file_path
+            # merge the files
+            cdo mergetime $multi_files $merged_file_path
 
-        echo "[INFO] Finished merging files for $model"
-    fi
+            echo "[INFO] Finished merging files for $model"
+        fi
 
-    # Set up the input files
-    files=${merged_file_path}
+        # Set up the input files
+        files=${merged_file_path}
 
     # for the files downloaded from ESGF
     elif [ "$model" == "EC-Earth3" ]; then
-    # Set up the input files from canari
-    i1_files="${canari_dir}/dcppA-hindcast/data/${variable}/${model}/${variable}_Amon_${model}_dcppA-hindcast_s${year}-r${run}i1p*f*_g*_*.nc"
-    i2_files="${canari_dir}/dcppA-hindcast/data/${variable}/${model}/${variable}_Amon_${model}_dcppA-hindcast_s${year}-r${run}i2p*f*_g*_*.nc"
+        # Set up the input files from canari
+        i1_multi_files="${canari_dir}/dcppA-hindcast/data/${variable}/${model}/${variable}_Amon_${model}_dcppA-hindcast_s${year}-r${run}i1p*f*_g*_*.nc"
+        i2_multi_files="${canari_dir}/dcppA-hindcast/data/${variable}/${model}/${variable}_Amon_${model}_dcppA-hindcast_s${year}-r${run}i2p*f*_g*_*.nc"
+
+        # Set up the merged file dir
+        merged_file_dir=${canari_dir}/dcppA-hindcast/data/${variable}/${model}/merged_files
+        mkdir -p $merged_file_dir
+
+        # Set up the start year
+        start_year="${year}11"
+
+        # Set up the end year
+        end_year=$((year + 10))"12"
+
+        # Set up the merged file name
+        i1_merged_filename=${variable}_Amon_${model}_dcppA-hindcast_s${year}-r${run}i1p1f1_gn_${start_year}-${end_year}.nc
+        i2_merged_filename=${variable}_Amon_${model}_dcppA-hindcast_s${year}-r${run}i2p1f1_gn_${start_year}-${end_year}.nc
+
+        # Set up the merged file path
+        i1_merged_file_path=${merged_file_dir}/${i1_merged_filename}
+        i2_merged_file_path=${merged_file_dir}/${i2_merged_filename}
+
+        # If the merged file already exists, do not overwrite
+        if [ -f "$i1_merged_file_path" ]; then
+            echo "INFO: Merged file already exists: $i1_merged_file_path"
+            echo "INFO: Not overwriting $i1_merged_file_path"
+        else
+            echo "INFO: Merged file does not exist: $i1_merged_file_path"
+            echo "INFO: Proceeding with script"
+
+            # Merge the files
+            cdo mergetime $i1_multi_files $i1_merged_file_path
+
+            echo "[INFO] Finished merging files for $model"
+        fi
+
+        # If the merged file already exists, do not overwrite
+        if [ -f "$i2_merged_file_path" ]; then
+            echo "INFO: Merged file already exists: $i2_merged_file_path"
+            echo "INFO: Not overwriting $i2_merged_file_path"
+        else
+            echo "INFO: Merged file does not exist: $i2_merged_file_path"
+            echo "INFO: Proceeding with script"
+
+            # Merge the files
+            cdo mergetime $i2_multi_files $i2_merged_file_path
+
+            echo "[INFO] Finished merging files for $model"
+        fi
+
+        # Set up the input files
+        files="${merged_file_dir}/${variable}_Amon_${model}_dcppA-hindcast_s${year}-r${run}i*p1f1_gn_${start_year}-${end_year}.nc"
 
     # set up the models downloaded from ESGF
     # this includes CESM1-1-CAM5-CMIP5, FGOALS-f3-L, BCC-CSM2-MR, IPSL-CM6A-LR, MIROC6, MPI-ESM1-2-HR, CanESM5, CMCC-CM2-SR5
     elif [ "$model" == "CESM1-1-CAM5-CMIP5" ] || [ "$model" == "FGOALS-f3-L" ] || [ "$model" == "BCC-CSM2-MR" ] || [ "$model" == "IPSL-CM6A-LR" ] || [ "$model" == "MIROC6" ] || [ "$model" == "MPI-ESM1-2-HR" ] || [ "$model" == "CanESM5" ] || [ "$model" == "CMCC-CM2-SR5" ]; then
-    # set up the input files from xfc
-    files="/work/xfc/vol5/user_cache/benhutch/sfcWind/${model}/sfcWind_Amon_${model}_dcppA-hindcast_s${year}-r${run}i*p*f*_g*_*.nc"
+        # set up the input files from xfc
+        files="/work/xfc/vol5/user_cache/benhutch/sfcWind/${model}/sfcWind_Amon_${model}_dcppA-hindcast_s${year}-r${run}i*p*f*_g*_*.nc"
     else
-    echo "[ERROR] Model not recognised for variable sfcWind"
-    exit 1
+        echo "[ERROR] Model not recognised for variable sfcWind"
+        exit 1
     fi
 else
     echo "[ERROR] Variable not recognised"
