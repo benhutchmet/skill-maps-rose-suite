@@ -2,7 +2,7 @@
 #
 # submit-all-multi-model.sel-region-forecast-range-season.bash
 #
-# For example: submit-all-multi-model.sel-region-forecast-range-season.bash CMCC-CM2-SR5 1960 1 psl north-atlantic 2-5 DJFM
+# For example: submit-all-multi-model.sel-region-forecast-range-season.bash CMCC-CM2-SR5 1960 1 psl north-atlantic 2-5 DJFM dcppA-hindcast
 #
 #
 
@@ -18,10 +18,10 @@ source $PWD/dictionaries.bash
 echo "[INFO] models list: $models"
 
 # set the usage message
-USAGE_MESSAGE="Usage: submit-all-multi-model.sel-region-forecast-range-season.bash <model> <initial-year> <final-year> <variable> <region> <forecast-range> <season>"
+USAGE_MESSAGE="Usage: submit-all-multi-model.sel-region-forecast-range-season.bash <model> <initial-year> <final-year> <variable> <region> <forecast-range> <season> <experiment>"
 
 # check that the correct number of arguments have been passed
-if [ $# -ne 7 ]; then
+if [ $# -ne 8 ]; then
     echo "$USAGE_MESSAGE"
     exit 1
 fi
@@ -34,6 +34,7 @@ variable=$4
 region=$5
 forecast_range=$6
 season=$7
+experiment=$8
 
 # If model is a number
 # Between 1-12
@@ -112,7 +113,7 @@ echo "[INFO] Extracting data for all models: $models"
                 echo "[INFO] Submitting job for $model, s$year, r$run, for variable $variable in region $region, for forecast period year $forecast_range and season $season"
 
                 # submit the job to LOTUS
-                sbatch --partition=short-serial -t 10 -o $OUTPUTS_DIR/${model}_${year}_r${run}_${variable}_${region}_${forecast_range}_${season}.out -e $OUTPUTS_DIR/${model}_${year}_r${run}_${variable}_${region}_${forecast_range}_${season}.err $EXTRACTOR $model $year $run $variable $region $forecast_range $season
+                sbatch --partition=short-serial -t 10 -o $OUTPUTS_DIR/${model}_${year}_r${run}_${variable}_${region}_${forecast_range}_${season}_${experiment}.out -e $OUTPUTS_DIR/${model}_${year}_r${run}_${variable}_${region}_${forecast_range}_${season}_${experiment}.err $EXTRACTOR $model $year $run $variable $region $forecast_range $season $experiment
 
             done
         done
@@ -164,7 +165,7 @@ for year in $(seq $initial_year $final_year); do
         echo "[INFO] Submitting job for $model, s$year, r$run, for variable $variable in region $region, for forecast period year $forecast_range and season $season"
 
         # submit the job to LOTUS
-        sbatch --partition=short-serial -t 10 -o $OUTPUTS_DIR/${model}_${year}_r${run}_${variable}_${region}_${forecast_range}_${season}.out -e $OUTPUTS_DIR/${model}_${year}_r${run}_${variable}_${region}_${forecast_range}_${season}.err $EXTRACTOR $model $year $run $variable $region $forecast_range $season
+        sbatch --partition=short-serial -t 10 -o $OUTPUTS_DIR/${model}_${year}_r${run}_${variable}_${region}_${forecast_range}_${season}_${experiment}.out -e $OUTPUTS_DIR/${model}_${year}_r${run}_${variable}_${region}_${forecast_range}_${season}_${experiment}.err $EXTRACTOR $model $year $run $variable $region $forecast_range $season $experiment
 
     done
 done
