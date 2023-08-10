@@ -2,7 +2,7 @@
 #
 # multi-model.sel-region-forecast-range-season.bash
 #
-# For example: multi-model.sel-region-forecast-range-season.bash HadGEM3-GC31-MM 1960 1 psl north-atlantic 2-5 DJFM
+# For example: multi-model.sel-region-forecast-range-season.bash HadGEM3-GC31-MM 1960 1 psl north-atlantic 2-5 DJFM dcppA-hindcast
 #
 # NOTE: Seasons should be formatted using: JFMAYULGSOND
 #
@@ -11,8 +11,8 @@
 source /home/users/benhutch/skill-maps-rose-suite/dictionaries.bash
 
 # check if the correct number of arguments have been passed
-if [ $# -ne 7 ]; then
-    echo "Usage: multi-model.sel-region-forecast-range-season.bash <model> <initialization-year> <run-number> <variable> <region> <forecast-range> <season>"
+if [ $# -ne 8 ]; then
+    echo "Usage: multi-model.sel-region-forecast-range-season.bash <model> <initialization-year> <run-number> <variable> <region> <forecast-range> <season> <experiment>"
     exit 1
 fi
 
@@ -24,6 +24,7 @@ variable=$4
 region=$5
 forecast_range=$6
 season=$7
+experiment=$8
 
 # set up the gridspec file
 grid="/home/users/benhutch/gridspec/gridspec-${region}.txt"
@@ -74,26 +75,25 @@ else
     exit 1
 fi
 
+
+# /gws/nopw/j04/canari/users/benhutch/dcppA-hindcast/data/psl/MIROC6
+# psl_Amon_MIROC6_dcppA-hindcast_s2021-r9i1p1f1_gn_202111-203112.nc
+
 # set up the files to be processed
 # if the variable is psl
 if [ "$variable" == "psl" ]; then
     # if the model is BCC-CSM2-MR or MPI-ESM1-2-HR or CanESM5 or CMCC-CM2-SR5
     if [ "$model" == "BCC-CSM2-MR" ] || [ "$model" == "MPI-ESM1-2-HR" ] || [ "$model" == "CanESM5" ] || [ "$model" == "CMCC-CM2-SR5" ]; then
-    # set up the input files
-    files="/badc/cmip6/data/CMIP6/DCPP/$model_group/$model/dcppA-hindcast/s${year}-r${run}i?p?f?/Amon/psl/g?/files/d????????/*.nc"
+        # set up the input files
+        files="/badc/cmip6/data/CMIP6/DCPP/$model_group/$model/${experiment}/s${year}-r${run}i?p?f?/Amon/psl/g?/files/d????????/*.nc"
     # for the single file models downloaded from ESGF
-    elif [ "$model" == "MPI-ESM1-2-LR" ] || [ "$model" == "FGOALS-f3-L" ] || [ "$model" == "MIROC6" ] || [ "$model" == "IPSL-CM6A-LR" ] || [ "$model" == "CESM1-1-CAM5-CMIP5" ] || [ "$model" == "NorCPM1" ]; then
-    # set up the input files from xfc
-    # check that this returns the files
-    files="/work/xfc/vol5/user_cache/benhutch/$model_group/$model/psl_Amon_${model}_dcppA-hindcast_s${year}-r${run}i*p*f*_g*_*.nc"
-    # if the model is HadGEM3 or EC-Earth3
-    elif [ "$model" == "HadGEM3-GC31-MM" ] || [ "$model" == "EC-Earth3" ]; then
-    # set up the input files
-    # MOVE THESE FROM SCRATCH TO CANARI
-    files="/work/scratch-nopw2/benhutch/psl/${model}/outputs/mergetime/psl_Amon_${model}_dcppA-hindcast_s${year}-r${run}i*.nc"
+    elif [ "$model" == "MPI-ESM1-2-LR" ] || [ "$model" == "FGOALS-f3-L" ] || [ "$model" == "MIROC6" ] || [ "$model" == "IPSL-CM6A-LR" ] || [ "$model" == "CESM1-1-CAM5-CMIP5" ] || [ "$model" == "NorCPM1" ] || [ "$model" == "HadGEM3-GC31-MM" ] || [ "$model" == "EC-Earth3" ]; then
+        # set up the input files from xfc
+        # check that this returns the files
+        files="${canari_base_dir}/${experiment}/data/${variable}/${model}/${variable}_Amon_${model}_${experiment}_s${year}-r${run}i*p*f*_g*_*.nc"
     else
-    echo "[ERROR] Model not recognised for variable psl"
-    exit 1
+        echo "[ERROR] Model not recognised for variable psl"
+        exit 1
     fi
 # if the variable is tas
 elif [ "$variable" == "tas" ]; then
@@ -101,16 +101,16 @@ elif [ "$variable" == "tas" ]; then
     # these include NorCPM1, IPSL-CM6A-LR, MIROC6, BCC-CSM2-MR, MPI-ESM1-2-HR, CanESM5, CMCC-CM2-SR5, EC-Earth3, HadGEM3-GC31-MM 
     if [ "$model" == "NorCPM1" ] || [ "$model" == "IPSL-CM6A-LR" ] || [ "$model" == "MIROC6" ] || [ "$model" == "BCC-CSM2-MR" ] || [ "$model" == "MPI-ESM1-2-HR" ] || [ "$model" == "CanESM5" ] || [ "$model" == "CMCC-CM2-SR5" ]; then
     # set up the input files
-    files="/badc/cmip6/data/CMIP6/DCPP/$model_group/$model/dcppA-hindcast/s${year}-r${run}i?p?f?/Amon/tas/g?/files/d????????/*.nc"
+    files="/badc/cmip6/data/CMIP6/DCPP/$model_group/$model/${experiment}/s${year}-r${run}i?p?f?/Amon/tas/g?/files/d????????/*.nc"
     # for the files downloaded from ESGF
     # which includes CESM1-1-CAM5-CMIP5, FGOALS-f3-L, MPI-ESM1-2-LR
     elif [ "$model" == "CESM1-1-CAM5-CMIP5" ] || [ "$model" == "FGOALS-f3-L" ] || [ "$model" == "MPI-ESM1-2-LR" ]; then
     # set up the input files from xfc
-    files="/work/xfc/vol5/user_cache/benhutch/tas/${model}/tas_Amon_${model}_dcppA-hindcast_s${year}-r${run}i*p*f*_g*_*.nc"
+    files="/work/xfc/vol5/user_cache/benhutch/tas/${model}/tas_Amon_${model}_${experiment}_s${year}-r${run}i*p*f*_g*_*.nc"
     # if the model is HadGEM3 or EC-Earth3
     elif [ "$model" == "HadGEM3-GC31-MM" ] || [ "$model" == "EC-Earth3" ]; then
     # set up the input files
-    files="/work/scratch-nopw2/benhutch/tas/${model}/outputs/mergetime/tas_Amon_${model}_dcppA-hindcast_s${year}-r${run}i*.nc"
+    files="/work/scratch-nopw2/benhutch/tas/${model}/outputs/mergetime/tas_Amon_${model}_${experiment}_s${year}-r${run}i*.nc"
     else
     echo "[ERROR] Model not recognised for variable tas"
     exit 1
@@ -121,15 +121,15 @@ elif [ "$variable" == "rsds" ]; then
     # thes incldue NorCPM1, IPSL-CM6A-LR, MIROC6, MPI-ESM1-2-HR, CanESM5, CMCC-CM2-SR5
     if [ "$model" == "NorCPM1" ] || [ "$model" == "IPSL-CM6A-LR" ] || [ "$model" == "MIROC6" ] || [ "$model" == "MPI-ESM1-2-HR" ] || [ "$model" == "CanESM5" ] || [ "$model" == "CMCC-CM2-SR5" ]; then
     # set up the input files
-    files="/badc/cmip6/data/CMIP6/DCPP/$model_group/$model/dcppA-hindcast/s${year}-r${run}i?p?f?/Amon/rsds/g?/files/d????????/*.nc"
+    files="/badc/cmip6/data/CMIP6/DCPP/$model_group/$model/${experiment}/s${year}-r${run}i?p?f?/Amon/rsds/g?/files/d????????/*.nc"
     # for the files downloaded from ESGF
     # for models CESM1-1-CAM5-CMIP5, FGOALS-f3-L, BCC-CSM2-MR
     elif [ "$model" == "CESM1-1-CAM5-CMIP5" ] || [ "$model" == "FGOALS-f3-L" ] || [ "$model" == "BCC-CSM2-MR" ]; then
     # set up the input files from xfc
-    files="/work/xfc/vol5/user_cache/benhutch/rsds/${model}/rsds_Amon_${model}_dcppA-hindcast_s${year}-r${run}i*p*f*_g*_*.nc"
+    files="/work/xfc/vol5/user_cache/benhutch/rsds/${model}/rsds_Amon_${model}_${experiment}_s${year}-r${run}i*p*f*_g*_*.nc"
     elif [ "$model" == "HadGEM3-GC31-MM" ] || [ "$model" == "EC-Earth3" ]; then
     # set up the input files
-    files="/work/scratch-nopw2/benhutch/rsds/${model}/outputs/mergetime/rsds_Amon_${model}_dcppA-hindcast_s${year}-r${run}i*.nc"
+    files="/work/scratch-nopw2/benhutch/rsds/${model}/outputs/mergetime/rsds_Amon_${model}_${experiment}_s${year}-r${run}i*.nc"
     else
     echo "[ERROR] Model not recognised for variable rsds"
     exit 1
@@ -140,11 +140,11 @@ elif [ "$variable" == "sfcWind" ]; then
     # this includes HadGEM3-GC31-MM, EC-Earth3
     if [ "$model" == "HadGEM3-GC31-MM" ] ; then
         # set up the input files - only one initialization scheme
-        multi_files="/badc/cmip6/data/CMIP6/DCPP/$model_group/$model/dcppA-hindcast/s${year}-r${run}i?p?f?/Amon/sfcWind/g?/files/d????????/*.nc"
+        multi_files="/badc/cmip6/data/CMIP6/DCPP/$model_group/$model/${experiment}/s${year}-r${run}i?p?f?/Amon/sfcWind/g?/files/d????????/*.nc"
 
         # merge the *.nc files into one file
         # set up the merged file first
-        merged_file_dir=${canari_dir}/dcppA-hindcast/data/${variable}/${model}/merged_files
+        merged_file_dir=${canari_dir}/${experiment}/data/${variable}/${model}/merged_files
         mkdir -p $merged_file_dir
 
         # set up the start year
@@ -158,7 +158,7 @@ elif [ "$variable" == "sfcWind" ]; then
         end_year=$((year + 11))"03"
 
         # set up the merged file name
-        merged_filename=${variable}_Amon_${model}_dcppA-hindcast_s${year}-r${run}i1p1f2_gn_${start_year}-${end_year}.nc
+        merged_filename=${variable}_Amon_${model}_${experiment}_s${year}-r${run}i1p1f2_gn_${start_year}-${end_year}.nc
 
         # set up the merged file path
         merged_file_path=${merged_file_dir}/${merged_filename}
@@ -183,11 +183,11 @@ elif [ "$variable" == "sfcWind" ]; then
     # for the files downloaded from ESGF
     elif [ "$model" == "EC-Earth3" ]; then
         # Set up the input files from canari
-        i1_multi_files="${canari_dir}/dcppA-hindcast/data/${variable}/${model}/${variable}_Amon_${model}_dcppA-hindcast_s${year}-r${run}i1p*f*_g*_*.nc"
-        i2_multi_files="${canari_dir}/dcppA-hindcast/data/${variable}/${model}/${variable}_Amon_${model}_dcppA-hindcast_s${year}-r${run}i2p*f*_g*_*.nc"
+        i1_multi_files="${canari_dir}/${experiment}/data/${variable}/${model}/${variable}_Amon_${model}_${experiment}_s${year}-r${run}i1p*f*_g*_*.nc"
+        i2_multi_files="${canari_dir}/${experiment}/data/${variable}/${model}/${variable}_Amon_${model}_${experiment}_s${year}-r${run}i2p*f*_g*_*.nc"
 
         # Set up the merged file dir
-        merged_file_dir=${canari_dir}/dcppA-hindcast/data/${variable}/${model}/merged_files
+        merged_file_dir=${canari_dir}/${experiment}/data/${variable}/${model}/merged_files
         mkdir -p $merged_file_dir
 
         # Set up the start year
@@ -197,8 +197,8 @@ elif [ "$variable" == "sfcWind" ]; then
         end_year=$((year + 10))"12"
 
         # Set up the merged file name
-        i1_merged_filename=${variable}_Amon_${model}_dcppA-hindcast_s${year}-r${run}i1p1f1_gn_${start_year}-${end_year}.nc
-        i2_merged_filename=${variable}_Amon_${model}_dcppA-hindcast_s${year}-r${run}i2p1f1_gn_${start_year}-${end_year}.nc
+        i1_merged_filename=${variable}_Amon_${model}_${experiment}_s${year}-r${run}i1p1f1_gn_${start_year}-${end_year}.nc
+        i2_merged_filename=${variable}_Amon_${model}_${experiment}_s${year}-r${run}i2p1f1_gn_${start_year}-${end_year}.nc
 
         # Set up the merged file path
         i1_merged_file_path=${merged_file_dir}/${i1_merged_filename}
@@ -233,13 +233,13 @@ elif [ "$variable" == "sfcWind" ]; then
         fi
 
         # Set up the input files
-        files="${merged_file_dir}/${variable}_Amon_${model}_dcppA-hindcast_s${year}-r${run}i*p1f1_gn_${start_year}-${end_year}.nc"
+        files="${merged_file_dir}/${variable}_Amon_${model}_${experiment}_s${year}-r${run}i*p1f1_gn_${start_year}-${end_year}.nc"
 
     # set up the models downloaded from ESGF
     # this includes CESM1-1-CAM5-CMIP5, FGOALS-f3-L, BCC-CSM2-MR, IPSL-CM6A-LR, MIROC6, MPI-ESM1-2-HR, CanESM5, CMCC-CM2-SR5
     elif [ "$model" == "CESM1-1-CAM5-CMIP5" ] || [ "$model" == "FGOALS-f3-L" ] || [ "$model" == "BCC-CSM2-MR" ] || [ "$model" == "IPSL-CM6A-LR" ] || [ "$model" == "MIROC6" ] || [ "$model" == "MPI-ESM1-2-HR" ] || [ "$model" == "CanESM5" ] || [ "$model" == "CMCC-CM2-SR5" ]; then
         # set up the input files from canari
-        files=${canari_dir}/dcppA-hindcast/data/${variable}/${model}/${variable}_Amon_${model}_dcppA-hindcast_s${year}-r${run}i*p*f*_g*_*.nc
+        files=${canari_dir}/${experiment}/data/${variable}/${model}/${variable}_Amon_${model}_${experiment}_s${year}-r${run}i*p*f*_g*_*.nc
     else
         echo "[ERROR] Model not recognised for variable sfcWind"
         exit 1
