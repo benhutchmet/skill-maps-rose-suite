@@ -24,6 +24,9 @@ badc_base_path="/badc/cmip6/data/CMIP6/DCPP/"
 
 scratch_path="/work/scratch-nopw2/benhutch"
 
+# set up the canari base dir
+canari_base_dir="/gws/nopw/j04/canari/users/benhutch"
+
 # list of models
 # available on JASMIN
 models="BCC-CSM2-MR MPI-ESM1-2-HR CanESM5 CMCC-CM2-SR5 HadGEM3-GC31-MM EC-Earth3 MPI-ESM1-2-LR FGOALS-f3-L MIROC6 IPSL-CM6A-LR CESM1-1-CAM5-CMIP5 NorCPM1"
