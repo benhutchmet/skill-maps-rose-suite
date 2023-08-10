@@ -128,6 +128,7 @@ OUTPUTS_DIR="/work/scratch-nopw2/benhutch/${variable}/${model}/${region}/years_$
 mkdir -p $OUTPUTS_DIR
 
 # Set up the number of ensemble members using a case statement
+# FGOALS has 3 members in RSDS case, but 9 will work just fine
 case $model in
     BCC-CSM2-MR) run=8;;
     MPI-ESM1-2-HR) run=10;;
