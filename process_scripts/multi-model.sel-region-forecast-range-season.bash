@@ -97,23 +97,31 @@ if [ "$variable" == "psl" ]; then
     fi
 # if the variable is tas
 elif [ "$variable" == "tas" ]; then
-    # set up the models that have tas on JASMIN
-    # these include NorCPM1, IPSL-CM6A-LR, MIROC6, BCC-CSM2-MR, MPI-ESM1-2-HR, CanESM5, CMCC-CM2-SR5, EC-Earth3, HadGEM3-GC31-MM 
-    if [ "$model" == "NorCPM1" ] || [ "$model" == "IPSL-CM6A-LR" ] || [ "$model" == "MIROC6" ] || [ "$model" == "BCC-CSM2-MR" ] || [ "$model" == "MPI-ESM1-2-HR" ] || [ "$model" == "CanESM5" ] || [ "$model" == "CMCC-CM2-SR5" ]; then
-    # set up the input files
-    files="/badc/cmip6/data/CMIP6/DCPP/$model_group/$model/${experiment}/s${year}-r${run}i?p?f?/Amon/tas/g?/files/d????????/*.nc"
+        
+        # set up the models that have tas on JASMIN
+        # these include NorCPM1, IPSL-CM6A-LR, MIROC6, BCC-CSM2-MR, MPI-ESM1-2-HR, CanESM5, CMCC-CM2-SR5, EC-Earth3, HadGEM3-GC31-MM 
+        if [ "$model" == "NorCPM1" ] || [ "$model" == "IPSL-CM6A-LR" ] || [ "$model" == "MIROC6" ] || [ "$model" == "BCC-CSM2-MR" ] || [ "$model" == "MPI-ESM1-2-HR" ] || [ "$model" == "CanESM5" ] || [ "$model" == "CMCC-CM2-SR5" ]; then
+        # set up the input files
+        files="/badc/cmip6/data/CMIP6/DCPP/$model_group/$model/${experiment}/s${year}-r${run}i?p?f?/Amon/tas/g?/files/d????????/*.nc"
+
     # for the files downloaded from ESGF
     # which includes CESM1-1-CAM5-CMIP5, FGOALS-f3-L, MPI-ESM1-2-LR
     elif [ "$model" == "CESM1-1-CAM5-CMIP5" ] || [ "$model" == "FGOALS-f3-L" ] || [ "$model" == "MPI-ESM1-2-LR" ]; then
-    # set up the input files from xfc
-    files="/work/xfc/vol5/user_cache/benhutch/tas/${model}/tas_Amon_${model}_${experiment}_s${year}-r${run}i*p*f*_g*_*.nc"
+
+        # set up the input files from canari
+        files="${canari_base_dir}/${experiment}/data/${variable}/${model}/${variable}_Amon_${model}_${experiment}_s${year}-r${run}i*p*f*_g*_*.nc"
+
     # if the model is HadGEM3 or EC-Earth3
-    elif [ "$model" == "HadGEM3-GC31-MM" ] || [ "$model" == "EC-Earth3" ]; then
-    # set up the input files
-    files="/work/scratch-nopw2/benhutch/tas/${model}/outputs/mergetime/tas_Amon_${model}_${experiment}_s${year}-r${run}i*.nc"
+    elif [ "$model" == "HadGEM3-GC31-MM" ]; then
+        
+        # set up the input files from badc
+        multi_files="/work/scratch-nopw2/benhutch/tas/${model}/outputs/mergetime/tas_Amon_${model}_${experiment}_s${year}-r${run}i*.nc"
+
+    elif [ "$model" == "EC-Earth3" ]; then
+
     else
-    echo "[ERROR] Model not recognised for variable tas"
-    exit 1
+        echo "[ERROR] Model not recognised for variable tas"
+        exit 1
     fi
 # if the variable is rsds
 elif [ "$variable" == "rsds" ]; then
