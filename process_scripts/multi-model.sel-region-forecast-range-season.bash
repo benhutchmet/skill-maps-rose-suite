@@ -152,6 +152,59 @@ elif [ "$variable" == "tas" ]; then
 
     elif [ "$model" == "EC-Earth3" ]; then
 
+        # set up the i1 and i2 input files from badc
+        i1_multi_files="/badc/cmip6/data/CMIP6/DCPP/$model_group/$model/${experiment}/s${year}-r${run}i1p?f?/Amon/tas/g?/files/d????????/*.nc"
+        i2_multi_files="/badc/cmip6/data/CMIP6/DCPP/$model_group/$model/${experiment}/s${year}-r${run}i2p?f?/Amon/tas/g?/files/d????????/*.nc"
+
+        # set up the merged file dir
+        merged_file_dir=${canari_base_dir}/${experiment}/data/${variable}/${model}/merged_files
+        mkdir -p $merged_file_dir
+
+        # set up the start year
+        start_year="${year}11"
+
+        # set up the end year
+        end_year=$((year + 11))"10"
+
+        # set up the merged file names
+        i1_merged_filename=${variable}_Amon_${model}_${experiment}_s${year}-r${run}i1p1f1_gr_${start_year}-${end_year}.nc
+        i2_merged_filename=${variable}_Amon_${model}_${experiment}_s${year}-r${run}i2p1f1_gr_${start_year}-${end_year}.nc
+
+        # set up the merged file paths
+        i1_merged_file_path=${merged_file_dir}/${i1_merged_filename}
+        i2_merged_file_path=${merged_file_dir}/${i2_merged_filename}
+
+        # if the merged file already exists, do not overwrite
+        if [ -f "$i1_merged_file_path" ]; then
+            echo "INFO: Merged file already exists: $i1_merged_file_path"
+            echo "INFO: Not overwriting $i1_merged_file_path"
+        else
+            echo "INFO: Merged file does not exist: $i1_merged_file_path"
+            echo "INFO: Proceeding with script"
+
+            # merge the files
+            cdo mergetime $i1_multi_files $i1_merged_file_path
+
+            echo "[INFO] Finished merging files for $model"
+        fi
+
+        # if the merged file already exists, do not overwrite
+        if [ -f "$i2_merged_file_path" ]; then
+            echo "INFO: Merged file already exists: $i2_merged_file_path"
+            echo "INFO: Not overwriting $i2_merged_file_path"
+        else
+            echo "INFO: Merged file does not exist: $i2_merged_file_path"
+            echo "INFO: Proceeding with script"
+
+            # merge the files
+            cdo mergetime $i2_multi_files $i2_merged_file_path
+
+            echo "[INFO] Finished merging files for $model"
+        fi
+
+        # Set up the input files
+        files="${merged_file_dir}/${variable}_Amon_${model}_${experiment}_s${year}-r${run}i*p1f1_gr_${start_year}-${end_year}.nc"
+        
     else
         echo "[ERROR] Model not recognised for variable tas"
         exit 1
