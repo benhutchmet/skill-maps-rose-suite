@@ -329,7 +329,7 @@ elif [ "$variable" == "sfcWind" ]; then
     # this includes HadGEM3-GC31-MM, EC-Earth3
     if [ "$model" == "HadGEM3-GC31-MM" ] ; then
         # set up the input files - only one initialization scheme
-        multi_files="/badc/cmip6/data/CMIP6/DCPP/$model_group/$model/${experiment}/s${year}-r${run}i?p?f?/Amon/sfcWind/g?/files/d????????/*.nc"
+        multi_files="/badc/cmip6/data/CMIP6/DCPP/$model_group/$model/${experiment}/s${year}-r${run}i?p?f?/Amon/sfcWind/g?/files/d????????/${variable}_Amon_${model}_${experiment}_s${year}-r${run}i1p1f2_gn_*.nc"
 
         # merge the *.nc files into one file
         # set up the merged file first
@@ -372,8 +372,9 @@ elif [ "$variable" == "sfcWind" ]; then
     # for the files downloaded from ESGF
     elif [ "$model" == "EC-Earth3" ]; then
         # Set up the input files from canari
-        i1_multi_files="${canari_dir}/${experiment}/data/${variable}/${model}/${variable}_Amon_${model}_${experiment}_s${year}-r${run}i1p*f*_g*_*.nc"
-        i2_multi_files="${canari_dir}/${experiment}/data/${variable}/${model}/${variable}_Amon_${model}_${experiment}_s${year}-r${run}i2p*f*_g*_*.nc"
+        # only i2 available for sfcWind currently
+        #i1_multi_files="${canari_dir}/${experiment}/data/${variable}/${model}/${variable}_Amon_${model}_${experiment}_s${year}-r${run}i1p*f*_g*_*.nc"
+        i2_multi_files="${canari_dir}/${experiment}/${variable}/${model}/data/${variable}_Amon_${model}_${experiment}_s${year}-r${run}i2p*f*_g*_*.nc"
 
         # Set up the merged file dir
         merged_file_dir=${canari_dir}/${experiment}/data/${variable}/${model}/merged_files
@@ -386,26 +387,26 @@ elif [ "$variable" == "sfcWind" ]; then
         end_year=$((year + 10))"12"
 
         # Set up the merged file name
-        i1_merged_filename=${variable}_Amon_${model}_${experiment}_s${year}-r${run}i1p1f1_gn_${start_year}-${end_year}.nc
+        #i1_merged_filename=${variable}_Amon_${model}_${experiment}_s${year}-r${run}i1p1f1_gn_${start_year}-${end_year}.nc
         i2_merged_filename=${variable}_Amon_${model}_${experiment}_s${year}-r${run}i2p1f1_gn_${start_year}-${end_year}.nc
 
         # Set up the merged file path
-        i1_merged_file_path=${merged_file_dir}/${i1_merged_filename}
+        #i1_merged_file_path=${merged_file_dir}/${i1_merged_filename}
         i2_merged_file_path=${merged_file_dir}/${i2_merged_filename}
 
         # If the merged file already exists, do not overwrite
-        if [ -f "$i1_merged_file_path" ]; then
-            echo "INFO: Merged file already exists: $i1_merged_file_path"
-            echo "INFO: Not overwriting $i1_merged_file_path"
-        else
-            echo "INFO: Merged file does not exist: $i1_merged_file_path"
-            echo "INFO: Proceeding with script"
+        # if [ -f "$i1_merged_file_path" ]; then
+        #     echo "INFO: Merged file already exists: $i1_merged_file_path"
+        #     echo "INFO: Not overwriting $i1_merged_file_path"
+        # else
+        #     echo "INFO: Merged file does not exist: $i1_merged_file_path"
+        #     echo "INFO: Proceeding with script"
 
-            # Merge the files
-            cdo mergetime $i1_multi_files $i1_merged_file_path
+        #     # Merge the files
+        #     cdo mergetime $i1_multi_files $i1_merged_file_path
 
-            echo "[INFO] Finished merging files for $model"
-        fi
+        #     echo "[INFO] Finished merging files for $model"
+        # fi
 
         # If the merged file already exists, do not overwrite
         if [ -f "$i2_merged_file_path" ]; then
@@ -424,11 +425,17 @@ elif [ "$variable" == "sfcWind" ]; then
         # Set up the input files
         files="${merged_file_dir}/${variable}_Amon_${model}_${experiment}_s${year}-r${run}i*p1f1_gn_${start_year}-${end_year}.nc"
 
-    # set up the models downloaded from ESGF
-    # this includes CESM1-1-CAM5-CMIP5, FGOALS-f3-L, BCC-CSM2-MR, IPSL-CM6A-LR, MIROC6, MPI-ESM1-2-HR, CanESM5, CMCC-CM2-SR5
-    elif [ "$model" == "CESM1-1-CAM5-CMIP5" ] || [ "$model" == "FGOALS-f3-L" ] || [ "$model" == "BCC-CSM2-MR" ] || [ "$model" == "IPSL-CM6A-LR" ] || [ "$model" == "MIROC6" ] || [ "$model" == "MPI-ESM1-2-HR" ] || [ "$model" == "CanESM5" ] || [ "$model" == "CMCC-CM2-SR5" ]; then
+    # elif for CESM and BCC (in a different canari folder)
+    elif [ "$model" == "CESM1-1-CAM5-CMIP5" ] || [ "$model" == "BCC-CSM2-MR" ]; then
+        # Set up the input files from canari
+        files="${canari_dir}/${experiment}/data/${variable}/${model}/${variable}_Amon_${model}_${experiment}_s${year}-r${run}i*p*f*_g*_*.nc"
+
+    # set up the remaining models downloaded from ESGF
+    # this includes FGOALS-f3-L, IPSL-CM6A-LR, MIROC6, MPI-ESM1-2-HR, CanESM5, CMCC-CM2-SR5
+    # these are in a different canari folder
+    elif [ "$model" == "FGOALS-f3-L" ] || [ "$model" == "IPSL-CM6A-LR" ] || [ "$model" == "MIROC6" ] || [ "$model" == "MPI-ESM1-2-HR" ] || [ "$model" == "CanESM5" ]; then
         # set up the input files from canari
-        files=${canari_dir}/${experiment}/data/${variable}/${model}/${variable}_Amon_${model}_${experiment}_s${year}-r${run}i*p*f*_g*_*.nc
+        files=${canari_dir}/${experiment}/${variable}/${model}/data/${variable}_Amon_${model}_${experiment}_s${year}-r${run}i*p*f*_g*_*.nc
     else
         echo "[ERROR] Model not recognised for variable sfcWind"
         exit 1
