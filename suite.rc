@@ -6,8 +6,8 @@
         final_year=2019
         variable="psl"
         region="global"
-        forecast_range="2-2"
-        season="DJFM"
+        forecast_range="2-9"
+        season="ULG"
         experiment="dcppA-hindcast"
 
 [scheduling]
