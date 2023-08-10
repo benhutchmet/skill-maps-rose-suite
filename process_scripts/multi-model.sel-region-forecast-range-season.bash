@@ -23,7 +23,6 @@ run=$3
 variable=$4
 region=$5
 forecast_range=$6
-season=$7
 experiment=$8
 
 # set up the gridspec file
@@ -75,6 +74,8 @@ else
     exit 1
 fi
 
+# activate the environment containing cdo
+module load jaspy
 
 # /gws/nopw/j04/canari/users/benhutch/dcppA-hindcast/data/psl/MIROC6
 # psl_Amon_MIROC6_dcppA-hindcast_s2021-r9i1p1f1_gn_202111-203112.nc
@@ -90,7 +91,7 @@ if [ "$variable" == "psl" ]; then
     elif [ "$model" == "MPI-ESM1-2-LR" ] || [ "$model" == "FGOALS-f3-L" ] || [ "$model" == "MIROC6" ] || [ "$model" == "IPSL-CM6A-LR" ] || [ "$model" == "CESM1-1-CAM5-CMIP5" ] || [ "$model" == "NorCPM1" ] || [ "$model" == "HadGEM3-GC31-MM" ] || [ "$model" == "EC-Earth3" ]; then
         # set up the input files from xfc
         # check that this returns the files
-        files="${canari_base_dir}/${experiment}/data/${variable}/${model}/${variable}_Amon_${model}_${experiment}_s${year}-r${run}i*p*f*_g*_*.nc"
+        files="${canari_base_dir}/${experiment}/data/${variable}/${model}/${variable}_Amon_${model}_${experiment}_s${year}-r${run}i*_g*_*.nc"
     else
         echo "[ERROR] Model not recognised for variable psl"
         exit 1
@@ -263,7 +264,7 @@ elif [ "$variable" == "rsds" ]; then
         # Set up the input files
         files=${merged_file_path}
 
-    elif [ "$model" == "EC-Earth3" ]; Then
+    elif [ "$model" == "EC-Earth3" ]; then
 
         # Set up the i1 and i2 input files
         i1_multi_files="/badc/cmip6/data/CMIP6/DCPP/$model_group/$model/${experiment}/s${year}-r${run}i1p?f?/Amon/rsds/g?/files/d????????/*.nc"
@@ -437,15 +438,15 @@ else
     exit 1
 fi
 
-# activate the environment containing cdo
-module load jaspy
-
 # set up the output directory
 OUTPUT_DIR="/work/scratch-nopw2/benhutch/${variable}/${model}/${region}/years_${forecast_range}/${season}/outputs"
 mkdir -p $OUTPUT_DIR
 
 # loop through the files and process them
 for INPUT_FILE in $files; do
+
+    # extract the season from the command line
+    season=$7
 
     # set up the output file names
     echo "Processing $INPUT_FILE"
