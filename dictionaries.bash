@@ -37,6 +37,8 @@ multi_file_models="HadGEM3-GC31-MM EC-Earth3 EC-Earth3-HR"
 
 sfcWind_models="BCC-CSM2-MR MPI-ESM1-2-HR CanESM5 CESM1-1-CAM5-CMIP5 EC-Earth3 FGOALS-f3-L MIROC6 IPSL-CM6A-LR HadGEM3-GC31-MM"
 
+sfcWind_models_numbers=1,2,3,5,6,8,9,10,11
+
 # models downloaded from CEDA/LLNL ESGF server to xfer
 # format these as arrays
 ESGF_models=("NorCPM1" "EC-Earth3-HR" "CESM1-1-CAM5-CMIP5" "IPSL-CM6A-LR" "MIROC6" "CNRM-ESM2-1" "FGOALS-f3-L" "MPI-ESM1-2-LR" "MRI-ESM2-0")
