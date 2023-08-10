@@ -115,7 +115,40 @@ elif [ "$variable" == "tas" ]; then
     elif [ "$model" == "HadGEM3-GC31-MM" ]; then
         
         # set up the input files from badc
-        multi_files="/work/scratch-nopw2/benhutch/tas/${model}/outputs/mergetime/tas_Amon_${model}_${experiment}_s${year}-r${run}i*.nc"
+        multi_files="/badc/cmip6/data/CMIP6/DCPP/$model_group/$model/${experiment}/s${year}-r${run}i?p?f?/Amon/tas/g?/files/d????????/*.nc"
+
+        # set up the merged file first
+        merged_file_dir=${canari_base_dir}/${experiment}/data/${variable}/${model}/merged_files
+        mkdir -p $merged_file_dir
+
+        # set up the start year
+        start_year="${year}11"
+
+        # set up the end year
+        end_year=$((year + 11))"03"
+
+        # set up the merged file name
+        merged_filename=${variable}_Amon_${model}_${experiment}_s${year}-r${run}i1p1f2_gn_${start_year}-${end_year}.nc
+
+        # set up the merged file path
+        merged_file_path=${merged_file_dir}/${merged_filename}
+
+        # if the merged file already exists, do not overwrite
+        if [ -f "$merged_file_path" ]; then
+            echo "INFO: Merged file already exists: $merged_file_path"
+            echo "INFO: Not overwriting $merged_file_path"
+        else
+            echo "INFO: Merged file does not exist: $merged_file_path"
+            echo "INFO: Proceeding with script"
+
+            # merge the files
+            cdo mergetime $multi_files $merged_file_path
+
+            echo "[INFO] Finished merging files for $model"
+        fi
+
+        # Set up the input files
+        files=${merged_file_path}
 
     elif [ "$model" == "EC-Earth3" ]; then
 
