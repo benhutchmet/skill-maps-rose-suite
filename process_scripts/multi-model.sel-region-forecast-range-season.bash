@@ -445,15 +445,25 @@ else
     exit 1
 fi
 
-# set up the output directory
-OUTPUT_DIR="/work/scratch-nopw2/benhutch/${variable}/${model}/${region}/years_${forecast_range}/${season}/outputs"
-mkdir -p $OUTPUT_DIR
+
 
 # loop through the files and process them
 for INPUT_FILE in $files; do
 
     # extract the season from the command line
     season=$7
+
+    # Set up the name for the output directory
+    OUTPUT_DIR="/work/scratch-nopw2/benhutch/${variable}/${model}/${region}/years_${forecast_range}/${season}/outputs"
+    
+    # if the output directory does not exist, create it
+    if [ ! -d "$OUTPUT_DIR" ]; then
+        echo "INFO: Output directory does not exist: $OUTPUT_DIR"
+        echo "INFO: Creating output directory"
+        mkdir -p $OUTPUT_DIR
+    else
+        echo "INFO: Output directory already exists: $OUTPUT_DIR"
+    fi
 
     # set up the output file names
     echo "Processing $INPUT_FILE"
