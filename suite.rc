@@ -12,9 +12,10 @@
 
 [scheduling]
     [[dependencies]]
-        graph = """sel_region<model><initial_year><final_year><variable><region><forecast_range><season><experiment> => calc_model_mean_state<model><variable><region><forecast_range><season>
+        graph = """
         calc_model_mean_state<model><variable><region><forecast_range><season> => calc_anoms<model><initial_year><final_year><variable><region><forecast_range><season>
-        calc_anoms<model><initial_year><final_year><variable><region><forecast_range><season> => merge_time<model><variable><region><forecast_range><season>"""
+        calc_anoms<model><initial_year><final_year><variable><region><forecast_range><season> => merge_time<model><variable><region><forecast_range><season>
+        """
 
 [runtime]
     [[root]]
@@ -25,10 +26,6 @@
             execution time limit = PT10M
         [[[directives]]]
             --partition = short-serial
-    [[sel_region<model><initial_year><final_year><variable><region><forecast_range><season><experiment>]]
-        script = """module load jaspy
-        cd ${CYLC_SUITE_RUN_DIR}/
-        bash submit-all-multi-model.sel-region-forecast-range-season.bash ${CYLC_TASK_PARAM_model} ${CYLC_TASK_PARAM_initial_year} ${CYLC_TASK_PARAM_final_year} ${CYLC_TASK_PARAM_variable} ${CYLC_TASK_PARAM_region} ${CYLC_TASK_PARAM_forecast_range} ${CYLC_TASK_PARAM_season} ${CYLC_TASK_PARAM_experiment}"""
     [[calc_model_mean_state<model><variable><region><forecast_range><season>]]
         script = """module load jaspy
         cd ${CYLC_SUITE_RUN_DIR}/
