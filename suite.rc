@@ -7,7 +7,7 @@
         variable="sfcWind"
         region="global"
         forecast_range="2-9"
-        season="SON"
+        season="MAM"
         experiment="dcppA-hindcast"
 
 [scheduling]
