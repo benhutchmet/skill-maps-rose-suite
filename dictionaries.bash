@@ -40,12 +40,28 @@ sfcWind_models="BCC-CSM2-MR MPI-ESM1-2-HR CanESM5 CESM1-1-CAM5-CMIP5 EC-Earth3 F
 # sfcwind missing CMCC-CM2-SR5, MPI-ESM1-2-LR, NorCPM1
 sfcWind_models_numbers=1,2,3,5,6,8,9,10,11
 
+# set up the sfcWind models list
+# this is the list of models that have sfcWind data available in my case
+sfcWind_models="BCC-CSM2-MR MPI-ESM1-2-HR CanESM5 HadGEM3-GC31-MM EC-Earth3 FGOALS-f3-L MIROC6 IPSL-CM6A-LR CESM1-1-CAM5-CMIP5" 
+
 # rsds missing MPI-ESM1-2-LR
 rsds_models_numbers=1,2,3,4,5,6,8,9,10,11,12
 
+# set up the rsds models list
+# this is the list of models that have rsds data available in my case
+rsds_models="BCC-CSM2-MR MPI-ESM1-2-HR CanESM5 CMCC-CM2-SR5 HadGEM3-GC31-MM EC-Earth3 FGOALS-f3-L MIROC6 IPSL-CM6A-LR CESM1-1-CAM5-CMIP5 NorCPM1"
+
 tas_models_numbers=1,2,3,4,5,6,8,9,10,11,12
 
+# set up the tas models list
+# this is the list of models that have tas data available in my case
+tas_models="BCC-CSM2-MR MPI-ESM1-2-HR CanESM5 CMCC-CM2-SR5 HadGEM3-GC31-MM EC-Earth3 FGOALS-f3-L MIROC6 IPSL-CM6A-LR CESM1-1-CAM5-CMIP5 NorCPM1"
+
 psl_models_numbers=1,2,3,4,5,6,8,9,10,11,12
+
+# set up the psl models list
+# this is the list of models that have psl data available in my case
+psl_models="BCC-CSM2-MR MPI-ESM1-2-HR CanESM5 CMCC-CM2-SR5 HadGEM3-GC31-MM EC-Earth3 MPI-ESM1-2-LR FGOALS-f3-L MIROC6 IPSL-CM6A-LR CESM1-1-CAM5-CMIP5 NorCPM1"
 
 # models downloaded from CEDA/LLNL ESGF server to xfer
 # format these as arrays
