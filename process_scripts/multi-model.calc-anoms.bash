@@ -32,7 +32,7 @@ base_dir="/work/scratch-nopw2/benhutch/$variable/$model/$region/years_${forecast
 # Function for processing files
 process_files() {
     init_scheme=$1
-    files_path="$base_dir/mean-years-${forecast_range}-${season}-${region}-${variable}_Amon_${model}_dcppA-hindcast_s????-r*${init_scheme}*.nc"
+    files_path="$base_dir/mean-years-${forecast_range}-${season}-${region}-${variable}_?mon_${model}_dcppA-hindcast_s????-r*${init_scheme}*.nc"
 
     # Echo the files to be processed
     echo "Model mean state calculated and anomalies calculated for: $files_path"
