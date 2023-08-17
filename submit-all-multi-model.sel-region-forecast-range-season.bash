@@ -145,53 +145,78 @@ echo "[INFO] Extracting data for all models: $models"
     done
 else
 
-# Individual model case
-# Echo the model name
-echo "[INFO] Extracting data for model: $model"
+    # Individual model case
+    # Echo the model name
+    echo "[INFO] Extracting data for model: $model"
 
-# Set up the output directory for the LOTUS outputs
-OUTPUTS_DIR="/work/scratch-nopw2/benhutch/${variable}/${model}/${region}/years_${forecast_range}/${season}/lotus-outputs"
-mkdir -p $OUTPUTS_DIR
+    # Set up the output directory for the LOTUS outputs
+    OUTPUTS_DIR="/work/scratch-nopw2/benhutch/${variable}/${model}/${region}/years_${forecast_range}/${season}/lotus-outputs"
+    mkdir -p $OUTPUTS_DIR
 
-# Set up the number of ensemble members using a case statement
-# FGOALS has 3 members in RSDS case, but 9 will work just fine
-case $model in
-    BCC-CSM2-MR) run=8;;
-    MPI-ESM1-2-HR) run=10;;
-    CanESM5) run=20;;
-    CMCC-CM2-SR5) run=10;;
-    HadGEM3-GC31-MM) run=10;;
-    EC-Earth3) run=10;;
-    MRI-ESM2-0) run=10;;
-    MPI-ESM1-2-LR) run=16;;
-    FGOALS-f3-L) run=9;;
-    MIROC6) run=10;;
-    IPSL-CM6A-LR) run=10;;
-    CESM1-1-CAM5-CMIP5) run=40;;
-    NorCPM1) run=10;;
-    *) echo "[ERROR] Model not recognised"; exit 1;;
-esac
+    # Set up the number of ensemble members using a case statement
+    # if variable is tos, then the case statement specifies differnt numbers of ensemble members
+    if [ "$variable" == "tos" ]; then
 
-# echo the number of ensemble members
-echo "[INFO] Number of ensemble members: $run"
+        # echo that the variable is tos and that we are using different values for the number of ensemble members
+        echo "[INFO] Variable is tos, using different values for the number of ensemble members"
 
-# sequence through the years specified
-for year in $(seq $initial_year $final_year); do
+        # Set up the number of ensemble members using a case statement for tos
+        case $model in
+            CanESM5) run=40;;
+            HadGEM3-GC31-MM) run=10;;
+            EC-Earth3) run=10;; # only 6..10, but this will do
+            FGOALS-f3-L) run=6;;
+            MIROC6) run=10;;
+            IPSL-CM6A-LR) run=10;;
+            CESM1-1-CAM5-CMIP5) run=40;;
+            NorCPM1) run=10;;
+            *) echo "[ERROR] Model not recognised"; exit 1;;
+        esac
 
-    # Echo the year
-    echo "Current year: ${year}"
+    else
 
-    # Loop through the ensemble members
-    for run in $(seq 1 $run); do
+        # echo that the variable is not tos and that we are using the same values for the number of ensemble members
+        echo "[INFO] Variable is not tos, using the same values for the number of ensemble members"
 
-        # set the date
-        year=$(printf "%d" $year)
-        run=$(printf "%d" $run)
-        echo "[INFO] Submitting job for $model, s$year, r$run, for variable $variable in region $region, for forecast period year $forecast_range and season $season"
+        # Set up the number of ensemble members using a case statement
+        case $model in
+            BCC-CSM2-MR) run=8;;
+            MPI-ESM1-2-HR) run=10;;
+            CanESM5) run=20;;
+            CMCC-CM2-SR5) run=10;;
+            HadGEM3-GC31-MM) run=10;;
+            EC-Earth3) run=10;;
+            MRI-ESM2-0) run=10;;
+            MPI-ESM1-2-LR) run=16;;
+            FGOALS-f3-L) run=9;;
+            MIROC6) run=10;;
+            IPSL-CM6A-LR) run=10;;
+            CESM1-1-CAM5-CMIP5) run=40;;
+            NorCPM1) run=10;;
+            *) echo "[ERROR] Model not recognised"; exit 1;;
+        esac
+    fi
 
-        # submit the job to LOTUS
-        sbatch --partition=short-serial -t 10 -o $OUTPUTS_DIR/${model}_${year}_r${run}_${variable}_${region}_${forecast_range}_${season}_${experiment}.out -e $OUTPUTS_DIR/${model}_${year}_r${run}_${variable}_${region}_${forecast_range}_${season}_${experiment}.err $EXTRACTOR $model $year $run $variable $region $forecast_range $season $experiment
+    # echo the number of ensemble members
+    echo "[INFO] Number of ensemble members: $run"
 
+    # sequence through the years specified
+    for year in $(seq $initial_year $final_year); do
+
+        # Echo the year
+        echo "Current year: ${year}"
+
+        # Loop through the ensemble members
+        for run in $(seq 1 $run); do
+
+            # set the date
+            year=$(printf "%d" $year)
+            run=$(printf "%d" $run)
+            echo "[INFO] Submitting job for $model, s$year, r$run, for variable $variable in region $region, for forecast period year $forecast_range and season $season"
+
+            # submit the job to LOTUS
+            sbatch --partition=short-serial -t 10 -o $OUTPUTS_DIR/${model}_${year}_r${run}_${variable}_${region}_${forecast_range}_${season}_${experiment}.out -e $OUTPUTS_DIR/${model}_${year}_r${run}_${variable}_${region}_${forecast_range}_${season}_${experiment}.err $EXTRACTOR $model $year $run $variable $region $forecast_range $season $experiment
+
+        done
     done
-done
 fi
