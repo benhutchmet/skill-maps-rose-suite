@@ -36,7 +36,7 @@ calculate_anoms() {
     init_scheme=$1
 
     # Set up the input file path
-    INPUT_FILES="$base_dir/mean-years-${forecast_range}-${season}-${region}-${variable}_Amon_${model}_dcppA-hindcast_s${year}-r*${init_scheme}*.nc"
+    INPUT_FILES="$base_dir/mean-years-${forecast_range}-${season}-${region}-${variable}_?mon_${model}_dcppA-hindcast_s${year}-r*${init_scheme}*.nc"
     # Set up the model mean state file path
     MODEL_MEAN_STATE="$base_dir/tmp/model_mean_state_${init_scheme}.nc"
 
@@ -106,7 +106,7 @@ else
         "EC-Earth3")
             calculate_anoms "i1"
             calculate_anoms "i2"
-        calculate_anoms "i4"
+            calculate_anoms "i4"
             ;;
         *)
             # For all other models, use a wildcard for init_scheme
