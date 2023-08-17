@@ -63,6 +63,11 @@ psl_models_numbers=1,2,3,4,5,6,8,9,10,11,12
 # this is the list of models that have psl data available in my case
 psl_models="BCC-CSM2-MR MPI-ESM1-2-HR CanESM5 CMCC-CM2-SR5 HadGEM3-GC31-MM EC-Earth3 MPI-ESM1-2-LR FGOALS-f3-L MIROC6 IPSL-CM6A-LR CESM1-1-CAM5-CMIP5 NorCPM1"
 
+# Set up the tos models list
+tos_models="CanESM5 HadGEM3-GC31-MM EC-Earth3 FGOALS-f3-L MIROC6 IPSL-CM6A-LR CESM1-1-CAM5-CMIP5 NorCPM1"
+
+tos_model_numbers=3,5,6,8,9,10,11,12
+
 # models downloaded from CEDA/LLNL ESGF server to xfer
 # format these as arrays
 ESGF_models=("NorCPM1" "EC-Earth3-HR" "CESM1-1-CAM5-CMIP5" "IPSL-CM6A-LR" "MIROC6" "CNRM-ESM2-1" "FGOALS-f3-L" "MPI-ESM1-2-LR" "MRI-ESM2-0")
