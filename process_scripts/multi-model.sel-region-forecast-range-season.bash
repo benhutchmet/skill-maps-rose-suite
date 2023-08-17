@@ -440,6 +440,97 @@ elif [ "$variable" == "sfcWind" ]; then
         echo "[ERROR] Model not recognised for variable sfcWind"
         exit 1
     fi
+# in the case the variable is tos - SSTs
+elif [ "$variable" == "tos" ]; then
+    # Set up the single file models
+    # which have been downloaded into my gws from ESGF
+    if [ "$model" == "CanESM5" ] || [ "$model" == "CESM1-1-CAM5-CMIP5" ] || [ "$model" == "FGOALS-f3-L" ] || [ "$model" == "IPSL-CM6A-LR" ] || [ "$model" == "MIROC6" ] || [ "$model" == "NorCPM1" ]; then
+        # Set up the input files from canari
+        # example: /gws/nopw/j04/canari/users/benhutch/dcppA-hindcast/tos/CanESM5/data
+        # file example: tos_Omon_MIROC6_dcppA-hindcast_s2021-r9i1p1f1_gn_202111-203112.nc
+        # specify a regular grid - gn - for CESM1-1-CAM5-CMIP5 (has both gr and gn)
+        files="${canari_dir}/${experiment}/${variable}/${model}/data/${variable}_Omon_${model}_${experiment}_s${year}-r${run}i*p*f*_gn_*.nc"
+    # Set up the multi-file models
+    # First the HadGEM case
+    elif [ "$model" == "HadGEM3-GC31-MM" ]; then
+        # Set up the multi-file input files for a single initialization scheme, run and year
+        # which have been downloaded into my gws from ESGF
+        multi_files="${canari_dir}/${experiment}/${variable}/${model}/data/${variable}_Omon_${model}_${experiment}_s${year}-r${run}i1p1f2_gn_*.nc"
+
+        # set up the merged file directory
+        merged_file_dir=${canari_dir}/${experiment}/${variable}/${model}/data/merged_files
+        mkdir -p $merged_file_dir
+
+        # set up the start year
+        start_year="${year}11"
+
+        # set up the end year
+        end_year=$((year + 11))"03"
+
+        # set up the merged file name
+        merged_filename=${variable}_Omon_${model}_${experiment}_s${year}-r${run}i1p1f2_gn_${start_year}-${end_year}.nc
+        # merged file path
+        merged_file_path=${merged_file_dir}/${merged_filename}
+
+        # if the merged file already exists, do not overwrite
+        if [ -f "$merged_file_path" ]; then
+            echo "INFO: Merged file already exists: $merged_file_path"
+            echo "INFO: Not overwriting $merged_file_path"
+        else
+            echo "INFO: Merged file does not exist: $merged_file_path"
+            echo "INFO: Proceeding with script"
+
+            # merge the files
+            cdo mergetime $multi_files $merged_file_path
+
+            echo "[INFO] Finished merging files for $model"
+        fi
+
+        # Set up the input files
+        files=${merged_file_path}
+
+    # Now the EC-Earth case
+    elif [ "$model" == "EC-Earth3" ]; then
+        # Set up the multi-file input files for a single initialization scheme, run and year
+        # only i2 in this case
+        # which have been downloaded into my gws from ESGF
+        multi_files="${canari_dir}/${experiment}/${variable}/${model}/data/${variable}_Omon_${model}_${experiment}_s${year}-r${run}i2p1f1_gn_*.nc"
+
+        # set up the merged file directory
+        merged_file_dir=${canari_dir}/${experiment}/${variable}/${model}/data/merged_files
+        mkdir -p $merged_file_dir
+
+        # set up the start year
+        start_year="${year}11"
+
+        # set up the end year
+        end_year=$((year + 10))"12"
+
+        # set up the merged file name
+        merged_filename=${variable}_Omon_${model}_${experiment}_s${year}-r${run}i2p1f1_gn_${start_year}-${end_year}.nc
+        # merged file path
+        merged_file_path=${merged_file_dir}/${merged_filename}
+
+        # if the merged file already exists, do not overwrite
+        if [ -f "$merged_file_path" ]; then
+            echo "INFO: Merged file already exists: $merged_file_path"
+            echo "INFO: Not overwriting $merged_file_path"
+        else
+            echo "INFO: Merged file does not exist: $merged_file_path"
+            echo "INFO: Proceeding with script"
+
+            # merge the files
+            cdo mergetime $multi_files $merged_file_path
+
+            echo "[INFO] Finished merging files for $model"
+        fi
+
+        # Set up the input files
+        files=${merged_file_path}
+    else
+        echo "[ERROR] Model not recognised for variable tos"
+        exit 1
+    fi
 else
     echo "[ERROR] Variable not recognised"
     exit 1

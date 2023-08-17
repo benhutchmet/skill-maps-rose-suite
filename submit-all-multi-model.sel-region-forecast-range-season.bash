@@ -73,23 +73,48 @@ echo "[INFO] Extracting data for all models: $models"
     # Echo the model name
     echo "[INFO] Extracting data for model: $model"
 
-    # Set up the number of ensemble members using a case statement
-    case $model in
-        BCC-CSM2-MR) run=8;;
-        MPI-ESM1-2-HR) run=10;;
-        CanESM5) run=20;;
-        CMCC-CM2-SR5) run=10;;
-        HadGEM3-GC31-MM) run=10;;
-        EC-Earth3) run=10;;
-        MRI-ESM2-0) run=10;;
-        MPI-ESM1-2-LR) run=16;;
-        FGOALS-f3-L) run=9;;
-        MIROC6) run=10;;
-        IPSL-CM6A-LR) run=10;;
-        CESM1-1-CAM5-CMIP5) run=40;;
-        NorCPM1) run=10;;
-        *) echo "[ERROR] Model not recognised"; exit 1;;
-    esac
+    # if variable is tos, then the case statement specifies differnt numbers of ensemble members
+    if [ "$variable" == "tos" ]; then
+
+        # echo that the variable is tos and that we are using different values for the number of ensemble members
+        echo "[INFO] Variable is tos, using different values for the number of ensemble members"
+
+        # Set up the number of ensemble members using a case statement for tos
+        case $model in
+            CanESM5) run=40;;
+            HadGEM3-GC31-MM) run=10;;
+            EC-Earth3) run=10;; # only 6..10, but this will do
+            FGOALS-f3-L) run=6;;
+            MIROC6) run=10;;
+            IPSL-CM6A-LR) run=10;;
+            CESM1-1-CAM5-CMIP5) run=40;;
+            NorCPM1) run=10;;
+            *) echo "[ERROR] Model not recognised"; exit 1;;
+        esac
+
+    else
+
+        # echo that the variable is not tos and that we are using the same values for the number of ensemble members
+        echo "[INFO] Variable is not tos, using the same values for the number of ensemble members"
+
+        # Set up the number of ensemble members using a case statement
+        case $model in
+            BCC-CSM2-MR) run=8;;
+            MPI-ESM1-2-HR) run=10;;
+            CanESM5) run=20;;
+            CMCC-CM2-SR5) run=10;;
+            HadGEM3-GC31-MM) run=10;;
+            EC-Earth3) run=10;;
+            MRI-ESM2-0) run=10;;
+            MPI-ESM1-2-LR) run=16;;
+            FGOALS-f3-L) run=9;;
+            MIROC6) run=10;;
+            IPSL-CM6A-LR) run=10;;
+            CESM1-1-CAM5-CMIP5) run=40;;
+            NorCPM1) run=10;;
+            *) echo "[ERROR] Model not recognised"; exit 1;;
+        esac
+    fi
 
     # echo the number of ensemble members
     echo "[INFO] Number of ensemble members: $run"
