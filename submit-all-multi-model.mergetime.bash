@@ -247,8 +247,8 @@ else
 
     if [ "$variable" == "tos" ]; then
 
-            # Echo that the variable is tos and that the tos case statement will be used
-            echo "[INFO] Variable is tos, using tos case statement"
+        # Echo that the variable is tos and that the tos case statement will be used
+        echo "[INFO] Variable is tos, using tos case statement"
 
         # Set up the number of ensemble members and initialisation methods using a case statement
         case $model in
