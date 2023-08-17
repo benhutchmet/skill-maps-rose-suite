@@ -81,22 +81,39 @@ calculate_anoms() {
 # Create output directories
 mkdir -p $OUTPUT_DIR
 
-# Processing
-case $model in
-    "NorCPM1")
-        calculate_anoms "i1"
-        calculate_anoms "i2"
-        ;;
-    "EC-Earth3")
-        calculate_anoms "i1"
-        calculate_anoms "i2"
-        calculate_anoms "i4"
-        ;;
-    *)
-        # For all other models, use a wildcard for init_scheme
-        calculate_anoms "i1"
-        ;;
-esac
+if [ "$variable" == "tos" ]; then
+    # Processing
+    case $model in
+        "NorCPM1")
+            process_files "i1"
+            process_files "i2"
+            ;;
+        "EC-Earth3")
+            process_files "i2"
+            ;;
+        *)
+            # For all other models, use a wildcard for init_scheme
+            process_files "i1"
+            ;;
+    esac
+else
+    # Processing
+    case $model in
+        "NorCPM1")
+            process_files "i1"
+            process_files "i2"
+            ;;
+        "EC-Earth3")
+            process_files "i1"
+            process_files "i2"
+            process_files "i4"
+            ;;
+        *)
+            # For all other models, use a wildcard for init_scheme
+            process_files "i1"
+            ;;
+    esac
+fi
 
 echo "Anomalies calculated for year ${year}, model $model, variable $variable, region $region, forecast range $forecast_range, season $season and saved to $OUTPUT_DIR"
 

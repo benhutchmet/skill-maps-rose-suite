@@ -61,22 +61,39 @@ process_files() {
 # Create output directories
 mkdir -p $base_dir/tmp
 
-# Processing
-case $model in
-    "NorCPM1")
-        process_files "i1"
-        process_files "i2"
-        ;;
-    "EC-Earth3")
-        process_files "i1"
-        process_files "i2"
-        process_files "i4"
-        ;;
-    *)
-        # For all other models, use a wildcard for init_scheme
-        process_files "i1"
-        ;;
-esac
+if [ "$variable" == "tos" ]; then
+    # Processing
+    case $model in
+        "NorCPM1")
+            process_files "i1"
+            process_files "i2"
+            ;;
+        "EC-Earth3")
+            process_files "i2"
+            ;;
+        *)
+            # For all other models, use a wildcard for init_scheme
+            process_files "i1"
+            ;;
+    esac
+else
+    # Processing
+    case $model in
+        "NorCPM1")
+            process_files "i1"
+            process_files "i2"
+            ;;
+        "EC-Earth3")
+            process_files "i1"
+            process_files "i2"
+            process_files "i4"
+            ;;
+        *)
+            # For all other models, use a wildcard for init_scheme
+            process_files "i1"
+            ;;
+    esac
+fi
 
 # Clean up temporary files
 rm -f ${base_dir}/tmp/temp-*.nc
