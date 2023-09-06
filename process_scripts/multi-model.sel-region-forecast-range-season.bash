@@ -542,7 +542,9 @@ elif [ "$variable" == "ua" ]; then
         # example: /gws/nopw/j04/canari/users/benhutch/dcppA-hindcast/ua/CanESM5/data
         # file example: ua_Amon_MIROC6_dcppA-hindcast_s2021-r9i1p1f1_gn_202111-203112.nc
         # specify a regular grid - gn - for CESM1-1-CAM5-CMIP5 (has both gr and gn)
-        files="${canari_base_dir}/${experiment}/${variable}/${model}/data/${variable}_Amon_${model}_${experiment}_s${year}-r${run}i*p*f*_g?_*.nc"
+        # extract the first three letters from ${year}
+        year_prefix=${year:0:3}
+        files="${canari_base_dir}/${experiment}/${variable}/${model}/data/${variable}_Amon_${model}_${experiment}_s${year}-r${run}i*p*f*_g?_${year_prefix}*.nc"
     elif [ "$model" == "HadGEM3-GC31-MM" ]; then
         # Set up the input files from badc
         multi_files="/badc/cmip6/data/CMIP6/DCPP/$model_group/$model/${experiment}/s${year}-r${run}i?p?f?/Amon/ua/g?/files/d????????/*.nc"
@@ -619,8 +621,10 @@ elif [ "$variable" == "va" ]; then
     # Set up the single files models
     # which have been downloaded into my gws from ESGF
     if [ "$model" == "NorCPM1" ] || [ "$model" == "IPSL-CM6A-LR" ] || [ "$model" == "MIROC6" ] || [ "$model" == "MPI-ESM1-2-HR" ] || [ "$model" == "CanESM5" ] || [ "$model" == "CMCC-CM2-SR5" ] || [ "$model" == "CESM1-1-CAM5-CMIP5" ] || [ "$model" == "FGOALS-f3-L" ] || [ "$model" == "BCC-CSM2-MR" ]; then
-    # Set up the files from canari
-    files="${canari_base_dir}/${experiment}/${variable}/${model}/data/${variable}_Amon_${model}_${experiment}_s${year}-r${run}i*p*f*_g?_*.nc"
+        # Set up the files from canari
+        # extract the first three letters from ${year}
+        year_prefix=${year:0:3}
+        files="${canari_base_dir}/${experiment}/${variable}/${model}/data/${variable}_Amon_${model}_${experiment}_s${year}-r${run}i*p*f*_g?_${year_prefix}*.nc"
     # In the case of HadGEM which must be merged
     elif [ "$model" == "HadGEM3-GC31-MM" ]; then
         # Set up the input files from badc
