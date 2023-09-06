@@ -1,0 +1,78 @@
+# First test the calculate MMS stage
+
+bash process_scripts/multi-model.calc-anoms-model-mean-state.bash HadGEM3-GC31-MM ua north-atlantic 2-9 DJFM
+
+# for va
+bash process_scripts/multi-model.calc-anoms-model-mean-state.bash HadGEM3-GC31-MM va north-atlantic 2-9 DJFM
+
+# for EC-Earth3
+bash process_scripts/multi-model.calc-anoms-model-mean-state.bash EC-Earth3 ua north-atlantic 2-9 DJFM
+
+# for va
+bash process_scripts/multi-model.calc-anoms-model-mean-state.bash EC-Earth3 va north-atlantic 2-9 DJFM
+
+# For MIROC6
+bash process_scripts/multi-model.calc-anoms-model-mean-state.bash MIROC6 ua north-atlantic 2-9 DJFM
+
+# for va
+bash process_scripts/multi-model.calc-anoms-model-mean-state.bash MIROC6 va north-atlantic 2-9 DJFM
+
+# For CMCC-CM2-SR5
+bash process_scripts/multi-model.calc-anoms-model-mean-state.bash CMCC-CM2-SR5 ua north-atlantic 2-9 DJFM
+
+# for va
+bash process_scripts/multi-model.calc-anoms-model-mean-state.bash CMCC-CM2-SR5 va north-atlantic 2-9 DJFM
+
+# For MPI-ESM1-2-HR
+#bash process_scripts/multi-model.calc-anoms-model-mean-state.bash MPI-ESM1-2-HR ua north-atlantic 2-9 DJFM
+
+# for va
+#bash process_scripts/multi-model.calc-anoms-model-mean-state.bash MPI-ESM1-2-HR va north-atlantic 2-9 DJFM
+
+# For CESM1-1-CAM5-CMIP5
+bash process_scripts/multi-model.calc-anoms-model-mean-state.bash CESM1-1-CAM5-CMIP5 ua north-atlantic 2-9 DJFM
+
+# for va
+bash process_scripts/multi-model.calc-anoms-model-mean-state.bash CESM1-1-CAM5-CMIP5 va north-atlantic 2-9 DJFM
+
+
+# Then test the remove MMS stage
+bash process_scripts/multi-model.calc-anoms-sub-anoms.bash HadGEM3-GC31-MM 1960 ua north-atlantic 2-9 DJFM
+
+# for va
+bash process_scripts/multi-model.calc-anoms-sub-anoms.bash HadGEM3-GC31-MM 1960 va north-atlantic 2-9 DJFM
+
+# for EC-Earth3
+bash process_scripts/multi-model.calc-anoms-sub-anoms.bash EC-Earth3 1960 ua north-atlantic 2-9 DJFM
+
+# for va
+bash process_scripts/multi-model.calc-anoms-sub-anoms.bash EC-Earth3 1960 va north-atlantic 2-9 DJFM
+
+
+# For MIROC6
+bash process_scripts/multi-model.calc-anoms-sub-anoms.bash MIROC6 1960 ua north-atlantic 2-9 DJFM
+
+# for va
+bash process_scripts/multi-model.calc-anoms-sub-anoms.bash MIROC6 1960 va north-atlantic 2-9 DJFM
+
+
+# For CMCC-CM2-SR5
+bash process_scripts/multi-model.calc-anoms-sub-anoms.bash CMCC-CM2-SR5 1960 ua north-atlantic 2-9 DJFM
+
+# for va
+bash process_scripts/multi-model.calc-anoms-sub-anoms.bash CMCC-CM2-SR5 1960 va north-atlantic 2-9 DJFM
+
+
+# For CESM1-1-CAM5-CMIP5
+bash process_scripts/multi-model.calc-anoms-sub-anoms.bash CESM1-1-CAM5-CMIP5 1960 ua north-atlantic 2-9 DJFM
+
+# for va
+bash process_scripts/multi-model.calc-anoms-sub-anoms.bash CESM1-1-CAM5-CMIP5 1960 va north-atlantic 2-9 DJFM
+
+
+
+
+
+
+
+# Then test the mergetime stage
