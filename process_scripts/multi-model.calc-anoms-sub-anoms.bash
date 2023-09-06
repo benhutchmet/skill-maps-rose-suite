@@ -105,8 +105,6 @@ else
             ;;
         "EC-Earth3")
             calculate_anoms "i1"
-            calculate_anoms "i2"
-            calculate_anoms "i4"
             ;;
         *)
             # For all other models, use a wildcard for init_scheme
