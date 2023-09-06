@@ -48,6 +48,9 @@ process_files() {
         rm -f $temp_model_mean_state
     fi
 
+    # Check if the variable is ua or va
+    if [ "$variable" = "ua" ] || [ "$variable" = "va" ]; then
+
     # Take the ensemble mean of the time mean files
     cdo ensmean ${files_path} ${temp_model_mean_state}
 
