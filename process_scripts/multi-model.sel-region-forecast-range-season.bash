@@ -542,7 +542,7 @@ elif [ "$variable" == "ua" ]; then
         # example: /gws/nopw/j04/canari/users/benhutch/dcppA-hindcast/ua/CanESM5/data
         # file example: ua_Amon_MIROC6_dcppA-hindcast_s2021-r9i1p1f1_gn_202111-203112.nc
         # specify a regular grid - gn - for CESM1-1-CAM5-CMIP5 (has both gr and gn)
-        files="${canari_base_dir}/${experiment}/${variable}/${model}/data/${variable}_Amon_${model}_${experiment}_s${year}-r${run}i*p*f*_gn_*.nc"
+        files="${canari_base_dir}/${experiment}/${variable}/${model}/data/${variable}_Amon_${model}_${experiment}_s${year}-r${run}i*p*f*_g?_*.nc"
     elif [ "$model" == "HadGEM3-GC31-MM" ]; then
         # Set up the input files from badc
         multi_files="/badc/cmip6/data/CMIP6/DCPP/$model_group/$model/${experiment}/s${year}-r${run}i?p?f?/Amon/ua/g?/files/d????????/*.nc"
@@ -587,8 +587,113 @@ elif [ "$variable" == "ua" ]; then
         merged_file_dir=${canari_base_dir}/${experiment}/data/${variable}/${model}/merged_files
         mkdir -p $merged_file_dir
 
-        # Set up the start year
+        # Set up the start year and end year
+        start_year="${year}11"
+        end_year=$((year + 11))"10"
 
+        # Set up the merged file name
+        i1_merged_filename=${variable}_Amon_${model}_${experiment}_s${year}-r${run}i1p1f1_gr_${start_year}-${end_year}.nc
+        merged_file_path=${merged_file_dir}/${i1_merged_filename}
+
+        # If the merged file already exists, do not overwrite
+        if [ -f "$merged_file_path" ]; then
+            echo "INFO: Merged file already exists: $merged_file_path"
+            echo "INFO: Not overwriting $merged_file_path"
+        else
+            echo "INFO: Merged file does not exist: $merged_file_path"
+            echo "INFO: Proceeding with script"
+
+            # Merge the files
+            cdo mergetime $i1_multi_files $merged_file_path
+
+            echo "[INFO] Finished merging files for $model"
+        fi
+
+        # Set up the input files
+        files=${merged_file_path}
+    else
+        echo "[ERROR] Model not recognised for variable ua"
+        exit 1
+    fi
+elif [ "$variable" == "va" ]; then
+    # Set up the single files models
+    # which have been downloaded into my gws from ESGF
+    if [ "$model" == "NorCPM1" ] || [ "$model" == "IPSL-CM6A-LR" ] || [ "$model" == "MIROC6" ] || [ "$model" == "MPI-ESM1-2-HR" ] || [ "$model" == "CanESM5" ] || [ "$model" == "CMCC-CM2-SR5" ] || [ "$model" == "CESM1-1-CAM5-CMIP5" ] || [ "$model" == "FGOALS-f3-L" ] || [ "$model" == "BCC-CSM2-MR" ]; then
+    # Set up the files from canari
+    files="${canari_base_dir}/${experiment}/${variable}/${model}/data/${variable}_Amon_${model}_${experiment}_s${year}-r${run}i*p*f*_g?_*.nc"
+    # In the case of HadGEM which must be merged
+    elif [ "$model" == "HadGEM3-GC31-MM" ]; then
+        # Set up the input files from badc
+        multi_files="/badc/cmip6/data/CMIP6/DCPP/$model_group/$model/${experiment}/s${year}-r${run}i?p?f?/Amon/ua/g?/files/d????????/*.nc"
+
+        # set up the merged file first
+        merged_file_dir=${canari_base_dir}/${experiment}/data/${variable}/${model}/merged_files
+        mkdir -p $merged_file_dir
+
+        # set up the start year
+        start_year="${year}11"
+        # set up the end year
+        end_year=$((year + 11))"03"
+
+        # set up the merged file name
+        merged_filename=${variable}_Amon_${model}_${experiment}_s${year}-r${run}i1p1f2_gn_${start_year}-${end_year}.nc
+        # set up the merged file path
+        merged_file_path=${merged_file_dir}/${merged_filename}
+
+        # if the merged file already exists, do not overwrite
+        if [ -f "$merged_file_path" ]; then
+            echo "INFO: Merged file already exists: $merged_file_path"
+            echo "INFO: Not overwriting $merged_file_path"
+        else
+            echo "INFO: Merged file does not exist: $merged_file_path"
+            echo "INFO: Proceeding with script"
+
+            # merge the files
+            cdo mergetime $multi_files $merged_file_path
+
+            echo "[INFO] Finished merging files for $model"
+        fi
+
+        # Set up the input files
+        files=${merged_file_path}
+    # In the case of EC-Earth
+    elif [ "$model" == "EC-Earth3" ]; then
+
+        # Set up the i1 multi files
+        i1_multi_files="${canari_base_dir}/${experiment}/${variable}/${model}/data/${variable}_Amon_${model}_${experiment}_s${year}-r${run}i1p?f?_g?_*.nc"
+
+        # Set up the merged file dir
+        merged_file_dir=${canari_base_dir}/${experiment}/data/${variable}/${model}/merged_files
+        mkdir -p $merged_file_dir
+
+        # Set up the start year and end year
+        start_year="${year}11"
+        end_year=$((year + 11))"10"
+
+        # Set up the merged file name
+        i1_merged_filename=${variable}_Amon_${model}_${experiment}_s${year}-r${run}i1p1f1_gr_${start_year}-${end_year}.nc
+        merged_file_path=${merged_file_dir}/${i1_merged_filename}
+
+        # If the merged file already exists, do not overwrite
+        if [ -f "$merged_file_path" ]; then
+            echo "INFO: Merged file already exists: $merged_file_path"
+            echo "INFO: Not overwriting $merged_file_path"
+        else
+            echo "INFO: Merged file does not exist: $merged_file_path"
+            echo "INFO: Proceeding with script"
+
+            # Merge the files
+            cdo mergetime $i1_multi_files $merged_file_path
+
+            echo "[INFO] Finished merging files for $model"
+        fi
+
+        # Set up the input files
+        files=${merged_file_path}
+    else
+        echo "[ERROR] Model not recognised for variable va"
+        exit 1
+    fi
 else
     echo "[ERROR] Variable not recognised"
     exit 1
