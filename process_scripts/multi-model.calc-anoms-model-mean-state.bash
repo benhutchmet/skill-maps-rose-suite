@@ -48,9 +48,6 @@ process_files() {
         rm -f $temp_model_mean_state
     fi
 
-    # Check if the variable is ua or va
-    if [ "$variable" = "ua" ] || [ "$variable" = "va" ]; then
-
     # Take the ensemble mean of the time mean files
     cdo ensmean ${files_path} ${temp_model_mean_state}
 
@@ -88,8 +85,6 @@ else
             ;;
         "EC-Earth3")
             process_files "i1"
-            process_files "i2"
-            process_files "i4"
             ;;
         *)
             # For all other models, use a wildcard for init_scheme
