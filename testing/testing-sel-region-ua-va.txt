@@ -1,0 +1,25 @@
+# Calling the script for testing purposes
+
+bash process_scripts/multi-model.sel-region-forecast-range-season.bash HadGEM3-GC31-MM 1960 1 ua north-atlantic 2-9 DJFM dcppA-hindcast
+
+bash process_scripts/multi-model.sel-region-forecast-range-season.bash HadGEM3-GC31-MM 1960 1 va north-atlantic 2-9 DJFM dcppA-hindcast
+
+# now for EC-Earth3
+bash process_scripts/multi-model.sel-region-forecast-range-season.bash EC-Earth3 1960 1 ua north-atlantic 2-9 DJFM dcppA-hindcast
+
+bash process_scripts/multi-model.sel-region-forecast-range-season.bash EC-Earth3 1960 1 va north-atlantic 2-9 DJFM dcppA-hindcast
+
+# Now for MIROC6
+bash process_scripts/multi-model.sel-region-forecast-range-season.bash MIROC6 1960 1 ua north-atlantic 2-9 DJFM dcppA-hindcast
+
+bash process_scripts/multi-model.sel-region-forecast-range-season.bash MIROC6 1960 1 va north-atlantic 2-9 DJFM dcppA-hindcast
+
+# Now for CMCC-CM2-SR5
+bash process_scripts/multi-model.sel-region-forecast-range-season.bash CMCC-CM2-SR5 2008 1 ua north-atlantic 2-9 DJFM dcppA-hindcast
+
+bash process_scripts/multi-model.sel-region-forecast-range-season.bash CMCC-CM2-SR5 2008 1 va north-atlantic 2-9 DJFM dcppA-hindcast
+
+# Now for CESM1-1-CAM5-CMIP5
+bash process_scripts/multi-model.sel-region-forecast-range-season.bash CESM1-1-CAM5-CMIP5 1960 1 ua north-atlantic 2-9 DJFM dcppA-hindcast
+
+bash process_scripts/multi-model.sel-region-forecast-range-season.bash CESM1-1-CAM5-CMIP5 1960 1 va north-atlantic 2-9 DJFM dcppA-hindcast

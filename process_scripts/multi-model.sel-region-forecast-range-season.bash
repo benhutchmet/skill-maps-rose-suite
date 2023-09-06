@@ -533,7 +533,6 @@ elif [ "$variable" == "tos" ]; then
     fi
 
 # If the variable is ua or va
-# TODO: update this to include call for ua models
 elif [ "$variable" == "ua" ]; then
     # Set up the single file models
     # which have been downloaded into my gws from ESGF
