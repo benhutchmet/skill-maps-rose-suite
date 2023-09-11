@@ -35,6 +35,12 @@ bash process_scripts/multi-model.calc-anoms-model-mean-state.bash CESM1-1-CAM5-C
 # for va
 bash process_scripts/multi-model.calc-anoms-model-mean-state.bash CESM1-1-CAM5-CMIP5 va north-atlantic 2-9 DJFM
 
+# For BCC-CSM2-MR
+bash process_scripts/multi-model.calc-anoms-model-mean-state.bash BCC-CSM2-MR ua north-atlantic 2-9 DJFM
+bash process_scripts/multi-model.calc-anoms-model-mean-state.bash BCC-CSM2-MR psl north-atlantic 2-9 DJFM
+# for va
+bash process_scripts/multi-model.calc-anoms-model-mean-state.bash BCC-CSM2-MR va north-atlantic 2-9 DJFM
+
 
 # Then test the remove MMS stage
 bash process_scripts/multi-model.calc-anoms-sub-anoms.bash HadGEM3-GC31-MM 1960 ua north-atlantic 2-9 DJFM
@@ -69,10 +75,17 @@ bash process_scripts/multi-model.calc-anoms-sub-anoms.bash CESM1-1-CAM5-CMIP5 19
 # for va
 bash process_scripts/multi-model.calc-anoms-sub-anoms.bash CESM1-1-CAM5-CMIP5 1960 va north-atlantic 2-9 DJFM
 
-
+# For BCC-CSM2-MR
+bash process_scripts/multi-model.calc-anoms-sub-anoms.bash BCC-CSM2-MR 1961 ua north-atlantic 2-9 DJFM
+bash process_scripts/multi-model.calc-anoms-sub-anoms.bash BCC-CSM2-MR 1961 psl north-atlantic 2-9 DJFM
 
 
 
 
 
 # Then test the mergetime stage
+# for BCC-CSM2-MR
+bash process_scripts/multi-model.mergetime.bash BCC-CSM2-MR ua north-atlantic 2-9 DJFM 1 1
+bash process_scripts/multi-model.mergetime.bash BCC-CSM2-MR psl north-atlantic 2-9 DJFM 1 1
+
+
