@@ -44,8 +44,6 @@ calculate_anoms() {
         INPUT_FILES="$base_dir/mean-years-${forecast_range}-${season}-${region}-${variable}_?mon_${model}_dcppA-hindcast_s${year}-r*${init_scheme}*.nc"
     fi
 
-    # Set up the input file path
-    INPUT_FILES="$base_dir/mean-years-${forecast_range}-${season}-${region}*${variable}_?mon_${model}_dcppA-hindcast_s${year}-r*${init_scheme}*.nc"
     # Set up the model mean state file path
     MODEL_MEAN_STATE="$base_dir/tmp/model_mean_state_${init_scheme}.nc"
 
