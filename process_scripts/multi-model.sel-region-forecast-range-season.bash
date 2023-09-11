@@ -702,17 +702,6 @@ else
     exit 1
 fi
 
-# Write a function to select the level
-# E.g. we might want to select the 850 level
-# Function to select a specific pressure level
-select_pressure_level() {
-    input_file=$1
-    output_file=$2
-    pressure_level=$3
-
-    # Select the specified pressure level
-    cdo sellevel,$pressure_level $input_file $output_file
-}
 
 
 # loop through the files and process them
@@ -731,35 +720,6 @@ for INPUT_FILE in $files; do
         mkdir -p $OUTPUT_DIR
     else
         echo "INFO: Output directory already exists: $OUTPUT_DIR"
-    fi
-
-    # If the variable is ua or va, select the pressure level
-    if [ "$variable" == "ua" ] || [ "$variable" == "va" ]; then
-        # Set up the output file name
-        base_fname=$(basename "$INPUT_FILE")
-        pressure_level_fname="plev-${base_fname}"
-        TEMP_FILE="$OUTPUT_DIR/temp-${base_fname}"
-        OUTPUT_FILE="$OUTPUT_DIR/${pressure_level_fname}"
-
-        # Select the pressure level - 85000
-        pressure_level=85000
-
-        # If OUTPUT_FILE already exists, do not overwrite
-        if [ -f "$OUTPUT_FILE" ]; then
-            echo "INFO: OUTPUT_FILE already exists: $OUTPUT_FILE"
-            echo "INFO: Not overwriting $OUTPUT_FILE"
-        else
-            echo "INFO: OUTPUT_FILE does not exist: $OUTPUT_FILE"
-            echo "INFO: Proceeding with script"
-
-            # Select the pressure level
-            select_pressure_level $INPUT_FILE $OUTPUT_FILE $pressure_level
-
-            echo "[INFO] Finished selecting pressure level for $model"
-        fi
-
-        # Set up the input file
-        INPUT_FILE=$OUTPUT_FILE
     fi
 
     # set up the output file names
