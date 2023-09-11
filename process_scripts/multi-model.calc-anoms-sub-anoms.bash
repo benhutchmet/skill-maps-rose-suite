@@ -34,6 +34,15 @@ OUTPUT_DIR="${base_dir}/anoms"
 calculate_anoms() {
     # Extract the initialization scheme
     init_scheme=$1
+    variable=$2
+
+    if [ "$variable" == "ua" ] || [ "$variable" == "va" ]; then
+        # Set up the input file path
+        INPUT_FILES="$base_dir/mean-years-${forecast_range}-${season}-${region}-plev-${variable}_?mon_${model}_dcppA-hindcast_s${year}-r*${init_scheme}*.nc"
+    else
+        # Set up the input file path
+        INPUT_FILES="$base_dir/mean-years-${forecast_range}-${season}-${region}-${variable}_?mon_${model}_dcppA-hindcast_s${year}-r*${init_scheme}*.nc"
+    fi
 
     # Set up the input file path
     INPUT_FILES="$base_dir/mean-years-${forecast_range}-${season}-${region}*${variable}_?mon_${model}_dcppA-hindcast_s${year}-r*${init_scheme}*.nc"
@@ -85,30 +94,30 @@ if [ "$variable" == "tos" ]; then
     # Processing
     case $model in
         "NorCPM1")
-            calculate_anoms "i1"
-            calculate_anoms "i2"
+            calculate_anoms "i1" $variable
+            calculate_anoms "i2" $variable
             ;;
         "EC-Earth3")
-            calculate_anoms "i2"
+            calculate_anoms "i2" $variable
             ;;
         *)
             # For all other models, use a wildcard for init_scheme
-            calculate_anoms "i1"
+            calculate_anoms "i1" $variable
             ;;
     esac
 else
     # Processing
     case $model in
         "NorCPM1")
-            calculate_anoms "i1"
-            calculate_anoms "i2"
+            calculate_anoms "i1" $variable
+            calculate_anoms "i2" $variable
             ;;
         "EC-Earth3")
-            calculate_anoms "i1"
+            calculate_anoms "i1" $variable
             ;;
         *)
             # For all other models, use a wildcard for init_scheme
-        calculate_anoms "i1"
+        calculate_anoms "i1" $variable
             ;;
     esac
 fi

@@ -31,7 +31,15 @@ base_dir="/work/scratch-nopw2/benhutch/${variable}/${model}/${region}/years_${fo
 # Function for processing files
 process_files() {
     init_scheme=$1
-    files_path="$base_dir/mean-years-${forecast_range}-${season}-${region}*${variable}_?mon_${model}_dcppA-hindcast_s????-r*${init_scheme}*.nc"
+    variable=$2
+
+    # If variable is ua or va
+    # Then set up the file path differently
+    if [ "$variable" == "ua" ] || [ "$variable" == "va" ]; then
+        files_path="$base_dir/mean-years-${forecast_range}-${season}-${region}-plev-${variable}_?mon_${model}_dcppA-hindcast_s????-r*${init_scheme}*.nc"
+    else
+        files_path="$base_dir/mean-years-${forecast_range}-${season}-${region}*${variable}_?mon_${model}_dcppA-hindcast_s????-r*${init_scheme}*.nc"
+    fi
 
     # Echo the files to be processed
     echo "Calculating model mean state for: $files_path"
@@ -65,30 +73,30 @@ if [ "$variable" == "tos" ]; then
     # Processing
     case $model in
         "NorCPM1")
-            process_files "i1"
-            process_files "i2"
+            process_files "i1" $variable
+            process_files "i2" $variable
             ;;
         "EC-Earth3")
-            process_files "i2"
+            process_files "i2" $variable
             ;;
         *)
             # For all other models, use a wildcard for init_scheme
-            process_files "i1"
+            process_files "i1" $variable
             ;;
     esac
 else
     # Processing
     case $model in
         "NorCPM1")
-            process_files "i1"
-            process_files "i2"
+            process_files "i1" $variable
+            process_files "i2" $variable
             ;;
         "EC-Earth3")
-            process_files "i1"
+            process_files "i1" $variable
             ;;
         *)
             # For all other models, use a wildcard for init_scheme
-            process_files "i1"
+            process_files "i1" $variable
             ;;
     esac
 fi
