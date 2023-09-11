@@ -38,7 +38,7 @@ process_files() {
     if [ "$variable" == "ua" ] || [ "$variable" == "va" ]; then
         files_path="$base_dir/mean-years-${forecast_range}-${season}-${region}-plev-${variable}_?mon_${model}_dcppA-hindcast_s????-r*${init_scheme}*.nc"
     else
-        files_path="$base_dir/mean-years-${forecast_range}-${season}-${region}*${variable}_?mon_${model}_dcppA-hindcast_s????-r*${init_scheme}*.nc"
+        files_path="$base_dir/mean-years-${forecast_range}-${season}-${region}-${variable}_?mon_${model}_dcppA-hindcast_s????-r*${init_scheme}*.nc"
     fi
 
     # Echo the files to be processed
