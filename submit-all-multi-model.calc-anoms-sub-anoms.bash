@@ -128,7 +128,7 @@ else
         echo "[INFO] Submitting job for model: $model, variable: $variable, region: $region, forecast range: $forecast_range, season: $season, run: $run, init_method: $init_method"
 
         # Submit the job
-        sbatch --partition=short-serial -t 5 -o $OUTPUT_DIR/${model}.${year}.${variable}.${region}.${forecast_range}.${season}-calc-anoms.out -e $OUTPUT_DIR/${model}.${year}.${variable}.${region}.${forecast_range}.${season}-calc-anoms.err $EXTRACTOR $model $year $variable $region $forecast_range $season
+        sbatch --partition=short-serial -t 20 -o $OUTPUT_DIR/${model}.${year}.${variable}.${region}.${forecast_range}.${season}-calc-anoms.out -e $OUTPUT_DIR/${model}.${year}.${variable}.${region}.${forecast_range}.${season}-calc-anoms.err $EXTRACTOR $model $year $variable $region $forecast_range $season
 
     done
 fi

@@ -1,7 +1,7 @@
 [cylc]
     UTC mode = True # Ignore DST
     [[parameters]]
-        model=1,2,3,4,5,6,8,9,10,11,12
+        model=2,3,8
         initial_year=1960
         final_year=2019
         variable="ua"
@@ -25,7 +25,7 @@
         pre-script="""set -eu"""
         [[[job]]]
             batch system = slurm
-            execution time limit = PT10M
+            execution time limit = PT30M
         [[[directives]]]
             --partition = short-serial
     [[sel_region<model><initial_year><final_year><variable><region><forecast_range><season><experiment>]]
