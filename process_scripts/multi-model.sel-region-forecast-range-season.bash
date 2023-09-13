@@ -752,7 +752,13 @@ for INPUT_FILE in $files; do
         # If OUTPUT_FILE already exists, do not overwrite
         if [ -f "$OUTPUT_FILE" ]; then
             echo "INFO: OUTPUT_FILE already exists: $OUTPUT_FILE"
-            echo "INFO: Not overwriting $OUTPUT_FILE"
+            echo "INFO: Overwriting $OUTPUT_FILE"
+            # Delete the file
+            rm $OUTPUT_FILE
+
+            # Select the pressure level
+            select_pressure_level $INPUT_FILE $OUTPUT_FILE $pressure_level
+
         else
             echo "INFO: OUTPUT_FILE does not exist: $OUTPUT_FILE"
             echo "INFO: Proceeding with script"
