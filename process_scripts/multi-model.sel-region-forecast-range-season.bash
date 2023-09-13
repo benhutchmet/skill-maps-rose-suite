@@ -783,6 +783,7 @@ for INPUT_FILE in $files; do
     OUTPUT_FILE="$OUTPUT_DIR/${season_fname}"
     MEAN_FILE="$OUTPUT_DIR/mean-${season_fname}"
 
+    # FIXME: Set the back to normal once HAdGEM processed
     # # If MEAN_FILE already exists, do not overwrite
     # if [ -f "$MEAN_FILE" ]; then
     #     echo "INFO: MEAN_FILE already exists: $MEAN_FILE"
@@ -893,6 +894,6 @@ for INPUT_FILE in $files; do
     rm "$OUTPUT_FILE"
 
     echo "[INFO] Finished processing: $INPUT_FILE"
-    
-    fi
+
+    # fi
 done
