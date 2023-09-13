@@ -646,7 +646,11 @@ elif [ "$variable" == "va" ]; then
         # if the merged file already exists, do not overwrite
         if [ -f "$merged_file_path" ]; then
             echo "INFO: Merged file already exists: $merged_file_path"
-            echo "INFO: Not overwriting $merged_file_path"
+            echo "INFO: Deleting $merged_file_path"
+            rm $merged_file_path
+
+            # merge the files
+            cdo mergetime $multi_files $merged_file_path
         else
             echo "INFO: Merged file does not exist: $merged_file_path"
             echo "INFO: Proceeding with script"
