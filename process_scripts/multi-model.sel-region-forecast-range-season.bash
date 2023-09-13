@@ -627,7 +627,7 @@ elif [ "$variable" == "va" ]; then
     # In the case of HadGEM which must be merged
     elif [ "$model" == "HadGEM3-GC31-MM" ]; then
         # Set up the input files from badc
-        multi_files="/badc/cmip6/data/CMIP6/DCPP/$model_group/$model/${experiment}/s${year}-r${run}i?p?f?/Amon/ua/g?/files/d????????/*.nc"
+        multi_files="/badc/cmip6/data/CMIP6/DCPP/$model_group/$model/${experiment}/s${year}-r${run}i?p?f?/Amon/va/g?/files/d????????/*.nc"
 
         # set up the merged file first
         merged_file_dir=${canari_base_dir}/${experiment}/data/${variable}/${model}/merged_files
