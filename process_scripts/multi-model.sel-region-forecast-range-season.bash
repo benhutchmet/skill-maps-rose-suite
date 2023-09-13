@@ -783,115 +783,116 @@ for INPUT_FILE in $files; do
     OUTPUT_FILE="$OUTPUT_DIR/${season_fname}"
     MEAN_FILE="$OUTPUT_DIR/mean-${season_fname}"
 
-    # If MEAN_FILE already exists, do not overwrite
-    if [ -f "$MEAN_FILE" ]; then
-        echo "INFO: MEAN_FILE already exists: $MEAN_FILE"
-        echo "INFO: Not overwriting $MEAN_FILE"
-    else
-        echo "INFO: MEAN_FILE does not exist: $MEAN_FILE"
-        echo "INFO: Proceeding with script"
+    # # If MEAN_FILE already exists, do not overwrite
+    # if [ -f "$MEAN_FILE" ]; then
+    #     echo "INFO: MEAN_FILE already exists: $MEAN_FILE"
+    #     echo "INFO: Not overwriting $MEAN_FILE"
+    # else
+    #     echo "INFO: MEAN_FILE does not exist: $MEAN_FILE"
+    #     echo "INFO: Proceeding with script"
     
-        # Regrid using bilinear interpolation
-        # Selects region (as long as x and y dimensions divide by 2.5)
-        cdo remapbil,$grid $INPUT_FILE $REGRIDDED_FILE
+    # Regrid using bilinear interpolation
+    # Selects region (as long as x and y dimensions divide by 2.5)
+    cdo remapbil,$grid $INPUT_FILE $REGRIDDED_FILE
 
-        # Extract initialization year from the input file name
-        year=$(basename "$REGRIDDED_FILE" | sed 's/.*_s\([0-9]\{4\}\)-.*/\1/')
+    # Extract initialization year from the input file name
+    year=$(basename "$REGRIDDED_FILE" | sed 's/.*_s\([0-9]\{4\}\)-.*/\1/')
 
-        # Set IFS to '-' and read into array
-        IFS='-' read -ra numbers <<< "$forecast_range"
+    # Set IFS to '-' and read into array
+    IFS='-' read -ra numbers <<< "$forecast_range"
 
-        # Extract numbers
-        forecast_start_year=${numbers[0]}
-        forecast_end_year=${numbers[1]}
+    # Extract numbers
+    forecast_start_year=${numbers[0]}
+    forecast_end_year=${numbers[1]}
 
-        echo "First number: $forecast_start_year"
-        echo "Second number: $forecast_end_year"
+    echo "First number: $forecast_start_year"
+    echo "Second number: $forecast_end_year"
 
-        # Declare the month codes
-        declare -A months=( ["J"]=1 ["F"]=2 ["M"]=3 ["A"]=4 ["Y"]=5 ["U"]=6 ["L"]=7 ["G"]=8 ["S"]=9 ["O"]=10 ["N"]=11 ["D"]=12 )
+    # Declare the month codes
+    declare -A months=( ["J"]=1 ["F"]=2 ["M"]=3 ["A"]=4 ["Y"]=5 ["U"]=6 ["L"]=7 ["G"]=8 ["S"]=9 ["O"]=10 ["N"]=11 ["D"]=12 )
 
-        # Extract the month code from the season
-        start_month=${months[${season:0:1}]}
-        if [[ ${#season} -eq 2 ]]; then
-        end_month=${months[${season:1:1}]}
-        elif [[ ${#season} -eq 3 ]]; then
-        end_month=${months[${season:2:1}]}
-        elif [[ ${#season} -eq 4 ]]; then
-        end_month=${months[${season:3:1}]}
-        else
-        end_month=${months[${season:3:1}]}
-        fi
+    # Extract the month code from the season
+    start_month=${months[${season:0:1}]}
+    if [[ ${#season} -eq 2 ]]; then
+    end_month=${months[${season:1:1}]}
+    elif [[ ${#season} -eq 3 ]]; then
+    end_month=${months[${season:2:1}]}
+    elif [[ ${#season} -eq 4 ]]; then
+    end_month=${months[${season:3:1}]}
+    else
+    end_month=${months[${season:3:1}]}
+    fi
 
-        # if start_month or end_month is a single digit, add a 0 to the start
-        if [[ ${#start_month} -eq 1 ]]; then
-        start_month="0${start_month}"
-        fi
+    # if start_month or end_month is a single digit, add a 0 to the start
+    if [[ ${#start_month} -eq 1 ]]; then
+    start_month="0${start_month}"
+    fi
 
-        # for end month, add a 0 to the start
-        if [[ ${#end_month} -eq 1 ]]; then
-        end_month="0${end_month}"
-        fi
+    # for end month, add a 0 to the start
+    if [[ ${#end_month} -eq 1 ]]; then
+    end_month="0${end_month}"
+    fi
 
-        echo "Start month: $start_month"
-        echo "End month: $end_month"
+    echo "Start month: $start_month"
+    echo "End month: $end_month"
 
-        # If the season specified is DJF, DJFM, NDJF, or NDJ, then the start year needs to be one less than the initialization year
-        if [[ $season == *"DJF"* ]] || [[ $season == *"NDJ"* ]]; then
-            echo "Season is DJF or NDJ"
-            echo "Modifying start year by -1"
-            # modify the start_year -1
-            start_year=$((forecast_start_year - 1))
-        else
-            # leave the start_year as it is
-            start_year=$forecast_start_year
-        fi
+    # If the season specified is DJF, DJFM, NDJF, or NDJ, then the start year needs to be one less than the initialization year
+    if [[ $season == *"DJF"* ]] || [[ $season == *"NDJ"* ]]; then
+        echo "Season is DJF or NDJ"
+        echo "Modifying start year by -1"
+        # modify the start_year -1
+        start_year=$((forecast_start_year - 1))
+    else
+        # leave the start_year as it is
+        start_year=$forecast_start_year
+    fi
 
-        # Calculate the start and end dates for the DJFM season
-        start_date=$((year + start_year))"-${start_month}-01"
-        end_date=$((year + forecast_end_year))"-${end_month}-31"
+    # Calculate the start and end dates for the DJFM season
+    start_date=$((year + start_year))"-${start_month}-01"
+    end_date=$((year + forecast_end_year))"-${end_month}-31"
 
-        echo "Start date: $start_date"
-        echo "End date: $end_date"
+    echo "Start date: $start_date"
+    echo "End date: $end_date"
 
-        # convert from JFMAYULGSOND to JFMAMJJASOND format
-        # if Y is in the season, replace with M
-        if [[ $season == *"Y"* ]]; then
-        season=${season//Y/M}
-        fi
+    # convert from JFMAYULGSOND to JFMAMJJASOND format
+    # if Y is in the season, replace with M
+    if [[ $season == *"Y"* ]]; then
+    season=${season//Y/M}
+    fi
 
-        # if U is in the season, replace with J
-        if [[ $season == *"U"* ]]; then
-        season=${season//U/J}
-        fi
+    # if U is in the season, replace with J
+    if [[ $season == *"U"* ]]; then
+    season=${season//U/J}
+    fi
 
-        # if L is in the season, replace with J
-        if [[ $season == *"L"* ]]; then
-        season=${season//L/J}
-        fi
+    # if L is in the season, replace with J
+    if [[ $season == *"L"* ]]; then
+    season=${season//L/J}
+    fi
 
-        # if G is in the season, replace with A
-        if [[ $season == *"G"* ]]; then
-        season=${season//G/A}
-        fi
+    # if G is in the season, replace with A
+    if [[ $season == *"G"* ]]; then
+    season=${season//G/A}
+    fi
 
-        # echo the season
-        echo "Season: $season"
+    # echo the season
+    echo "Season: $season"
 
-        # Constrain the input file to the DJFM season
-        cdo select,season=${season} "$REGRIDDED_FILE" "$TEMP_FILE"
+    # Constrain the input file to the DJFM season
+    cdo select,season=${season} "$REGRIDDED_FILE" "$TEMP_FILE"
 
-        # Extract the 2-9 years using cdo
-        cdo select,startdate="$start_date",enddate="$end_date" "$TEMP_FILE" "$OUTPUT_FILE"
+    # Extract the 2-9 years using cdo
+    cdo select,startdate="$start_date",enddate="$end_date" "$TEMP_FILE" "$OUTPUT_FILE"
 
-        # Take the time mean of the output file
-        cdo timmean "$OUTPUT_FILE" "$MEAN_FILE"
+    # Take the time mean of the output file
+    cdo timmean "$OUTPUT_FILE" "$MEAN_FILE"
 
-        # Remove the temporary, regridded, and original output files
-        rm "$TEMP_FILE"
-        rm "$REGRIDDED_FILE"
-        rm "$OUTPUT_FILE"
+    # Remove the temporary, regridded, and original output files
+    rm "$TEMP_FILE"
+    rm "$REGRIDDED_FILE"
+    rm "$OUTPUT_FILE"
 
-        echo "[INFO] Finished processing: $INPUT_FILE"
+    echo "[INFO] Finished processing: $INPUT_FILE"
+    
     fi
 done
