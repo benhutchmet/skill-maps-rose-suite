@@ -2,7 +2,7 @@
 #
 # multi-model.sel-region-forecast-range-season.bash
 #
-# For example: multi-model.sel-region-forecast-range-season.bash HadGEM3-GC31-MM 1960 1 psl north-atlantic 2-5 DJFM dcppA-hindcast
+# For example: multi-model.sel-region-forecast-range-season.bash HadGEM3-GC31-MM 1960 1 psl north-atlantic 2-5 DJFM dcppA-hindcast 92500
 #
 # NOTE: Seasons should be formatted using: JFMAYULGSOND
 #
@@ -11,7 +11,7 @@
 source /home/users/benhutch/skill-maps-rose-suite/dictionaries.bash
 
 # check if the correct number of arguments have been passed
-if [ $# -ne 8 ]; then
+if [ $# -ne 9 ]; then
     echo "Usage: multi-model.sel-region-forecast-range-season.bash <model> <initialization-year> <run-number> <variable> <region> <forecast-range> <season> <experiment>"
     exit 1
 fi
@@ -24,6 +24,7 @@ variable=$4
 region=$5
 forecast_range=$6
 experiment=$8
+pressure_level=$9
 
 # set up the gridspec file
 grid="/home/users/benhutch/gridspec/gridspec-${region}.txt"
@@ -726,8 +727,14 @@ for INPUT_FILE in $files; do
     # extract the season from the command line
     season=$7
 
-    # Set up the name for the output directory
-    OUTPUT_DIR="/work/scratch-nopw2/benhutch/${variable}/${model}/${region}/years_${forecast_range}/${season}/outputs"
+    # If the variable is ua or va, use the pressure level in the OUTPUT_DIR
+    if [ "$variable" == "ua" ] || [ "$variable" == "va" ]; then
+        # Set up the name for the output directory
+        OUTPUT_DIR="/work/scratch-nopw2/benhutch/${variable}/${model}/${region}/years_${forecast_range}/${season}/plev_${pressure_level}/outputs"
+    else
+        # Set up the name for the output directory
+        OUTPUT_DIR="/work/scratch-nopw2/benhutch/${variable}/${model}/${region}/years_${forecast_range}/${season}/outputs"
+
     
     # if the output directory does not exist, create it
     if [ ! -d "$OUTPUT_DIR" ]; then
@@ -745,9 +752,6 @@ for INPUT_FILE in $files; do
         pressure_level_fname="plev-${base_fname}"
         TEMP_FILE="$OUTPUT_DIR/temp-${base_fname}"
         OUTPUT_FILE="$OUTPUT_DIR/${pressure_level_fname}"
-
-        # Select the pressure level - 92500
-        pressure_level=92500
 
         # If OUTPUT_FILE already exists, do not overwrite
         if [ -f "$OUTPUT_FILE" ]; then
