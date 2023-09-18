@@ -734,7 +734,7 @@ for INPUT_FILE in $files; do
     else
         # Set up the name for the output directory
         OUTPUT_DIR="/work/scratch-nopw2/benhutch/${variable}/${model}/${region}/years_${forecast_range}/${season}/outputs"
-
+    fi
     
     # if the output directory does not exist, create it
     if [ ! -d "$OUTPUT_DIR" ]; then

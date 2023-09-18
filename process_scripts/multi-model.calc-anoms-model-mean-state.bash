@@ -4,13 +4,13 @@
 #
 # Script for calculating the model mean state for a given model.
 #
-# For example: calculate-model-mean-states.bash HadGEM3-GC31-MM psl north-atlantic 2-5 DJF
+# For example: calculate-model-mean-states.bash HadGEM3-GC31-MM psl north-atlantic 2-5 DJF 92500
 
 # Set the usage message
 USAGE_MESSAGE="Usage: multi-model.calc-anoms-model-mean-state.bash <model> <variable> <region> <forecast-range> <season>"
 
 # Check that the correct number of arguments have been passed
-if [ $# -ne 5 ]; then
+if [ $# -ne 6 ]; then
     echo "$USAGE_MESSAGE"
     exit 1
 fi
@@ -21,12 +21,18 @@ variable=$2
 region=$3
 forecast_range=$4
 season=$5
+pressure_level=$6
 
 # Load cdo
 module load jaspy
 
-# Base directory
-base_dir="/work/scratch-nopw2/benhutch/${variable}/${model}/${region}/years_${forecast_range}/${season}/outputs"
+# Set up the base directory
+if [ "$variable" == "ua" ] || [ "$variable" == "va" ]; then
+    base_dir="/work/scratch-nopw2/benhutch/${variable}/${model}/${region}/years_${forecast_range}/${season}/plev_${pressure_level}/outputs"
+else
+    # Base directory
+    base_dir="/work/scratch-nopw2/benhutch/${variable}/${model}/${region}/years_${forecast_range}/${season}/outputs"
+fi
 
 # Function for processing files
 process_files() {
