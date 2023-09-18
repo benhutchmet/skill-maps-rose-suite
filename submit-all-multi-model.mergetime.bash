@@ -5,7 +5,7 @@
 # Submit script for merging all the year files
 # into a single file for each model, run and init method
 #
-# For example: submit-all-multi-model.mergetime.bash HadGEM3-GC31-MM psl north-atlantic 2-5 DJF
+# For example: submit-all-multi-model.mergetime.bash HadGEM3-GC31-MM psl north-atlantic 2-5 DJF 92500
 #
 
 # make sure that the dictionaries.bash file exists
@@ -20,10 +20,10 @@ source $PWD/dictionaries.bash
 echo "[INFO] models list: $models"
 
 # set the usage message
-USAGE_MESSAGE="Usage: submit-all-multi-model.mergetime.bash <model> <variable> <region> <forecast-range> <season>"
+USAGE_MESSAGE="Usage: submit-all-multi-model.mergetime.bash <model> <variable> <region> <forecast-range> <season> <pressure-level>"
 
 # check that the correct number of arguments have been passed
-if [ $# -ne 5 ]; then
+if [ $# -ne 6 ]; then
     echo "$USAGE_MESSAGE"
     exit 1
 fi
@@ -34,6 +34,7 @@ variable=$2
 region=$3
 forecast_range=$4
 season=$5
+pressure_level=$6
 
 # If model is a number
 # Between 1-12
@@ -211,7 +212,7 @@ echo "[INFO] Extracting data for all models: $models"
                     echo "[INFO] Output file name: $OUTPUT_FILE"
 
                     # submit the job to LOTUS
-                    sbatch --partition=short-serial -t 5 -o $OUTPUTS_DIR/merge.${model}.${run}.${init}.${forecast_range}.${season}.out -e $OUTPUTS_DIR/merge.${model}.${run}.${init}.${forecast_range}.${season}.err $EXTRACTOR $model $variable $region $forecast_range $season $run $init
+                    sbatch --partition=short-serial -t 5 -o $OUTPUTS_DIR/merge.${model}.${run}.${init}.${forecast_range}.${season}.out -e $OUTPUTS_DIR/merge.${model}.${run}.${init}.${forecast_range}.${season}.err $EXTRACTOR $model $variable $region $forecast_range $season $run $init $pressure_level
                     
 
                 done
@@ -226,7 +227,7 @@ echo "[INFO] Extracting data for all models: $models"
                 echo "[INFO] Output file name: $OUTPUT_FILE"
 
                 # submit the job to LOTUS
-                sbatch --partition=short-serial -t 5 -o $OUTPUTS_DIR/merge.${model}.${run}.${init}.${forecast_range}.${season}.out -e $OUTPUTS_DIR/merge.${model}.${run}.${init_methods}.${forecast_range}.${season}.err $EXTRACTOR $model $variable $region $forecast_range $season $run $init_methods
+                sbatch --partition=short-serial -t 5 -o $OUTPUTS_DIR/merge.${model}.${run}.${init}.${forecast_range}.${season}.out -e $OUTPUTS_DIR/merge.${model}.${run}.${init_methods}.${forecast_range}.${season}.err $EXTRACTOR $model $variable $region $forecast_range $season $run $init_methods $pressure_level
 
             fi
         done
@@ -378,7 +379,7 @@ else
                 echo "[INFO] Output file name: $OUTPUT_FILE"
 
                 # submit the job to LOTUS
-                sbatch --partition=short-serial -t 20 -o $OUTPUTS_DIR/merge.${model}.${run}.${init}.${forecast_range}.${season}.out -e $OUTPUTS_DIR/merge.${model}.${run}.${init}.${forecast_range}.${season}.err $EXTRACTOR $model $variable $region $forecast_range $season $run $init
+                sbatch --partition=short-serial -t 20 -o $OUTPUTS_DIR/merge.${model}.${run}.${init}.${forecast_range}.${season}.out -e $OUTPUTS_DIR/merge.${model}.${run}.${init}.${forecast_range}.${season}.err $EXTRACTOR $model $variable $region $forecast_range $season $run $init $pressure_level
                 
 
             done
@@ -393,7 +394,7 @@ else
             echo "[INFO] Output file name: $OUTPUT_FILE"
 
             # submit the job to LOTUS
-            sbatch --partition=short-serial -t 20 -o $OUTPUTS_DIR/merge.${model}.${run}.${init_methods}.${forecast_range}.${season}.out -e $OUTPUTS_DIR/merge.${model}.${run}.${init_methods}.${forecast_range}.${season}.err $EXTRACTOR $model $variable $region $forecast_range $season $run $init_methods
+            sbatch --partition=short-serial -t 20 -o $OUTPUTS_DIR/merge.${model}.${run}.${init_methods}.${forecast_range}.${season}.out -e $OUTPUTS_DIR/merge.${model}.${run}.${init_methods}.${forecast_range}.${season}.err $EXTRACTOR $model $variable $region $forecast_range $season $run $init_methods $pressure_level
 
         fi
     done
