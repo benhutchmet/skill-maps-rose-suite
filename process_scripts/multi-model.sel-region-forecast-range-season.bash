@@ -708,7 +708,7 @@ fi
 
 # Function to select the plev
 # Write a function to select the level
-# E.g. we might want to select the 850 level
+# E.g. we might want to select the 925 hPa level
 # Function to select a specific pressure level
 select_pressure_level() {
     input_file=$1
@@ -746,8 +746,8 @@ for INPUT_FILE in $files; do
         TEMP_FILE="$OUTPUT_DIR/temp-${base_fname}"
         OUTPUT_FILE="$OUTPUT_DIR/${pressure_level_fname}"
 
-        # Select the pressure level - 85000
-        pressure_level=85000
+        # Select the pressure level - 92500
+        pressure_level=92500
 
         # If OUTPUT_FILE already exists, do not overwrite
         if [ -f "$OUTPUT_FILE" ]; then
