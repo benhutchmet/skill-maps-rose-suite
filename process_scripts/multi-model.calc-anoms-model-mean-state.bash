@@ -7,7 +7,7 @@
 # For example: calculate-model-mean-states.bash HadGEM3-GC31-MM psl north-atlantic 2-5 DJF 92500
 
 # Set the usage message
-USAGE_MESSAGE="Usage: multi-model.calc-anoms-model-mean-state.bash <model> <variable> <region> <forecast-range> <season>"
+USAGE_MESSAGE="Usage: multi-model.calc-anoms-model-mean-state.bash <model> <variable> <region> <forecast-range> <season> <pressure-level>"
 
 # Check that the correct number of arguments have been passed
 if [ $# -ne 6 ]; then

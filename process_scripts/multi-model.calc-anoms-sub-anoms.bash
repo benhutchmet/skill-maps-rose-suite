@@ -4,13 +4,13 @@
 #
 # Script for calculating the anomalies from the model mean state for a given model, variable, region, forecast range, and season.
 #
-# For example: multi-model.calc-anoms-sub-anoms.bash HadGEM3-GC31-MM 1960 psl north-atlantic 2-5 DJF
+# For example: multi-model.calc-anoms-sub-anoms.bash HadGEM3-GC31-MM 1960 psl north-atlantic 2-5 DJF 92500
 
 # Set the usage message
-USAGE_MESSAGE="Usage: multi-model.calc-anoms-sub-anoms.bash <model> <initialization-year> <variable> <region> <forecast-range> <season>"
+USAGE_MESSAGE="Usage: multi-model.calc-anoms-sub-anoms.bash <model> <initialization-year> <variable> <region> <forecast-range> <season> <pressure-level>"
 
 # Check that the correct number of arguments have been passed
-if [ $# -ne 6 ]; then
+if [ $# -ne 7 ]; then
     echo "$USAGE_MESSAGE"
     exit 1
 fi
@@ -22,12 +22,20 @@ variable=$3
 region=$4
 forecast_range=$5
 season=$6
+pressure_level=$7
 
 # Load cdo
 module load jaspy
 
 # Set the base directory
-base_dir="/work/scratch-nopw2/benhutch/$variable/$model/$region/years_${forecast_range}/$season/outputs"
+# Set up the base directory
+if [ "$variable" == "ua" ] || [ "$variable" == "va" ]; then
+    base_dir="/work/scratch-nopw2/benhutch/${variable}/${model}/${region}/years_${forecast_range}/${season}/plev_${pressure_level}/outputs"
+else
+    # Base directory
+    base_dir="/work/scratch-nopw2/benhutch/${variable}/${model}/${region}/years_${forecast_range}/${season}/outputs"
+fi
+
 OUTPUT_DIR="${base_dir}/anoms"
 
 # Function for calculating anomalies

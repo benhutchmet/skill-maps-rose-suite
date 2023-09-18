@@ -12,7 +12,7 @@ source /home/users/benhutch/skill-maps-rose-suite/dictionaries.bash
 
 # check if the correct number of arguments have been passed
 if [ $# -ne 9 ]; then
-    echo "Usage: multi-model.sel-region-forecast-range-season.bash <model> <initialization-year> <run-number> <variable> <region> <forecast-range> <season> <experiment>"
+    echo "Usage: multi-model.sel-region-forecast-range-season.bash <model> <initialization-year> <run-number> <variable> <region> <forecast-range> <season> <experiment> <pressure-level>"
     exit 1
 fi
 

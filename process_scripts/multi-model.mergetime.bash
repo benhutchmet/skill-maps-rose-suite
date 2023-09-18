@@ -5,13 +5,13 @@
 # Script to merge the time dimension of multiple files
 # For each individual ensemble member (~150 ish)
 #
-# For example: multi-model.mergetime.bash HadGEM3-GC31-MM psl north-atlantic 2-5 DJF 1 1
+# For example: multi-model.mergetime.bash HadGEM3-GC31-MM psl north-atlantic 2-5 DJF 1 1 92500
 #
 
-USAGE_MESSAGE="Usage: multi-model.mergetime.bash <model> <variable> <region> <forecast-range> <season> <run> <init_scheme>"
+USAGE_MESSAGE="Usage: multi-model.mergetime.bash <model> <variable> <region> <forecast-range> <season> <run> <init_scheme> <pressure-level>"
 
 # check that the correct number of arguments have been passed
-if [ $# -ne 7 ]; then
+if [ $# -ne 8 ]; then
     echo "$USAGE_MESSAGE"
     exit 1
 fi
@@ -26,12 +26,18 @@ season=$5
 # extract the run and init_scheme
 run=$6
 init_scheme=$7
+pressure_level=$8
 
 # make sure that cdo is loaded
 module load jaspy
 
-# anoms directory from which to extract the files
-base_dir="/work/scratch-nopw2/benhutch/$variable/$model/$region/years_${forecast_range}/$season/outputs/anoms"
+if [ "$variable" == "ua" ] || [ "$variable" == "va" ]; then
+    # anoms directory from which to extract the files
+    base_dir="/work/scratch-nopw2/benhutch/$variable/$model/$region/years_${forecast_range}/$season/plev_${pressure_level}/outputs/anoms"
+else
+    # anoms directory from which to extract the files
+    base_dir="/work/scratch-nopw2/benhutch/$variable/$model/$region/years_${forecast_range}/$season/outputs/anoms"
+fi    
 
 # If the variable is ua or va
 # Then the files are in the format:
@@ -57,9 +63,15 @@ if [ -z "$(ls -A $base_dir)" ]; then
     exit 1
 fi
 
-# set the output directory
-# send to the home directory
-OUTPUT_DIR="/home/users/benhutch/skill-maps-processed-data/${variable}/${model}/${region}/years_${forecast_range}/${season}/outputs/mergetime"
+if [ "$variable" == "ua" ] || [ "$variable" == "va" ]; then
+    # Set the output directory with the pressure level
+    OUTPUT_DIR="/home/users/benhutch/skill-maps-processed-data/${variable}/${model}/${region}/years_${forecast_range}/${season}/plev_${pressure_level}/outputs/mergetime"
+else
+    # set the output directory
+    # send to the home directory
+    OUTPUT_DIR="/home/users/benhutch/skill-maps-processed-data/${variable}/${model}/${region}/years_${forecast_range}/${season}/outputs/mergetime"
+fi
+
 mkdir -p $OUTPUT_DIR
 
 # set the output file
