@@ -4,7 +4,7 @@
 #
 # Script for submitting a job for calculating the anomalies from the model mean state for a given model.
 #
-# For example: submit-all-multi-model.calc-anoms-model-mean-state.bash HadGEM3-GC31-MM psl north-atlantic 2-5 DJF
+# For example: submit-all-multi-model.calc-anoms-model-mean-state.bash HadGEM3-GC31-MM psl north-atlantic 2-5 DJF 92500
 
 # Make sure that the dictionaries.bash file exists
 if [ ! -f $PWD/dictionaries.bash ]; then
@@ -18,10 +18,10 @@ source $PWD/dictionaries.bash
 echo "[INFO] models: $models"
 
 # Set the usage message
-USAGE_MESSAGE="Usage: submit-all-multi-model.calc-anoms-model-mean-state.bash <model> <variable> <region> <forecast-range> <season>"
+USAGE_MESSAGE="Usage: submit-all-multi-model.calc-anoms-model-mean-state.bash <model> <variable> <region> <forecast-range> <season> <pressure-level>"
 
 # Check that the correct number of arguments have been passed
-if [ $# -ne 5 ]; then
+if [ $# -ne 6 ]; then
     echo "$USAGE_MESSAGE"
     exit 1
 fi
@@ -32,6 +32,7 @@ variable=$2
 region=$3
 forecast_range=$4
 season=$5
+pressure_level=$6
 
 # If model is a number
 # Between 1-12
@@ -90,7 +91,7 @@ if [ "$model" == "all" ]; then
         echo "[INFO] Submitting job for model: $model, variable: $variable, region: $region, forecast range: $forecast_range, season: $season"
 
         # Submit the job
-        sbatch --partition=short-serial --mem=5000 -t 5 -o $OUTPUT_DIR/${model}.${variable}.${region}.${forecast_range}.${season}-model-mean-state.out -e $OUTPUT_DIR/${model}.${variable}.${region}.${forecast_range}.${season}-model-mean-state.err $EXTRACTOR $model $variable $region $forecast_range $season
+        sbatch --partition=short-serial --mem=5000 -t 5 -o $OUTPUT_DIR/${model}.${variable}.${region}.${forecast_range}.${season}-model-mean-state.out -e $OUTPUT_DIR/${model}.${variable}.${region}.${forecast_range}.${season}-model-mean-state.err $EXTRACTOR $model $variable $region $forecast_range $season $pressure_level
 
     done
     
@@ -111,6 +112,6 @@ else
     echo "[INFO] Submitting job for model: $model, variable: $variable, region: $region, forecast range: $forecast_range, season: $season"
 
     # Submit the job
-    sbatch --partition=short-serial --mem=5000 -t 15 -o $OUTPUT_DIR/${model}.${variable}.${region}.${forecast_range}.${season}-model-mean-state.out -e $OUTPUT_DIR/${model}.${variable}.${region}.${forecast_range}.${season}-model-mean-state.err $EXTRACTOR $model $variable $region $forecast_range $season
+    sbatch --partition=short-serial --mem=5000 -t 15 -o $OUTPUT_DIR/${model}.${variable}.${region}.${forecast_range}.${season}-model-mean-state.out -e $OUTPUT_DIR/${model}.${variable}.${region}.${forecast_range}.${season}-model-mean-state.err $EXTRACTOR $model $variable $region $forecast_range $season $pressure_level
 
 fi
