@@ -26,7 +26,7 @@
         pre-script="""set -eu"""
         [[[job]]]
             batch system = slurm
-            execution time limit = PT30M
+            execution time limit = PT60M
         [[[directives]]]
             --partition = short-serial
     [[sel_region<model><initial_year><final_year><variable><region><forecast_range><season><experiment><pressure_level>]]
