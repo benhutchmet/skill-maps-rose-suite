@@ -4,12 +4,12 @@
         model=1,2,3,4,5,6,7,8,9,10,11,12
         initial_year=1960
         final_year=2019
-        variable="psl"
+        variable=sfcWind,tas,rsds,ua
         region="global"
         forecast_range="2-2"
         season=ULG,SON,MAY
         experiment="dcppA-hindcast"
-        pressure_level=100000
+        pressure_level=85000
 
 [scheduling]
     [[dependencies]]
