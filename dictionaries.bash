@@ -29,17 +29,17 @@ canari_base_dir="/gws/nopw/j04/canari/users/benhutch"
 
 # Create an associative array for the models
 declare -A psl_models_nens
-psl_models_nens=(["BCC-CSM2-MR"]=8,
-    ["MPI-ESM1-2-HR"]=10,
-    ["CanESM5"]=20,
-    ["CMCC-CM2-SR5"]=10,
-    ["HadGEM3-GC31-MM"]=10,
-    ["EC-Earth3"]=10,
-    ["MPI-ESM1-2-LR"]=16,
-    ["FGOALS-f3-L"]=9,
-    ["MIROC6"]=10,
-    ["IPSL-CM6A-LR"]=10,
-    ["CESM1-1-CAM5-CMIP5"]=40,
+psl_models_nens=(["BCC-CSM2-MR"]=8
+    ["MPI-ESM1-2-HR"]=10
+    ["CanESM5"]=20
+    ["CMCC-CM2-SR5"]=10
+    ["HadGEM3-GC31-MM"]=10
+    ["EC-Earth3"]=10
+    ["MPI-ESM1-2-LR"]=16
+    ["FGOALS-f3-L"]=9
+    ["MIROC6"]=10
+    ["IPSL-CM6A-LR"]=10
+    ["CESM1-1-CAM5-CMIP5"]=40
     ["NorCPM1"]=10
 )
 
