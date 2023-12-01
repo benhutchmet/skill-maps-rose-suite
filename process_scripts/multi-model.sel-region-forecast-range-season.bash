@@ -10,6 +10,11 @@
 # source the dictionaries.bash file
 source /home/users/benhutch/skill-maps-rose-suite/dictionaries.bash
 
+# Print all of the CLI arguments
+echo "CLI arguments: $@"
+echo "Number of CLI arguments: $#"
+
+
 # check if the correct number of arguments have been passed
 if [ $# -ne 8 ]; then
     echo "Usage: multi-model.sel-region-forecast-range-season.bash <model> <initialization-year> <run-number> <variable> <region> <forecast-range> <season> <experiment>"

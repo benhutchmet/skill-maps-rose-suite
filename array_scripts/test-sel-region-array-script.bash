@@ -1,10 +1,10 @@
 #!/bin/bash 
 #SBATCH --partition=test
 #SBATCH --job-name=ben-array-sel-region-test
-#SBATCH -o /home/users/benhutch/skill-maps-rose-suite/logs
-#SBATCH -e /home/users/benhutch/skill-maps-rose-suite/logs
-#SBATCH --time=30:00
-#SBATCH --array=1-10
+#SBATCH -o ./${SLURM_JOB_NAME}_).out
+#SBATCH -e ./${SLURM_JOB_NAME}_).err
+#SBATCH --time=10:00
+#SBATCH --array=1-8
 
 # Echo th task id
 echo "Task id is: ${SLURM_ARRAY_TASK_ID}"
@@ -41,7 +41,7 @@ for year in $(seq $start_year $end_year); do
     echo "Processing year: $year"
 
     # Run the process script as an array job
-    sbatch $process_script ${model} ${year} ${SLURM_ARRAY_TASK_ID} ${variable} ${region} ${forecast_range} ${season} ${experiment}
+    bash $process_script ${model} ${year} ${SLURM_ARRAY_TASK_ID} ${variable} ${region} ${forecast_range} ${season} ${experiment}
 
 done
 
