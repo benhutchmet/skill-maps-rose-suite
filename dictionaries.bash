@@ -27,6 +27,22 @@ scratch_path="/work/scratch-nopw2/benhutch"
 # set up the canari base dir
 canari_base_dir="/gws/nopw/j04/canari/users/benhutch"
 
+# Create an associative array for the models
+declare -A psl_models_nens
+psl_models_nens=(["BCC-CSM2-MR"]=8,
+    ["MPI-ESM1-2-HR"]=10,
+    ["CanESM5"]=20,
+    ["CMCC-CM2-SR5"]=10,
+    ["HadGEM3-GC31-MM"]=10,
+    ["EC-Earth3"]=10,
+    ["MPI-ESM1-2-LR"]=16,
+    ["FGOALS-f3-L"]=9,
+    ["MIROC6"]=10,
+    ["IPSL-CM6A-LR"]=10,
+    ["CESM1-1-CAM5-CMIP5"]=40,
+    ["NorCPM1"]=10
+)
+
 # list of models
 # available on JASMIN
 models="BCC-CSM2-MR MPI-ESM1-2-HR CanESM5 CMCC-CM2-SR5 HadGEM3-GC31-MM EC-Earth3 MPI-ESM1-2-LR FGOALS-f3-L MIROC6 IPSL-CM6A-LR CESM1-1-CAM5-CMIP5 NorCPM1"
@@ -42,7 +58,7 @@ sfcWind_models_numbers=1,2,3,5,6,8,9,10,11
 
 # set up the sfcWind models list
 # this is the list of models that have sfcWind data available in my case
-sfcWind_models="BCC-CSM2-MR MPI-ESM1-2-HR CanESM5 HadGEM3-GC31-MM EC-Earth3 FGOALS-f3-L MIROC6 IPSL-CM6A-LR CESM1-1-CAM5-CMIP5" 
+sfcWind_models="BCC-CSM2-MR MPI-ESM1-2-HR CanESM5 HadGEM3-GC31-MM EC-Earth3 FGOALS-f3-L MIROC6 IPSL-CM6A-LR CESM1-1-CAM5-CMIP5"
 
 # rsds missing MPI-ESM1-2-LR
 rsds_models_numbers=1,2,3,4,5,6,8,9,10,11,12
@@ -99,7 +115,7 @@ rsds_ESGF_models=("CESM1-1-CAM5-CMIP5" "FGOALS-f3-L" "BCC-CSM2-MR")
 # nodes for downloading surface radiation data from ESGF
 # corresponding to the models above
 # will need to make sure that these are the correct nodes
-rsds_ESGF_nodes=("esgf-data.ucar.edu" "esg.lasg.ac.cn" "esgf-data1.llnl.gov")   
+rsds_ESGF_nodes=("esgf-data.ucar.edu" "esg.lasg.ac.cn" "esgf-data1.llnl.gov")
 
 canari_dir="/gws/nopw/j04/canari/users/benhutch"
 

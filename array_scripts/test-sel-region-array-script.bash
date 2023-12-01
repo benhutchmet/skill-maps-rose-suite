@@ -6,6 +6,9 @@
 #SBATCH --time=10:00
 #SBATCH --array=1960-1965
 
+# Source the dictionaries
+source /home/users/benhutch/skill-maps-rose-suite/dictionaries.bash
+
 # Echo th task id
 echo "Task id is: ${SLURM_ARRAY_TASK_ID}"
 
@@ -30,7 +33,6 @@ region=$3
 forecast_range=$4
 season=$5
 experiment=$6
-nens=$7
 
 # Load cdo
 module load jaspy
@@ -46,6 +48,9 @@ for model in $test_models; do
 
     # Echo the model name
     echo "Processing model: $model"
+
+    # Extract the number of ensemble members
+    nens=${psl_models_nens[$model]}
 
     # Loop over the years
     for run in $(seq 1 $nens); do
