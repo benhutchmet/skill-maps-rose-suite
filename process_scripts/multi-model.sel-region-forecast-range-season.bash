@@ -736,10 +736,10 @@ for INPUT_FILE in $files; do
     # if [ "$variable" == "ua" ] || [ "$variable" == "va" ]; then
     #     # Set up the name for the output directory
     #     OUTPUT_DIR="/work/scratch-nopw2/benhutch/${variable}/${model}/${region}/years_${forecast_range}/${season}/plev_${pressure_level}/outputs"
-    # else
-    #     # Set up the name for the output directory
-    #     OUTPUT_DIR="/work/scratch-nopw2/benhutch/${variable}/${model}/${region}/years_${forecast_range}/${season}/outputs"
-    # fi
+
+    # Set up the name for the output directory
+    OUTPUT_DIR="/work/scratch-nopw2/benhutch/${variable}/${model}/${region}/years_${forecast_range}/${season}/outputs"
+
     
     # if the output directory does not exist, create it
     if [ ! -d "$OUTPUT_DIR" ]; then

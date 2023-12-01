@@ -9,8 +9,13 @@
 # Echo th task id
 echo "Task id is: ${SLURM_ARRAY_TASK_ID}"
 
-# Set up the error log files
-./test-sel-region-array-script.bash ${SLURM_ARRAY_TASK_ID}
+# # Set up the error log files
+# ./test-sel-region-array-script.bash ${SLURM_ARRAY_TASK_ID}
+
+# Print the CLI arguments
+echo "CLI arguments are: $@"
+echo "Number of CLI arguments is: $#"
+echo "Desired no. of arguments is: 8"
 
 # Check if the correct number of arguments were passed
 if [ $# -ne 8 ]; then
