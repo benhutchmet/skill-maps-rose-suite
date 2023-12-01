@@ -18,11 +18,11 @@ echo "Task id is: ${SLURM_ARRAY_TASK_ID}"
 # Print the CLI arguments
 echo "CLI arguments are: $@"
 echo "Number of CLI arguments is: $#"
-echo "Desired no. of arguments is: 7"
+echo "Desired no. of arguments is: 6"
 
 # Check if the correct number of arguments were passed
-if [ $# -ne 7 ]; then
-    echo "Usage: test-sel-region-array-script.bash <model> <variable> <region> <forecast-range> <season> <experiment> <nens>"
+if [ $# -ne 6 ]; then
+    echo "Usage: test-sel-region-array-script.bash <model> <variable> <region> <forecast-range> <season> <experiment>"
     exit 1
 fi
 
@@ -50,7 +50,8 @@ for model in $test_models; do
     echo "Processing model: $model"
 
     # Extract the number of ensemble members
-    nens=${psl_models_nens[$model]}
+    # declare these as integers
+    declare -i nens=${psl_models_nens[$model]}
 
     # Loop over the years
     for run in $(seq 1 $nens); do
