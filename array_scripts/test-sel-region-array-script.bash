@@ -1,10 +1,10 @@
 #!/bin/bash
 #SBATCH --partition=test
 #SBATCH --job-name=ben-array-sel-region-test
-#SBATCH -o ./${SLURM_JOB_NAME}_).out
-#SBATCH -e ./${SLURM_JOB_NAME}_).err
+#SBATCH -o ./logs/%j.out
+#SBATCH -e ./logs/%j.err
 #SBATCH --time=10:00
-#SBATCH --array=1960-2021
+#SBATCH --array=1960-1965
 
 # Echo th task id
 echo "Task id is: ${SLURM_ARRAY_TASK_ID}"
@@ -38,14 +38,25 @@ module load jaspy
 # Set up the process script
 process_script=$PWD/process_scripts/multi-model.sel-region-forecast-range-season.bash
 
-# Loop over the years
-for run in $(seq 1 $nens); do
+# Set up a test models list
+test_models="BCC-CSM2-MR MPI-ESM1-2-HR CanESM5 CMCC-CM2-SR5"
 
-    # Echo the year
-    echo "Processing run: $run"
+# Loop over models
+for model in $test_models; do
 
-    # Run the process script as an array job
-    bash $process_script ${model} ${SLURM_ARRAY_TASK_ID} ${run} ${variable} ${region} ${forecast_range} ${season} ${experiment}
+    # Echo the model name
+    echo "Processing model: $model"
+
+    # Loop over the years
+    for run in $(seq 1 $nens); do
+
+        # Echo the year
+        echo "Processing run: $run"
+
+        # Run the process script as an array job
+        bash $process_script ${model} ${SLURM_ARRAY_TASK_ID} ${run} ${variable} ${region} ${forecast_range} ${season} ${experiment}
+
+    done
 
 done
 
