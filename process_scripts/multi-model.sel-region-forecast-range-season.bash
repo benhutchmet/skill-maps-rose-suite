@@ -11,8 +11,8 @@
 source /home/users/benhutch/skill-maps-rose-suite/dictionaries.bash
 
 # check if the correct number of arguments have been passed
-if [ $# -ne 9 ]; then
-    echo "Usage: multi-model.sel-region-forecast-range-season.bash <model> <initialization-year> <run-number> <variable> <region> <forecast-range> <season> <experiment> <pressure-level>"
+if [ $# -ne 8 ]; then
+    echo "Usage: multi-model.sel-region-forecast-range-season.bash <model> <initialization-year> <run-number> <variable> <region> <forecast-range> <season> <experiment>"
     exit 1
 fi
 
@@ -24,7 +24,7 @@ variable=$4
 region=$5
 forecast_range=$6
 experiment=$8
-pressure_level=$9
+# pressure_level=$9
 
 # set up the gridspec file
 grid="/home/users/benhutch/gridspec/gridspec-${region}.txt"
@@ -711,14 +711,14 @@ fi
 # Write a function to select the level
 # E.g. we might want to select the 925 hPa level
 # Function to select a specific pressure level
-select_pressure_level() {
-    input_file=$1
-    output_file=$2
-    pressure_level=$3
+# select_pressure_level() {
+#     input_file=$1
+#     output_file=$2
+#     pressure_level=$3
 
-    # Select the specified pressure level
-    cdo sellevel,$pressure_level $input_file $output_file
-}
+#     # Select the specified pressure level
+#     cdo sellevel,$pressure_level $input_file $output_file
+# }
 
 
 # loop through the files and process them
@@ -728,13 +728,13 @@ for INPUT_FILE in $files; do
     season=$7
 
     # If the variable is ua or va, use the pressure level in the OUTPUT_DIR
-    if [ "$variable" == "ua" ] || [ "$variable" == "va" ]; then
-        # Set up the name for the output directory
-        OUTPUT_DIR="/work/scratch-nopw2/benhutch/${variable}/${model}/${region}/years_${forecast_range}/${season}/plev_${pressure_level}/outputs"
-    else
-        # Set up the name for the output directory
-        OUTPUT_DIR="/work/scratch-nopw2/benhutch/${variable}/${model}/${region}/years_${forecast_range}/${season}/outputs"
-    fi
+    # if [ "$variable" == "ua" ] || [ "$variable" == "va" ]; then
+    #     # Set up the name for the output directory
+    #     OUTPUT_DIR="/work/scratch-nopw2/benhutch/${variable}/${model}/${region}/years_${forecast_range}/${season}/plev_${pressure_level}/outputs"
+    # else
+    #     # Set up the name for the output directory
+    #     OUTPUT_DIR="/work/scratch-nopw2/benhutch/${variable}/${model}/${region}/years_${forecast_range}/${season}/outputs"
+    # fi
     
     # if the output directory does not exist, create it
     if [ ! -d "$OUTPUT_DIR" ]; then
@@ -745,36 +745,36 @@ for INPUT_FILE in $files; do
         echo "INFO: Output directory already exists: $OUTPUT_DIR"
     fi
 
-        # If the variable is ua or va, select the pressure level
-    if [ "$variable" == "ua" ] || [ "$variable" == "va" ]; then
-        # Set up the output file name
-        base_fname=$(basename "$INPUT_FILE")
-        pressure_level_fname="plev-${base_fname}"
-        TEMP_FILE="$OUTPUT_DIR/temp-${base_fname}"
-        OUTPUT_FILE="$OUTPUT_DIR/${pressure_level_fname}"
+    #     # If the variable is ua or va, select the pressure level
+    # if [ "$variable" == "ua" ] || [ "$variable" == "va" ]; then
+    #     # Set up the output file name
+    #     base_fname=$(basename "$INPUT_FILE")
+    #     pressure_level_fname="plev-${base_fname}"
+    #     TEMP_FILE="$OUTPUT_DIR/temp-${base_fname}"
+    #     OUTPUT_FILE="$OUTPUT_DIR/${pressure_level_fname}"
 
-        # If OUTPUT_FILE already exists, do not overwrite
-        if [ -f "$OUTPUT_FILE" ]; then
-            echo "INFO: OUTPUT_FILE already exists: $OUTPUT_FILE"
-            echo "INFO: Overwriting $OUTPUT_FILE"
-            # Delete the file
-            rm $OUTPUT_FILE
+    #     # If OUTPUT_FILE already exists, do not overwrite
+    #     if [ -f "$OUTPUT_FILE" ]; then
+    #         echo "INFO: OUTPUT_FILE already exists: $OUTPUT_FILE"
+    #         echo "INFO: Overwriting $OUTPUT_FILE"
+    #         # Delete the file
+    #         rm $OUTPUT_FILE
 
-            # Select the pressure level
-            select_pressure_level $INPUT_FILE $OUTPUT_FILE $pressure_level
-        else
-            echo "INFO: OUTPUT_FILE does not exist: $OUTPUT_FILE"
-            echo "INFO: Proceeding with script"
+    #         # Select the pressure level
+    #         select_pressure_level $INPUT_FILE $OUTPUT_FILE $pressure_level
+    #     else
+    #         echo "INFO: OUTPUT_FILE does not exist: $OUTPUT_FILE"
+    #         echo "INFO: Proceeding with script"
 
-            # Select the pressure level
-            select_pressure_level $INPUT_FILE $OUTPUT_FILE $pressure_level
+    #         # Select the pressure level
+    #         select_pressure_level $INPUT_FILE $OUTPUT_FILE $pressure_level
 
-            echo "[INFO] Finished selecting pressure level for $model"
-        fi
+    #         echo "[INFO] Finished selecting pressure level for $model"
+    #     fi
 
-        # Set up the input file
-        INPUT_FILE=$OUTPUT_FILE
-    fi
+    #     # Set up the input file
+    #     INPUT_FILE=$OUTPUT_FILE
+    # fi
 
     # set up the output file names
     echo "Processing $INPUT_FILE"
