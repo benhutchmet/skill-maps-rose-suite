@@ -1,4 +1,4 @@
-#!/bin/bash 
+#!/bin/bash
 #SBATCH --partition=test
 #SBATCH --job-name=ben-array-sel-region-test
 #SBATCH -o ./${SLURM_JOB_NAME}_).out
@@ -45,7 +45,7 @@ for run in $(seq 1 $nens); do
     echo "Processing run: $run"
 
     # Run the process script as an array job
-    bash $process_script ${model} ${year} ${SLURM_ARRAY_TASK_ID} ${variable} ${region} ${forecast_range} ${season} ${experiment}
+    bash $process_script ${model} ${SLURM_ARRAY_TASK_ID} ${run} ${variable} ${region} ${forecast_range} ${season} ${experiment}
 
 done
 
