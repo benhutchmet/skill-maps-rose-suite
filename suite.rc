@@ -27,7 +27,8 @@
         [[[job]]]
             batch system = slurm
         [[[directives]]]
-            --partition = short-serial
+            --partition = short-seria
+    //TODO: This task loops over years and members, so it should be submitted as an array job
     [[sel_region<model><initial_year><final_year><variable><region><forecast_range><season><experiment><pressure_level>]]
         script = """module load jaspy
         cd ${CYLC_SUITE_RUN_DIR}/
@@ -40,12 +41,14 @@
         bash submit-all-multi-model.calc-anoms-model-mean-state.bash ${CYLC_TASK_PARAM_model} ${CYLC_TASK_PARAM_variable} ${CYLC_TASK_PARAM_region} ${CYLC_TASK_PARAM_forecast_range} ${CYLC_TASK_PARAM_season} ${CYLC_TASK_PARAM_pressure_level}"""
         [[[job]]]
             execution time limit = PT30M
+    // TODO: This task loops over years, so it should be submitted as an array job
     [[calc_anoms<model><initial_year><final_year><variable><region><forecast_range><season><pressure_level>]]
         script = """module load jaspy
         cd ${CYLC_SUITE_RUN_DIR}/
         bash submit-all-multi-model.calc-anoms-sub-anoms.bash ${CYLC_TASK_PARAM_model} ${CYLC_TASK_PARAM_initial_year} ${CYLC_TASK_PARAM_final_year} ${CYLC_TASK_PARAM_variable} ${CYLC_TASK_PARAM_region} ${CYLC_TASK_PARAM_forecast_range} ${CYLC_TASK_PARAM_season} ${CYLC_TASK_PARAM_pressure_level}"""
         [[[job]]]
             execution time limit = PT30M
+    // TODO: This task loops over ensemble members, so it should be submitted as an array job
     [[merge_time<model><variable><region><forecast_range><season><pressure_level>]]
         script = """module load jaspy
         cd ${CYLC_SUITE_RUN_DIR}/

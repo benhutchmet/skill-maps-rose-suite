@@ -43,6 +43,65 @@ psl_models_nens=(["BCC-CSM2-MR"]=8
     ["NorCPM1"]=10
 )
 
+# Create an associative array for the models - tas
+declare -A tas_models_nens
+tas_models_nens=(["BCC-CSM2-MR"]=8
+    ["MPI-ESM1-2-HR"]=10
+    ["CanESM5"]=20
+    ["CMCC-CM2-SR5"]=10
+    ["HadGEM3-GC31-MM"]=10
+    ["EC-Earth3"]=10
+    ["MPI-ESM1-2-LR"]=16
+    ["FGOALS-f3-L"]=9
+    ["MIROC6"]=10
+    ["IPSL-CM6A-LR"]=10
+    ["CESM1-1-CAM5-CMIP5"]=40
+    ["NorCPM1"]=10
+)
+
+# Create an associative array for the models - rsds
+declare -A rsds_models_nens
+rsds_models_nens=(["BCC-CSM2-MR"]=8
+    ["MPI-ESM1-2-HR"]=10
+    ["CanESM5"]=20
+    ["CMCC-CM2-SR5"]=10
+    ["HadGEM3-GC31-MM"]=10
+    ["EC-Earth3"]=10
+    ["MPI-ESM1-2-LR"]=16
+    ["FGOALS-f3-L"]=3
+    ["MIROC6"]=10
+    ["IPSL-CM6A-LR"]=10
+    ["CESM1-1-CAM5-CMIP5"]=40
+    ["NorCPM1"]=10
+)
+
+# TODO: These will need to be changed once we have consistent moels
+# more consistent models
+# Create an associative array for the models - sfcWind
+declare -A sfcWind_models_nens
+sfcWind_models_nens=(["BCC-CSM2-MR"]=8
+    ["MPI-ESM1-2-HR"]=10
+    ["CanESM5"]=20
+    ["CMCC-CM2-SR5"]=10
+    ["HadGEM3-GC31-MM"]=10
+    ["FGOALS-f3-L"]=3
+    ["IPSL-CM6A-LR"]=10
+    ["CESM1-1-CAM5-CMIP5"]=40
+)
+
+# Same for tos
+declare -A tos_models_nens
+tos_models_nens=(
+    ["CanESM5"]=40
+    ["HadGEM3-GC31-MM"]=10
+    ["EC-Earth3"]=10
+    ["FGOALS-f3-L"]=6
+    ["MIROC6"]=10
+    ["IPSL-CM6A-LR"]=10
+    ["CESM1-1-CAM5-CMIP5"]=40
+    ["NorCPM1"]=10
+)
+
 # list of models
 # available on JASMIN
 models="BCC-CSM2-MR MPI-ESM1-2-HR CanESM5 CMCC-CM2-SR5 HadGEM3-GC31-MM EC-Earth3 MPI-ESM1-2-LR FGOALS-f3-L MIROC6 IPSL-CM6A-LR CESM1-1-CAM5-CMIP5 NorCPM1"

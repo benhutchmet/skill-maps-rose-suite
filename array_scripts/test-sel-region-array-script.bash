@@ -6,6 +6,12 @@
 #SBATCH --time=10:00
 #SBATCH --array=1960-1965
 
+# Verify that the dictionaries.bash file exists
+if [ ! -f $PWD/dictionaries.bash ]; then
+    echo "ERROR: dictionaries.bash file does not exist"
+    exit 1
+fi
+
 # Source the dictionaries
 source /home/users/benhutch/skill-maps-rose-suite/dictionaries.bash
 
@@ -40,8 +46,64 @@ module load jaspy
 # Set up the process script
 process_script=$PWD/process_scripts/multi-model.sel-region-forecast-range-season.bash
 
-# Set up a test models list
-test_models="BCC-CSM2-MR MPI-ESM1-2-HR CanESM5 CMCC-CM2-SR5"
+# If model is all
+if [ $model == "all" ]; then
+
+    # Extract the models list using a case statement
+    case $variable in
+    "psl")
+        models=$models
+        nens_extractor=$psl_models_nens
+        ;;
+    "sfcWind")
+        models=$sfcWind_models
+        nens_extractor=$sfcWind_models_nens
+        ;;
+    "rsds")
+        models=$rsds_models
+        nens_extractor=$rsds_models_nens
+        ;;
+    "tas")
+        models=$tas_models
+        nens_extractor=$tas_models_nens
+        ;;
+    "tos")
+        models=$tos_models
+        nens_extractor=$tos_models_nens
+        ;;
+    *)
+        echo "ERROR: variable not recognized: $variable"
+        exit 1
+        ;;
+    esac
+
+    # Loop over the models
+    for model in $models; do
+
+        # Echo the model name
+        echo "Processing model: $model"
+
+        # Extract the number of ensemble members
+        nens=${nens_extractor[$model]}
+
+        # Loop over the years
+        for run in $(seq 1 $nens); do
+
+            # Echo the year
+            echo "Processing run: $run"
+
+            # Run the process script as an array job
+            bash $process_script ${model} ${SLURM_ARRAY_TASK_ID} ${run} ${variable} ${region} ${forecast_range} ${season} ${experiment}
+
+        done
+
+    done
+
+    # End the script
+    echo "Finished processing ${model} ${variable} ${region} ${forecast_range} ${season} ${experiment} ${start_year} ${end_year}"
+    exit 0
+
+fi
 
 # Loop over models
 for model in $test_models; do
@@ -51,7 +113,7 @@ for model in $test_models; do
 
     # Extract the number of ensemble members
     # declare these as integers
-    declare -i nens=${psl_models_nens[$model]}
+    nens=${psl_models_nens[$model]}
 
     # Loop over the years
     for run in $(seq 1 $nens); do
