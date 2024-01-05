@@ -4,7 +4,7 @@
 #SBATCH -o /gws/nopw/j04/canari/users/benhutch/batch_logs/ben-array-sel-region-test/%j.out
 #SBATCH -e /gws/nopw/j04/canari/users/benhutch/batch_logs/ben-array-sel-region-test/%j.err
 #SBATCH --time=10:00
-#SBATCH --array=1960-1965
+#SBATCH --array=1960-1963
 
 # Form the path for the logs folder and make sure it exists
 logs_dir="/gws/nopw/j04/canari/users/benhutch/batch_logs/ben-array-sel-region-test"
@@ -101,8 +101,11 @@ if [ $model == "all" ]; then
         # Echo the model name
         echo "Processing model: $model"
 
+        # Declare nameref for the nens extractor
+        declare -n nens_extractor_ref=nens_extractor
+
         # Extract the number of ensemble members
-        nens=${nens_extractor[$model]}
+        nens=${nens_extractor_ref[$model]}
 
         # Loop over the years
         for run in $(seq 1 $nens); do
