@@ -136,6 +136,9 @@ echo "Processing year: ${SLURM_ARRAY_TASK_ID}"
 # Extract the number of ensemble members for a single model
 nens=${nens_extractor[$model]}
 
+# Echo the number of ensemble members
+echo "Number of ensemble members: $nens"
+
 # Loop over the ensemble members
 for run in $(seq 1 $nens); do
 
