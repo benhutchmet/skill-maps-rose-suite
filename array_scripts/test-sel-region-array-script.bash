@@ -64,6 +64,7 @@ module load jaspy
 # Set up the process script
 process_script=$PWD/process_scripts/multi-model.sel-region-forecast-range-season.bash
 
+#FIXME: NENS extractor not working, but we use this in a different mode
 # If model is all
 if [ $model == "all" ]; then
 
@@ -141,9 +142,9 @@ for run in $(seq 1 $nens); do
     # Echo the ensemble member
     echo "Processing run: $run"
 
-    # Run the process script as an array job
-    bash $process_script ${model} ${SLURM_ARRAY_TASK_ID} ${run} ${variable} \
-        ${region} ${forecast_range} ${season} ${experiment}
+    # # Run the process script as an array job
+    # bash $process_script ${model} ${SLURM_ARRAY_TASK_ID} ${run} ${variable} \
+    #     ${region} ${forecast_range} ${season} ${experiment}
 
 done
 
