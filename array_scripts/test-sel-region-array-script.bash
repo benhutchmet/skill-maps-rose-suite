@@ -67,50 +67,47 @@ process_script=$PWD/process_scripts/multi-model.sel-region-forecast-range-season
 # Declare an empty associative array
 declare -A nens_extractor
 
-# Write a function which copies the key-value pairs from one associative array to another
-copy_key_value_pairs() {
-    # Declare the associative arrays
-    declare -n source=$1
-    declare -n destination=$2
-
-    # Loop over the keys in the source array
-    for key in "${!source[@]}"; do
-        # Copy the key-value pair from the source to the destination
-        destination[$key]=${source[$key]}
-    done
-}
-
 # Extract the models list using a case statement
 case $variable in
 "psl")
     models=$models
 
-    # Use the function to copy the key-value pairs from the psl_models_nens
-    copy_key_value_pairs psl_models_nens nens_extractor
+    # Loop over and copy each key-value pair from the psl_models_nens
+    for key in "${!psl_models_nens[@]}"; do
+        nens_extractor[$key]=${psl_models_nens[$key]}
+    done
     ;;
 "sfcWind")
     models=$sfcWind_models
 
-    # Use the function to copy the key-value pairs from the sfcWind_models_nens
-    copy_key_value_pairs sfcWind_models_nens nens_extractor
+    # Loop over and copy each key-value pair from the sfcWind_models_nens
+    for key in "${!sfcWind_models_nens[@]}"; do
+        nens_extractor[$key]=${sfcWind_models_nens[$key]}
+    done
     ;;
 "rsds")
     models=$rsds_models
 
-    # Use the function to copy the key-value pairs from the rsds_models_nens
-    copy_key_value_pairs rsds_models_nens nens_extractor
+    # Loop over and copy each key-value pair from the rsds_models_nens
+    for key in "${!rsds_models_nens[@]}"; do
+        nens_extractor[$key]=${rsds_models_nens[$key]}
+    done
     ;;
 "tas")
     models=$tas_models
 
-    # Use the function to copy the key-value pairs from the tas_models_nens
-    copy_key_value_pairs tas_models_nens nens_extractor
+    # loop over and copy each key-value pair from the tas_models_nens
+    for key in "${!tas_models_nens[@]}"; do
+        nens_extractor[$key]=${tas_models_nens[$key]}
+    done
     ;;
 "tos")
     models=$tos_models
 
-    # Use the function to copy the key-value pairs from the tos_models_nens
-    copy_key_value_pairs tos_models_nens nens_extractor
+    # Loop over and copy each key-value pair from the tos_models_nens
+    for key in "${!tos_models_nens[@]}"; do
+        nens_extractor[$key]=${tos_models_nens[$key]}
+    done
     ;;
 *)
     echo "ERROR: variable not recognized: $variable"
@@ -138,7 +135,7 @@ if [ $model == "all" ]; then
         echo "Processing model: $model"
 
         # Declare nameref for the nens extractor
-        declare -n nens_extractor_ref=nens_extractor
+        nens_extractor_ref=nens_extractor
 
         # Extract the number of ensemble members
         nens=${nens_extractor[$model]}
