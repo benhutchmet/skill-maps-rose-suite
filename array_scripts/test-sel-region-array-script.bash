@@ -1,10 +1,20 @@
 #!/bin/bash
 #SBATCH --partition=test
 #SBATCH --job-name=ben-array-sel-region-test
-#SBATCH -o ./logs/%j.out
-#SBATCH -e ./logs/%j.err
+#SBATCH -o /gws/nopw/j04/canari/users/benhutch/batch_logs/ben-array-sel-region-test/%j.out
+#SBATCH -e /gws/nopw/j04/canari/users/benhutch/batch_logs/ben-array-sel-region-test%j.err
 #SBATCH --time=10:00
 #SBATCH --array=1960-1965
+
+# Form the path for the logs folder and make sure it exists
+logs_dir="/gws/nopw/j04/canari/users/benhutch/batch_logs/ben-array-sel-region-test"
+
+# If the logs directory does not exist
+if [ ! -d $logs_dir ]; then
+    # Make the logs directory
+    mkdir -p $logs_dir
+fi
+
 
 # Verify that the dictionaries.bash file exists
 if [ ! -f $PWD/dictionaries.bash ]; then
