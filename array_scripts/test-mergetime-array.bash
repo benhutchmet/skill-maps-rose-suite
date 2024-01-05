@@ -1,5 +1,5 @@
 #!/bin/bash
-#SBATCH --partition=test
+#SBATCH --partition=short-serial
 #SBATCH --job-name=mergetime-array-test
 #SBATCH -o /gws/nopw/j04/canari/users/benhutch/batch_logs/mergetime-array-test/%j.out
 #SBATCH -e /gws/nopw/j04/canari/users/benhutch/batch_logs/mergetime-array-test/%j.err
@@ -61,8 +61,7 @@ echo "Pressure level is: $pressure_level"
 module load jaspy
 
 # Set the process script
-process_script="/home/users/benhutch/skill-maps-rose-suite/process_scripts/\
-                multi-model.mergetime.bash"
+process_script="/home/users/benhutch/skill-maps-rose-suite/process_scripts/multi-model.mergetime.bash"
 
 # Check that the process script exists
 if [ ! -f $process_script ]; then
