@@ -1,4 +1,5 @@
 #!/bin/bash
+#SBATCH --job-name=ben-array-sel-region-test
 #SBATCH --partition=short-serial
 #SBATCH -o /gws/nopw/j04/canari/users/benhutch/batch_logs/ben-array-sel-region-test/%j.out
 #SBATCH -e /gws/nopw/j04/canari/users/benhutch/batch_logs/ben-array-sel-region-test/%j.err
