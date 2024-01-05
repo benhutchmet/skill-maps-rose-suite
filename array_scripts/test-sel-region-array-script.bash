@@ -64,27 +64,53 @@ module load jaspy
 # Set up the process script
 process_script=$PWD/process_scripts/multi-model.sel-region-forecast-range-season.bash
 
+# Declare an empty associative array
+declare -A nens_extractor
+
+# Write a function which copies the key-value pairs from one associative array to another
+copy_key_value_pairs() {
+    # Declare the associative arrays
+    declare -n source=$1
+    declare -n destination=$2
+
+    # Loop over the keys in the source array
+    for key in "${!source[@]}"; do
+        # Copy the key-value pair from the source to the destination
+        destination[$key]=${source[$key]}
+    done
+}
+
 # Extract the models list using a case statement
 case $variable in
 "psl")
     models=$models
-    declare -n nens_extractor=psl_models_nens
+
+    # Use the function to copy the key-value pairs from the psl_models_nens
+    copy_key_value_pairs psl_models_nens nens_extractor
     ;;
 "sfcWind")
     models=$sfcWind_models
-    declare -n nens_extractor=sfcWind_models_nens
+
+    # Use the function to copy the key-value pairs from the sfcWind_models_nens
+    copy_key_value_pairs sfcWind_models_nens nens_extractor
     ;;
 "rsds")
     models=$rsds_models
-    declare -n nens_extractor=rsds_models_nens
+
+    # Use the function to copy the key-value pairs from the rsds_models_nens
+    copy_key_value_pairs rsds_models_nens nens_extractor
     ;;
 "tas")
     models=$tas_models
-    declare -n nens_extractor=tas_models_nens
+
+    # Use the function to copy the key-value pairs from the tas_models_nens
+    copy_key_value_pairs tas_models_nens nens_extractor
     ;;
 "tos")
     models=$tos_models
-    declare -n nens_extractor=tos_models_nens
+
+    # Use the function to copy the key-value pairs from the tos_models_nens
+    copy_key_value_pairs tos_models_nens nens_extractor
     ;;
 *)
     echo "ERROR: variable not recognized: $variable"
@@ -95,8 +121,11 @@ esac
 # Echo the models
 echo "Models are: $models"
 
-# Declare and print the nens_extractor
-declare -p nens_extractor
+# Echo the values of the nens_extractor
+echo "Values of nens_extractor are: ${nens_extractor[@]}"
+
+# Echo the keys of the nens_extractor
+echo "Keys of nens_extractor are: ${!nens_extractor[@]}"
 
 #FIXME: NENS extractor not working, but we use this in a different mode
 # If model is all
@@ -112,7 +141,7 @@ if [ $model == "all" ]; then
         declare -n nens_extractor_ref=nens_extractor
 
         # Extract the number of ensemble members
-        nens=${nens_extractor_ref[$model]}
+        nens=${nens_extractor[$model]}
 
         # Loop over the years
         for run in $(seq 1 $nens); do
