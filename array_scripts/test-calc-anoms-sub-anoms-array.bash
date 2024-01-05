@@ -79,23 +79,18 @@ if [ $model == "all" ]; then
     case $variable in
     "psl")
         models=$models
-        nens_extractor=$psl_models_nens
         ;;
     "sfcWind")
         models=$sfcWind_models
-        nens_extractor=$sfcWind_models_nens
         ;;
     "rsds")
         models=$rsds_models
-        nens_extractor=$rsds_models_nens
         ;;
     "tas")
         models=$tas_models
-        nens_extractor=$tas_models_nens
         ;;
     "tos")
         models=$tos_models
-        nens_extractor=$tos_models_nens
         ;;
     *)
         echo "ERROR: variable not recognized: $variable"
