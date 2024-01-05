@@ -15,6 +15,7 @@ if [ $# -ne 7 ]; then
     exit 1
 fi
 
+# TODO: for individual members as well?
 # Extract the model-year-run, variable, region, forecast range and season
 model=$1
 year=$2

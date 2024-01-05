@@ -2,7 +2,7 @@
 #SBATCH --partition=test
 #SBATCH --job-name=ben-array-sel-region-test
 #SBATCH -o /gws/nopw/j04/canari/users/benhutch/batch_logs/ben-array-sel-region-test/%j.out
-#SBATCH -e /gws/nopw/j04/canari/users/benhutch/batch_logs/ben-array-sel-region-test%j.err
+#SBATCH -e /gws/nopw/j04/canari/users/benhutch/batch_logs/ben-array-sel-region-test/%j.err
 #SBATCH --time=10:00
 #SBATCH --array=1960-1965
 
@@ -14,7 +14,6 @@ if [ ! -d $logs_dir ]; then
     # Make the logs directory
     mkdir -p $logs_dir
 fi
-
 
 # Verify that the dictionaries.bash file exists
 if [ ! -f $PWD/dictionaries.bash ]; then
@@ -124,26 +123,24 @@ if [ $model == "all" ]; then
 
 fi
 
-# Loop over models
-for model in $test_models; do
+# In the case of individual models
+echo "Processing single model: $model"
 
-    # Echo the model name
-    echo "Processing model: $model"
+# Echo the year which we are processing
+echo "Processing year: ${SLURM_ARRAY_TASK_ID}"
 
-    # Extract the number of ensemble members
-    # declare these as integers
-    nens=${psl_models_nens[$model]}
+# Extract the number of ensemble members for a single model
+nens=${nens_extractor[$model]}
 
-    # Loop over the years
-    for run in $(seq 1 $nens); do
+# Loop over the ensemble members
+for run in $(seq 1 $nens); do
 
-        # Echo the year
-        echo "Processing run: $run"
+    # Echo the ensemble member
+    echo "Processing run: $run"
 
-        # Run the process script as an array job
-        bash $process_script ${model} ${SLURM_ARRAY_TASK_ID} ${run} ${variable} ${region} ${forecast_range} ${season} ${experiment}
-
-    done
+    # Run the process script as an array job
+    bash $process_script ${model} ${SLURM_ARRAY_TASK_ID} ${run} ${variable} \
+        ${region} ${forecast_range} ${season} ${experiment}
 
 done
 
