@@ -28,7 +28,8 @@ echo "Desired no. of arguments is: 6"
 
 # Check if the correct number of arguments were passed
 if [ $# -ne 6 ]; then
-    echo "Usage: test-sel-region-array-script.bash <model> <variable> <region> <forecast-range> <season> <experiment>"
+    echo "Usage: sbatch test-sel-region-array-script.bash <model> <variable> <region> <forecast-range> <season> <experiment>"
+    echo "Example: sbatch test-sel-region-array-script.bash HadGEM3-GC31-MM psl global 2-9 DJFM dcppA-hindcast"
     exit 1
 fi
 
@@ -39,6 +40,14 @@ region=$3
 forecast_range=$4
 season=$5
 experiment=$6
+
+# Print the model, variable, region, forecast range and season
+echo "Model is: $model"
+echo "Variable is: $variable"
+echo "Region is: $region"
+echo "Forecast range is: $forecast_range"
+echo "Season is: $season"
+echo "Experiment is: $experiment"
 
 # Load cdo
 module load jaspy
