@@ -109,6 +109,31 @@ if [ $model == "all" ]; then
         # Echo the model name
         echo "Extracting data for model: $model"
 
-        # Extract the number of ensemble members
-        nens=${nens_extractor[$model]}
-            
+        # Echo the year which we are processing
+        echo "Processing year: ${SLURM_ARRAY_TASK_ID}"
+
+        # Run the process script as an array job
+        bash $process_script ${model} ${SLURM_ARRAY_TASK_ID} ${variable} \
+        ${region} ${forecast_range} ${season} ${pressure_level}
+
+    done
+
+    # End the script
+    echo "Finished processing anomalies for  ${model} ${variable} ${region} \
+    ${forecast_range} ${season} ${pressure_level}"
+
+fi
+
+# In the other case of individual models
+echo "Extracting data for single model: $model"
+
+# Echo the year which we are processing
+echo "Processing year: ${SLURM_ARRAY_TASK_ID}"
+
+# Run the process script as an array job
+bash $process_script ${model} ${SLURM_ARRAY_TASK_ID} ${variable} \
+    ${region} ${forecast_range} ${season} ${pressure_level}
+
+# End the script
+echo "Finished processing anomalies for  ${model} ${variable} ${region} \
+${forecast_range} ${season} ${pressure_level}"
