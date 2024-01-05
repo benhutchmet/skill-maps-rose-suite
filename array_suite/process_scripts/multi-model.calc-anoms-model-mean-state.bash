@@ -83,6 +83,7 @@ if [ "$variable" == "tos" ]; then
             process_files "i2" $variable
             ;;
         "EC-Earth3")
+            process_files "i1" $variable
             process_files "i2" $variable
             ;;
         *)
@@ -99,6 +100,7 @@ else
             ;;
         "EC-Earth3")
             process_files "i1" $variable
+            process_files "i2" $variable
             ;;
         *)
             # For all other models, use a wildcard for init_scheme
