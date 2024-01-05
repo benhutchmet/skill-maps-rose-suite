@@ -148,7 +148,7 @@ echo "[INFO] Extracting data for all models: $models"
                 ;;
             EC-Earth3)
                 run=10
-                init_methods=4
+                init_methods=2
                 ;;
             MRI-ESM2-0)
                 run=10
@@ -319,7 +319,7 @@ else
                 ;;
             EC-Earth3)
                 run=10
-                init_methods=4
+                init_methods=2
                 ;;
             MRI-ESM2-0)
                 run=10
