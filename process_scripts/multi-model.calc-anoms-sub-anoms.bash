@@ -105,6 +105,7 @@ if [ "$variable" == "tos" ]; then
             calculate_anoms "i2" $variable
             ;;
         "EC-Earth3")
+            calculate_anoms "i1" $variable
             calculate_anoms "i2" $variable
             ;;
         *)
@@ -121,6 +122,7 @@ else
             ;;
         "EC-Earth3")
             calculate_anoms "i1" $variable
+            calculate_anoms "i2" $variable
             ;;
         *)
             # For all other models, use a wildcard for init_scheme
