@@ -24,7 +24,6 @@
         pre-script="""set -eu"""
         [[[job]]]
             batch system = slurm
-
         [[[directives]]]
             --partition = short-serial
     [[sel_region<model><variable><region><forecast_range><season><pressure-level>]]
