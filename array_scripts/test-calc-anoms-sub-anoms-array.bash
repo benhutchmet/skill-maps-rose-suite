@@ -2,7 +2,7 @@
 #SBATCH --partition=test
 #SBATCH --job-name=calc-anoms-array-test
 #SBATCH -o /gws/nopw/j04/canari/users/benhutch/batch_logs/calc-anoms-array-test/%j.out
-#SBATCH -e /gws/nopw/j04/canari/users/benhutch/batch_logs/calc-anoms-array-test%j.err
+#SBATCH -e /gws/nopw/j04/canari/users/benhutch/batch_logs/calc-anoms-array-test/%j.err
 #SBATCH --time=10:00
 #SBATCH --array=1960-1965
 
