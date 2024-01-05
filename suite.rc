@@ -26,31 +26,27 @@
             batch system = slurm
         [[[directives]]]
             --partition = short-serial
-    //TODO: This task loops over years and members, so it should be submitted as an array job
-    // TODO: Should be SBATCH not bash
     [[sel_region<model><variable><region><forecast_range><season><pressure-level>]]
         script = """module load jaspy
         cd ${CYLC_SUITE_RUN_DIR}/
-        sbatch submit-all-multi-model.sel-region-forecast-range-season.bash ${CYLC_TASK_PARAM_model} ${CYLC_TASK_PARAM_initial_year} ${CYLC_TASK_PARAM_final_year} ${CYLC_TASK_PARAM_variable} ${CYLC_TASK_PARAM_region} ${CYLC_TASK_PARAM_forecast_range} ${CYLC_TASK_PARAM_season} ${CYLC_TASK_PARAM_experiment} ${CYLC_TASK_PARAM_pressure_level}"""
+        sbatch test-sel-region-array-script.bash ${CYLC_TASK_PARAM_model} ${CYLC_TASK_PARAM_variable} ${CYLC_TASK_PARAM_region} ${CYLC_TASK_PARAM_forecast_range} ${CYLC_TASK_PARAM_season} ${CYLC_TASK_PARAM_pressure_level}"""
         [[[job]]]
-            execution time limit = PT90M
+            execution time limit = PT30M
     [[calc_model_mean_state<model><variable><region><forecast_range><season><pressure_level>]]
         script = """module load jaspy
         cd ${CYLC_SUITE_RUN_DIR}/
         bash submit-all-multi-model.calc-anoms-model-mean-state.bash ${CYLC_TASK_PARAM_model} ${CYLC_TASK_PARAM_variable} ${CYLC_TASK_PARAM_region} ${CYLC_TASK_PARAM_forecast_range} ${CYLC_TASK_PARAM_season} ${CYLC_TASK_PARAM_pressure_level}"""
         [[[job]]]
             execution time limit = PT30M
-    // TODO: This task loops over years, so it should be submitted as an array job
     [[calc_anoms<model><variable><region><forecast_range><season><pressure_level>]]
         script = """module load jaspy
         cd ${CYLC_SUITE_RUN_DIR}/
-        sbatch submit-all-multi-model.calc-anoms-sub-anoms.bash ${CYLC_TASK_PARAM_model} ${CYLC_TASK_PARAM_initial_year} ${CYLC_TASK_PARAM_final_year} ${CYLC_TASK_PARAM_variable} ${CYLC_TASK_PARAM_region} ${CYLC_TASK_PARAM_forecast_range} ${CYLC_TASK_PARAM_season} ${CYLC_TASK_PARAM_pressure_level}"""
+        sbatch test-calc-anoms-sub-anoms-array.bash ${CYLC_TASK_PARAM_model} ${CYLC_TASK_PARAM_variable} ${CYLC_TASK_PARAM_region} ${CYLC_TASK_PARAM_forecast_range} ${CYLC_TASK_PARAM_season} ${CYLC_TASK_PARAM_pressure_level}"""
         [[[job]]]
             execution time limit = PT30M
-    // TODO: This task loops over ensemble members, so it should be submitted as an array job
     [[merge_time<model><variable><region><forecast_range><season><pressure_level>]]
         script = """module load jaspy
         cd ${CYLC_SUITE_RUN_DIR}/
-        sbatch submit-all-multi-model.mergetime.bash ${CYLC_TASK_PARAM_model} ${CYLC_TASK_PARAM_variable} ${CYLC_TASK_PARAM_region} ${CYLC_TASK_PARAM_forecast_range} ${CYLC_TASK_PARAM_season} ${CYLC_TASK_PARAM_pressure_level}"""
+        sbatch test-mergetime-array.bash ${CYLC_TASK_PARAM_model} ${CYLC_TASK_PARAM_variable} ${CYLC_TASK_PARAM_region} ${CYLC_TASK_PARAM_forecast_range} ${CYLC_TASK_PARAM_season} ${CYLC_TASK_PARAM_pressure_level}"""
         [[[job]]]
             execution time limit = PT30M
