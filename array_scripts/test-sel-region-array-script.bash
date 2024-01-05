@@ -184,8 +184,8 @@ for run in $(seq 1 $nens); do
     echo "Processing run: $run"
 
     # # Run the process script as an array job
-    # bash $process_script ${model} ${SLURM_ARRAY_TASK_ID} ${run} ${variable} \
-    #     ${region} ${forecast_range} ${season} ${experiment}
+    bash $process_script ${model} ${SLURM_ARRAY_TASK_ID} ${run} ${variable} \
+        ${region} ${forecast_range} ${season} ${experiment}
 
 done
 
