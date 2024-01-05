@@ -49,7 +49,7 @@ if [[ $model =~ ^[0-9]+$ ]]; then
     echo "[INFO] models array: ${models_array[*]}"
 
     # Extract the numbered element of the models array
-    model=${models_array[$model-1]}
+    model=${models_array[$model - 1]}
 
     # echo the model name
     echo "[INFO] Model name: $model"
@@ -121,7 +121,7 @@ else
 
         # Echo the year
         echo "[INFO] Calculating anomalies for year: $year"
-        
+
         # Echo the output directory
         echo "[INFO] Output directory: $OUTPUT_DIR"
 
