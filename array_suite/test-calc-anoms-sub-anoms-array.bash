@@ -61,8 +61,7 @@ echo "Pressure level is: $pressure_level"
 module load jaspy
 
 # Set the process script
-process_script="/home/users/benhutch/skill-maps-rose-suite/process_scripts/\
-multi-model.calc-anoms-sub-anoms.bash"
+process_script="/home/users/benhutch/skill-maps-rose-suite/process_scripts/multi-model.calc-anoms-sub-anoms.bash"
 
 # Check that the process script exists
 if [ ! -f $process_script ]; then
