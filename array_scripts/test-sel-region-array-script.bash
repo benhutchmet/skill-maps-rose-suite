@@ -64,37 +64,37 @@ module load jaspy
 # Set up the process script
 process_script=$PWD/process_scripts/multi-model.sel-region-forecast-range-season.bash
 
+# Extract the models list using a case statement
+case $variable in
+"psl")
+    models=$models
+    nens_extractor=$psl_models_nens
+    ;;
+"sfcWind")
+    models=$sfcWind_models
+    nens_extractor=$sfcWind_models_nens
+    ;;
+"rsds")
+    models=$rsds_models
+    nens_extractor=$rsds_models_nens
+    ;;
+"tas")
+    models=$tas_models
+    nens_extractor=$tas_models_nens
+    ;;
+"tos")
+    models=$tos_models
+    nens_extractor=$tos_models_nens
+    ;;
+*)
+    echo "ERROR: variable not recognized: $variable"
+    exit 1
+    ;;
+esac
+
 #FIXME: NENS extractor not working, but we use this in a different mode
 # If model is all
 if [ $model == "all" ]; then
-
-    # Extract the models list using a case statement
-    case $variable in
-    "psl")
-        models=$models
-        nens_extractor=$psl_models_nens
-        ;;
-    "sfcWind")
-        models=$sfcWind_models
-        nens_extractor=$sfcWind_models_nens
-        ;;
-    "rsds")
-        models=$rsds_models
-        nens_extractor=$rsds_models_nens
-        ;;
-    "tas")
-        models=$tas_models
-        nens_extractor=$tas_models_nens
-        ;;
-    "tos")
-        models=$tos_models
-        nens_extractor=$tos_models_nens
-        ;;
-    *)
-        echo "ERROR: variable not recognized: $variable"
-        exit 1
-        ;;
-    esac
 
     # Loop over the models
     for model in $models; do
@@ -132,6 +132,12 @@ echo "Processing single model: $model"
 
 # Echo the year which we are processing
 echo "Processing year: ${SLURM_ARRAY_TASK_ID}"
+
+# Declare the nen_extractor
+declare -p nens_extractor
+
+# Echo the model
+echo "Model is: $model"
 
 # Extract the number of ensemble members for a single model
 nens=${nens_extractor[$model]}
