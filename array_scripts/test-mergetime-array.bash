@@ -30,7 +30,7 @@ echo "SLURM_ARRAY_TASK_ID is: ${SLURM_ARRAY_TASK_ID}"
 # Echo trhe CLI's
 echo "CLI arguments are: $@"
 echo "Number of CLI arguments is: $#"
-echo "Desired no. of arguments is: 6" # FIXME: might need to change this
+echo "Desired no. of arguments is: 6"
 
 # Check if the correct number of arguments were passed
 if [ $# -ne 6 ]; then
