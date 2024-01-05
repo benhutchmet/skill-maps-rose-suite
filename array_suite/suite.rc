@@ -29,7 +29,7 @@
     [[sel_region<model><variable><region><forecast_range><season><experiment>]]
         script = """module load jaspy
         cd ${CYLC_SUITE_RUN_DIR}/
-        sbatch --job-name=sel_region test-sel-region-array.bash ${CYLC_TASK_PARAM_model} ${CYLC_TASK_PARAM_variable} ${CYLC_TASK_PARAM_region} ${CYLC_TASK_PARAM_forecast_range} ${CYLC_TASK_PARAM_season} ${CYLC_TASK_PARAM_experiment}"""
+        sbatch test-sel-region-array-script.bash ${CYLC_TASK_PARAM_model} ${CYLC_TASK_PARAM_variable} ${CYLC_TASK_PARAM_region} ${CYLC_TASK_PARAM_forecast_range} ${CYLC_TASK_PARAM_season} ${CYLC_TASK_PARAM_experiment}"""
         [[[job]]]
             execution time limit = PT30M
     [[calc_model_mean_state<model><variable><region><forecast_range><season><pressure_level>]]
